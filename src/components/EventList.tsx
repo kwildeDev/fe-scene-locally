@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getEvents } from '../api.ts';
-import { Container, SimpleGrid } from '@chakra-ui/react';
+import { Container, SimpleGrid, Spinner, Text, VStack } from '@chakra-ui/react';
 import EventCard from './EventCard.tsx';
 
 interface EventSummary {
@@ -20,20 +20,34 @@ interface EventSummary {
 
 const EventList: React.FC = () => {
     const [events, setEvents] = useState<EventSummary[]>([]);
-    const [isError, setIsError] = useState(false);
+    const [isError, setIsError] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getEvents()
-            .then((events) => setEvents(events))
-            .catch(() => setIsError(true));
+            .then((events) => {
+                setEvents(events);
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                setIsError(true);
+                setIsLoading(false);
+            });
     }, []);
 
     if (isError) {
         return <p>Failed to load events.</p>;
     }
+    if (isLoading) {
+        return (
+            <VStack colorPalette="teal">
+                <Spinner color="colorPalette.600" />
+                <Text color="colorPalette.600">Loading...</Text>
+            </VStack>
+        )
+    }
 
     return (
-        <Container>
             <SimpleGrid
                 columns={[1, 2, 3]}
                 columnGap="2"
@@ -46,7 +60,6 @@ const EventList: React.FC = () => {
                     />
                 ))}
             </SimpleGrid>
-        </Container>
     );
 };
 

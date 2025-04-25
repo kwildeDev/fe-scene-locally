@@ -3,7 +3,7 @@ import { Container, Heading } from '@chakra-ui/react';
 const Header: React.FC = () => {
     return (
         <Container>
-            <Heading>Events Platform</Heading>
+            <Heading p={10}>Events Platform</Heading>
         </Container>
     );
 };
