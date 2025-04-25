@@ -1,12 +1,31 @@
-import { useState } from 'react'
-import './App.css'
+import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import EventList from './components/EventList';
+import Header from './components/Header';
+import { ChakraProvider, createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-function App() {
+const config = defineConfig({
+  theme: {
+    tokens: {
+      colors: {}
+    },
+  },
+})
 
-  return (
-    <>
-    </>
-  )
-}
+const system = createSystem(defaultConfig, config)
 
-export default App
+const App: React.FC = () => {
+    return (
+        <ChakraProvider value={system}>
+        <Header/>
+        <Routes>
+            <Route
+                path="/"
+                element={<EventList />}
+            />
+        </Routes>
+        </ChakraProvider>
+    );
+};
+
+export default App;
