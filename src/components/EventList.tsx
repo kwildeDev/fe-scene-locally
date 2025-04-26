@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getEvents } from '../api.ts';
-import { Container, SimpleGrid, Spinner, Text, VStack } from '@chakra-ui/react';
+import { SimpleGrid, Spinner, Text, VStack } from '@chakra-ui/react';
 import EventCard from './EventCard.tsx';
+import CategoryList from './CategoryList.tsx';
+import SubcategoryList from './SubcategoryList.tsx';
 
 interface EventSummary {
     event_id: number;
@@ -48,18 +50,21 @@ const EventList: React.FC = () => {
     }
 
     return (
-            <SimpleGrid
-                columns={[1, 2, 3]}
-                columnGap="2"
-                rowGap="4"
-            >
-                {events.map((event) => (
-                    <EventCard
-                        key={event.event_id}
-                        event={event}
-                    />
-                ))}
-            </SimpleGrid>
+            <>
+                <CategoryList />
+                <SimpleGrid
+                    columns={[1, 2, 3]}
+                    columnGap="2"
+                    rowGap="4"
+                >
+                    {events.map((event) => (
+                        <EventCard
+                            key={event.event_id}
+                            event={event}
+                        />
+                    ))}
+                </SimpleGrid>
+            </>
     );
 };
 
