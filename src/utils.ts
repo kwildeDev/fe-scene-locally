@@ -5,3 +5,21 @@ export function formatDateTime(dateTime: string) {
     const formattedDate = format(date, "eee do MMMM 'at' hh:mm a");
     return formattedDate;
 }
+
+export function getIconColour(idNumber: number) {
+    const colourId:number = idNumber % 10
+    console.log(idNumber, idNumber % 10)
+    const colourLookup: string[] = [
+        "teal",
+        "blue",
+        "green",
+        "orange",
+        "red",
+        "purple",
+        "pink",
+        "yellow",
+        "cyan",
+        "gray",
+      ];
+    return colourLookup[colourId]  
+}

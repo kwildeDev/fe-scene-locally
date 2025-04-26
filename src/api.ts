@@ -37,6 +37,20 @@ export interface RecurringSchedule {
     day?: string;
 }
 
+export interface CategoryDetail {
+    category_id: number;
+    name: string;
+    slug: string;
+    description: string;
+}
+
+export interface SubcategoryDetail {
+    category_id: number;
+    name: string;
+    slug: string;
+    description: string;
+}
+
 // Events
 const getEvents = (): Promise<EventSummary[]> => {
     return api.get('/events').then(({ data }) => {
@@ -48,6 +62,19 @@ const getEventById = (event_id: number): Promise<EventDetail> => {
     return api.get(`/events/${event_id}`).then(({ data }) => {
         return data.event
     });
-}
+};
 
-export { getEvents, getEventById };
+//Categories
+const getCategories = (): Promise<CategoryDetail[]> => {
+    return api.get('/categories').then(({ data }) => {
+        return data.categories
+    });
+};
+
+const getSubcategories = (category_slug: number): Promise<SubcategoryDetail[]> => {
+    return api.get(`/categories/${category_slug}`).then(({ data }) => {
+        return data.subcategories
+    });
+};
+
+export { getEvents, getEventById, getCategories, getSubcategories };
