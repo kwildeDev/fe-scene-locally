@@ -3,7 +3,6 @@ import {
     Button,
     HStack,
     Icon,
-    Link,
     SimpleGrid,
     Spinner,
     Tag,
@@ -15,8 +14,8 @@ import { EventDetail, getEventById } from '../api.ts';
 import { FaBuilding, FaCalendarDays, FaLocationDot, FaRotate } from 'react-icons/fa6';
 import { formatDateTime } from '../utils.ts';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { FaInfoCircle } from 'react-icons/fa';
+import { useNavigate, useParams } from 'react-router-dom';
+import { FaArrowCircleLeft, FaInfoCircle } from 'react-icons/fa';
 
 interface RouteParams {
     event_id: string;
@@ -28,6 +27,7 @@ const IndividualEvent: React.FC = () => {
     const [event, setEvent] = useState<EventDetail>({} as EventDetail);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getEventById(eventIdNumber)
@@ -59,7 +59,17 @@ const IndividualEvent: React.FC = () => {
 
     return (
         <>
-        <Link ml={4} href="">Back to list </Link>
+        <Button
+            size="lg"
+            ml={4}
+            variant="plain"
+            onClick={() => {
+                navigate(-1);
+            }}
+        >
+            <FaArrowCircleLeft />
+            <Text textDecoration="underline">Back to list</Text>
+        </Button>
         <SimpleGrid
             minChildWidth="sm"
             gap={6}

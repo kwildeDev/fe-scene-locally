@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { getEvents } from '../api.ts';
-import { SimpleGrid, Spinner, Text, VStack } from '@chakra-ui/react';
+import { SimpleGrid, Text } from '@chakra-ui/react';
 import EventCard from './EventCard.tsx';
-import CategoryList from './CategoryList.tsx';
-import SubcategoryList from './SubcategoryList.tsx';
+import { useSearchParams } from 'react-router-dom';
+import LoadingSpinner from './LoadingSpinner.tsx';
+import EventFilterForm from './EventFilterForm.tsx';
 
 interface EventSummary {
     event_id: number;
@@ -22,36 +23,79 @@ interface EventSummary {
 
 const EventList: React.FC = () => {
     const [events, setEvents] = useState<EventSummary[]>([]);
+    const [uniqueTags, setUniqueTags] = useState<string[]>([]);
+    const [uniqueVenues, setUniqueVenues] = useState<string[]>([]);
+    const [uniqueOrganisers, setUniqueOrganisers] = useState<string[]>([])
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const filters = useMemo(() => {
+        return Object.fromEntries(
+            Array.from(searchParams.entries()) 
+            .filter(([, value]) => value)
+        );
+    }, [searchParams]);
+
+    const handleFilterChange = (key: string, value: string) => {
+        const updatedParams = new URLSearchParams(searchParams);
+
+        if (key === 'resetAll') {
+            const resetValues = JSON.parse(value);
+            for (const filterKey in resetValues) {
+                updatedParams.delete(filterKey);
+            }
+            updatedParams.delete('resetAll');
+        } else if (value) {
+          updatedParams.set(key, value);
+        } else {
+          updatedParams.delete(key);
+        }
+        setSearchParams(updatedParams);
+      };
 
     useEffect(() => {
-        getEvents()
+        getEvents(filters)
             .then((events) => {
                 setEvents(events);
                 setIsLoading(false);
+
+                if (events.length > 0) {
+                    const allTags: string[] = [];
+                    const allVenues: string[] = [];
+                    const allOrganisers: string[] = [];
+                    events.forEach(event => {
+                        allTags.push(...event.tags);
+                        allVenues.push(event.venue);
+                        allOrganisers.push(event.organiser);
+                    })
+                    setUniqueTags([...new Set(allTags)]);
+                    setUniqueVenues([...new Set(allVenues)]);
+                    setUniqueOrganisers([...new Set(allOrganisers)]);
+                } else {
+                    setUniqueTags([]);
+                    setUniqueVenues([]);
+                }
             })
             .catch((err) => {
                 setIsError(true);
                 setIsLoading(false);
             });
-    }, []);
+    }, [filters]);
 
     if (isError) {
         return <p>Failed to load events.</p>;
     }
     if (isLoading) {
-        return (
-            <VStack colorPalette="teal">
-                <Spinner color="colorPalette.600" />
-                <Text color="colorPalette.600">Loading...</Text>
-            </VStack>
-        )
+        return <LoadingSpinner />
+    }
+    if (events.length === 0) {
+        return <Text>No events available.</Text>
     }
 
     return (
             <>
-                <CategoryList />
+                <EventFilterForm filters={filters} onFilterChange={handleFilterChange} availableTags={uniqueTags} availableVenues={uniqueVenues} availableOrganisers={uniqueOrganisers} />
                 <SimpleGrid
                     columns={[1, 2, 3]}
                     columnGap="2"
