@@ -51,10 +51,27 @@ export interface SubcategoryDetail {
     description: string;
 }
 
+interface EventQueryParams {
+    sort_by?: string;
+    order?: string;
+    category?: string;
+    subcategory?: string;
+    search?: string;
+    date?: string;
+    venue?: string;
+    tags?: string;
+}
+
+interface VenueDetail {
+    name: string;
+}
+
 // Events
-const getEvents = (): Promise<EventSummary[]> => {
-    return api.get('/events').then(({ data }) => {
-        return data.events
+const getEvents = (params: EventQueryParams): Promise<EventSummary[]> => {
+    return api
+        .get('/events', { params })
+        .then(({ data }) => {
+            return data.events
     });
 };
 
@@ -71,10 +88,19 @@ const getCategories = (): Promise<CategoryDetail[]> => {
     });
 };
 
-const getSubcategories = (category_slug: number): Promise<SubcategoryDetail[]> => {
-    return api.get(`/categories/${category_slug}`).then(({ data }) => {
-        return data.subcategories
-    });
+const getSubcategories = (category_slug: string): Promise<SubcategoryDetail[]> => {
+    return api
+        .get(`/categories/${category_slug}/subcategories`)    
+        .then(({ data }) => {
+            return data.subcategories
+        });
 };
 
-export { getEvents, getEventById, getCategories, getSubcategories };
+//Venues
+const getVenues = (): Promise<VenueDetail[]> => {
+    return api.get('/venues').then(({ data }) => {
+        return data.venues
+    })
+};
+
+export { getEvents, getEventById, getCategories, getSubcategories, getVenues };

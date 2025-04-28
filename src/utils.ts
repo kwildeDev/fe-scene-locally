@@ -8,7 +8,6 @@ export function formatDateTime(dateTime: string) {
 
 export function getIconColour(idNumber: number) {
     const colourId:number = idNumber % 10
-    console.log(idNumber, idNumber % 10)
     const colourLookup: string[] = [
         "teal",
         "blue",
