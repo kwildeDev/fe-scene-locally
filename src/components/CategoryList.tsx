@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getCategories } from '../api.ts';
 import { getIconColour } from '../utils.ts';
-import { AspectRatio, Box, Button, HStack, Text } from '@chakra-ui/react';
+import { AspectRatio, Box, Button, Container, HStack, Text } from '@chakra-ui/react';
 import LoadingSpinner from './LoadingSpinner.tsx';
 import { useSearchParams } from 'react-router-dom';
 
@@ -44,6 +44,7 @@ const CategoryList: React.FC<CategoryListProps> = ({onCategoryClick}) => {
     }
 
     return (
+            <Container p={0}>
             <Box overflowX="auto" whiteSpace="nowrap" pb={4} mb={4}>
             <Button
                 variant="plain"
@@ -93,6 +94,7 @@ const CategoryList: React.FC<CategoryListProps> = ({onCategoryClick}) => {
                 })}
             </HStack>
             </Box>
+            </Container>
     );
 };
 

@@ -10,7 +10,11 @@ const HomePage: React.FC = () => {
     const subcategory = searchParams.get("subcategory");
 
     const handleCategoryClick = (categorySlug: string) => {
-        setSearchParams({ category: categorySlug });
+        if (categorySlug === "") {
+            setSearchParams("");
+        } else {
+            setSearchParams({ category: categorySlug });
+        }
     };
 
     const handleSubcategoryClick = (subcategorySlug: string) => {
