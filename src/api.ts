@@ -66,6 +66,23 @@ interface VenueDetail {
     name: string;
 }
 
+interface SignupCardData {
+    user_id: number | null;
+    name: string;
+    email: string;
+    is_registered_user: boolean;
+}
+
+interface AttendeeDetail {
+    registration_id: number;
+    event_id: number;
+    user_id: string | null;
+    name: string;
+    email: string;
+    is_registered_user: boolean;
+}
+
+
 // Events
 const getEvents = (params: EventQueryParams): Promise<EventSummary[]> => {
     return api
@@ -79,6 +96,16 @@ const getEventById = (event_id: number): Promise<EventDetail> => {
     return api.get(`/events/${event_id}`).then(({ data }) => {
         return data.event
     });
+};
+
+const postAttendee = (event_id: number, signupCardData: SignupCardData ): Promise<AttendeeDetail> => {
+    console.log(event_id, signupCardData)
+    return api
+        .post(`/events/${event_id}/attendees`, signupCardData )
+        .then(({ data }) => {
+            console.log(data)
+            return data.attendee
+        });
 };
 
 //Categories
@@ -103,4 +130,4 @@ const getVenues = (): Promise<VenueDetail[]> => {
     })
 };
 
-export { getEvents, getEventById, getCategories, getSubcategories, getVenues };
+export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee };

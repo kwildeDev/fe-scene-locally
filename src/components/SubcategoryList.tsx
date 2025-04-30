@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getSubcategories } from '../api.ts';
 import { getIconColour } from '../utils.ts';
-import { AspectRatio, Box, Button, HStack, Link, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Text } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
 import LoadingSpinner from './LoadingSpinner.tsx';
 
@@ -79,38 +79,3 @@ const SubcategoryList: React.FC<SubcategoryListProps> = ({onSubcategoryClick}) =
 };
 
 export default SubcategoryList;
-
-/*
-<AspectRatio ratio={1} minW={["80px", "120px"]} maxW={180} key={subcategory.subcategory_id}>
-                    <Button
-                        w="100%"
-                        h="100%" 
-                        bg={`${getIconColour(subcategory.subcategory_id)}.subtle`}
-                        borderColor={`${getIconColour(subcategory.subcategory_id)}.emphasized`}
-                        p={4}
-                        _hover={{
-                            bg: `${getIconColour(subcategory.subcategory_id)}.emphasized`,
-                            color: "white" 
-                        }}
-                        _active={{
-                            transform: "scale(0.98)",
-                            bg: `${getIconColour(subcategory.subcategory_id)}.emphasized`,
-                        }}
-                        _focus={{
-                            boxShadow: "outline",
-                        }}
-                        onClick={() => {
-                            console.log("clicked subcategory:", subcategory.slug);
-                            onSubcategoryClick(subcategory.slug);
-                        }}
-                    >
-                        <Text
-                            color={`${getIconColour(subcategory.subcategory_id)}.fg`}
-                            fontWeight="bold" 
-                            fontSize={["xs", "sm", "md"]} 
-                            whiteSpace="normal">{subcategory.name}
-                        </Text>
-                    </Button>
-                    </AspectRatio>
-
-*/

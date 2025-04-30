@@ -1,5 +1,6 @@
-import { Box, Center, Stack, Button } from '@chakra-ui/react';
+import { Box, Center, Button, Wrap, Text } from '@chakra-ui/react';
 import { useState, useCallback } from 'react';
+import { MdFilterAltOff } from 'react-icons/md';
 import Select from 'react-select';
 import makeAnimated, { SingleValue } from 'react-select/animated'
 
@@ -153,7 +154,9 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
 
     return (
         <Box mb={8}>
-        <Stack direction={{ base: "column", md: "row" }} gap="4">
+        <Text fontWeight="semibold">Filters</Text>
+        <Wrap>
+        {/*<Stack direction={{ base: "column", md: "row" }} gap="4">*/}
             <Center>
                 <input
                     type="checkbox"
@@ -267,17 +270,18 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
                     />
                 </div>
             </Box>
-            <Center>
+            <Box alignContent="end">
                 <Button
-                    colorPalette="blue"
-                    variant="solid"
-                    rounded="full"
+                    variant="surface"
+                    rounded="md"
                     onClick={resetAllFilters}   
                 >
-                    RESET
+                    <MdFilterAltOff />
+                    <Text>RESET</Text>
                 </Button>
-            </Center>
-        </Stack>
+            </Box>
+            </Wrap>
+        {/*</Stack>*/}
         </Box>
     );
 };

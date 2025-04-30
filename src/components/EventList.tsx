@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getEvents } from '../api.ts';
-import { SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Collapsible, Group, SimpleGrid, Text } from '@chakra-ui/react';
 import EventCard from './EventCard.tsx';
 import { useSearchParams } from 'react-router-dom';
 import LoadingSpinner from './LoadingSpinner.tsx';
 import EventFilterForm from './EventFilterForm.tsx';
+import { useBreakpointValue } from '@chakra-ui/react';
+import { FaFilter } from 'react-icons/fa6';
 
 interface EventSummary {
     event_id: number;
@@ -29,6 +31,8 @@ const EventList: React.FC = () => {
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const isCollapsible = useBreakpointValue({ base: true, md: false });
 
     const filters = useMemo(() => {
         return Object.fromEntries(
@@ -95,7 +99,35 @@ const EventList: React.FC = () => {
 
     return (
             <>
-                <EventFilterForm filters={filters} onFilterChange={handleFilterChange} availableTags={uniqueTags} availableVenues={uniqueVenues} availableOrganisers={uniqueOrganisers} />
+                {isCollapsible ? (
+                    <Collapsible.Root>
+                        <Collapsible.Trigger padding={2} borderWidth="1px">
+                            <Group>
+                            <FaFilter />
+                            <Text>Toggle Filters</Text>
+                            </Group>
+                        </Collapsible.Trigger>
+                        <Collapsible.Content>
+                            <Box padding="4">
+                                <EventFilterForm 
+                                    filters={filters} 
+                                    onFilterChange={handleFilterChange} 
+                                    availableTags={uniqueTags} 
+                                    availableVenues={uniqueVenues} 
+                                    availableOrganisers={uniqueOrganisers} 
+                                />
+                            </Box>
+                        </Collapsible.Content>
+                    </Collapsible.Root>
+                ) : (
+                    <EventFilterForm
+                        filters={filters} 
+                        onFilterChange={handleFilterChange} 
+                        availableTags={uniqueTags} 
+                        availableVenues={uniqueVenues} 
+                        availableOrganisers={uniqueOrganisers} 
+                    />
+                )}
                 <SimpleGrid
                     columns={[1, 2, 3]}
                     columnGap="2"
