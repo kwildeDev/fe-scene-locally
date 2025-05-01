@@ -6,6 +6,18 @@ export function formatDateTime(dateTime: string) {
     return formattedDate;
 }
 
+export function formatShortDate(dateTime: string) {
+    const date: Date = new Date(dateTime);
+    const shortDate = format(date, "dd/MM/yyyy");
+    return shortDate;
+}
+
+export function formatShortTime(dateTime: string) {
+    const date: Date = new Date(dateTime);
+    const shortTime = format(date, "k:mm");
+    return shortTime;
+}
+
 export function getIconColour(idNumber: number) {
     const colourId:number = idNumber % 10
     const colourLookup: string[] = [

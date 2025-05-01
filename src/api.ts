@@ -82,6 +82,19 @@ interface AttendeeDetail {
     is_registered_user: boolean;
 }
 
+export interface OrganisationEventSummary {
+    organisation_id: number;
+    event_id: number;
+    title: string;
+    status: string;
+    start_datetime: string;
+    venue: string;
+    category_id: number;
+    subcategory_id: number;
+    is_recurring: boolean;
+    image_url: string;
+    is_online: boolean;
+}
 
 // Events
 const getEvents = (params: EventQueryParams): Promise<EventSummary[]> => {
@@ -130,4 +143,21 @@ const getVenues = (): Promise<VenueDetail[]> => {
     })
 };
 
-export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee };
+//Organisations
+const getOrganisationEvents = (organisation_id: number): Promise<OrganisationEventSummary[]> => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('Token not found');
+    }
+    return api
+        .get(`/organisations/${organisation_id}/events`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(({ data }) => {
+            console.log(data)
+            return data.events
+        })
+}
+export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee, getOrganisationEvents };
