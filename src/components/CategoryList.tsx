@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { getCategories } from '../api.ts';
 import { getIconColour } from '../utils.ts';
 import { AspectRatio, Box, Button, Container, HStack, Text } from '@chakra-ui/react';
-import LoadingSpinner from './LoadingSpinner.tsx';
 import { useSearchParams } from 'react-router-dom';
 
 interface CategoryDetail {
@@ -20,27 +19,19 @@ const CategoryList: React.FC<CategoryListProps> = ({onCategoryClick}) => {
     const [searchParams] = useSearchParams();
     const [categories, setCategories] = useState<CategoryDetail[]>([]);
     const [isError, setIsError] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getCategories()
             .then((categories) => {
                 setCategories(categories);
-                setIsLoading(false);
             })
             .catch((err) => {
-                setIsError(true);
-                setIsLoading(false);
+                setIsError(true);                setIsLoading(false);
             });
     }, []);
 
     if (isError) {
         return <p>Failed to load categories.</p>;
-    }
-    if (isLoading) {
-        return (
-            <LoadingSpinner />
-        )
     }
 
     return (

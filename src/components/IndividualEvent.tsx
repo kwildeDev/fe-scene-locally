@@ -85,6 +85,7 @@ const IndividualEvent: React.FC = () => {
                                 mb={4}
                             />
                         </Box>
+                        <Text>Category name / Subcategory name</Text>
                         <HStack
                             pb={8}
                             pt={1}
@@ -129,7 +130,7 @@ const IndividualEvent: React.FC = () => {
                                 marginRight="2"
                             />
                             <Text as="span">
-                                {formatDateTime(event.start_datetime)}
+                                {formatDateTime(event.start_datetime)} to {formatDateTime(event.end_datetime)}
                             </Text>
                         </Box>
                         {recurringScheduleExists && (

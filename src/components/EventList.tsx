@@ -3,10 +3,10 @@ import { getEvents } from '../api.ts';
 import { Box, Collapsible, Group, SimpleGrid, Text } from '@chakra-ui/react';
 import EventCard from './EventCard.tsx';
 import { useSearchParams } from 'react-router-dom';
-import LoadingSpinner from './LoadingSpinner.tsx';
 import EventFilterForm from './EventFilterForm.tsx';
 import { useBreakpointValue } from '@chakra-ui/react';
 import { FaFilter } from 'react-icons/fa6';
+import LoadingSpinner from './LoadingSpinner.tsx';
 
 interface EventSummary {
     event_id: number;
@@ -28,8 +28,8 @@ const EventList: React.FC = () => {
     const [uniqueTags, setUniqueTags] = useState<string[]>([]);
     const [uniqueVenues, setUniqueVenues] = useState<string[]>([]);
     const [uniqueOrganisers, setUniqueOrganisers] = useState<string[]>([])
-    const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isError, setIsError] = useState<boolean>(false);
     const [searchParams, setSearchParams] = useSearchParams();
 
     const isCollapsible = useBreakpointValue({ base: true, md: false });
@@ -59,6 +59,7 @@ const EventList: React.FC = () => {
       };
 
     useEffect(() => {
+        setIsLoading(true);
         getEvents(filters)
             .then((events) => {
                 setEvents(events);
@@ -69,9 +70,15 @@ const EventList: React.FC = () => {
                     const allVenues: string[] = [];
                     const allOrganisers: string[] = [];
                     events.forEach(event => {
-                        allTags.push(...event.tags);
-                        allVenues.push(event.venue);
-                        allOrganisers.push(event.organiser);
+                        if (Array.isArray(event.tags)) {
+                            allTags.push(...event.tags);
+                        }
+                        if (event.venue) {
+                            allVenues.push(event.venue);
+                        }
+                        if (event.organiser) {
+                            allOrganisers.push(event.organiser);
+                        }
                     })
                     setUniqueTags([...new Set(allTags)]);
                     setUniqueVenues([...new Set(allVenues)]);
@@ -91,7 +98,9 @@ const EventList: React.FC = () => {
         return <p>Failed to load events.</p>;
     }
     if (isLoading) {
-        return <LoadingSpinner />
+        return (
+            <LoadingSpinner />
+        );
     }
     if (events.length === 0) {
         return <Text>No events available.</Text>

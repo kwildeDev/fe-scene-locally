@@ -16,17 +16,17 @@ import { getOrganisationEvents, OrganisationEventSummary } from '../api';
 import { useEffect, useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { formatShortDate, formatShortTime } from '../utils';
+import { useOutletContext } from 'react-router-dom';
 
-interface OrganisationEventListProps {
-    organisation_id: number;
+interface OutletContextType {
+    organisation_id: number | null | undefined;
 }
 
-const OrganisationEventList: React.FC<OrganisationEventListProps> = ({
-    organisation_id,
-}) => {
+const OrganisationEventList: React.FC = () => {
     const [events, setEvents] = useState<OrganisationEventSummary[]>([]);
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const { organisation_id } = useOutletContext() as OutletContextType;
 
     useEffect(() => {
         getOrganisationEvents(organisation_id)

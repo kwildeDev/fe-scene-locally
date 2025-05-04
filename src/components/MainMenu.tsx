@@ -1,35 +1,37 @@
-import {
-    HStack,
-    Link,
-    Text,
-} from '@chakra-ui/react';
+import { HStack, Link, Text } from '@chakra-ui/react';
+import React from 'react';
 
 interface LinkItem {
+    id: number;
     text: string;
     href: string;
 }
 
-export default function MainMenu() {
-    const testOrganisationId: number = 3;
+interface MainMenuProps {
+    user?: User | null;
+}
 
-    const linkColour: string = 'colorPalette.600'
+export default function MainMenu({ user }: MainMenuProps) {
+    const linkColour: string = 'colorPalette.600';
 
     const linkItems: LinkItem[] = [
-        { text: 'Browse all events', href: '/' },
-                { text: 'Sign in', href: '' },
-                { text: 'Profile', href: '' },
-                { text: 'Help', href: '' },
-                {
-                    text: 'Staff Dashboard',
-                    href: `/organisations/${testOrganisationId}/events`,
-                },
-    ]
+        { id: 1, text: 'Browse all events', href: '/' },
+        { id: 2, text: 'Sign in', href: '' },
+        { id: 3, text: 'Profile', href: '' },
+        { id: 4, text: 'Help', href: '' },
+        {
+            id: 5,
+            text: 'Staff Dashboard',
+            href: user?.organisation_id
+                ? `/organisations/${user.organisation_id}/events`
+                : '#',
+        },
+    ];
     return (
         <HStack colorPalette="teal">
-            {linkItems.map((item, index) => (
-                <>
+            {linkItems.map((item) => (
+                <React.Fragment key={item.id}>
                     <Link
-                        key={`link-${index}`}
                         color={linkColour}
                         variant="underline"
                         textDecorationColor={linkColour}
@@ -39,7 +41,7 @@ export default function MainMenu() {
                     >
                         {item.text}
                     </Link>
-                    {index < 4 && (
+                    {item.id < 5 && (
                         <Text
                             color={linkColour}
                             fontSize="2xl"
@@ -48,7 +50,7 @@ export default function MainMenu() {
                             |
                         </Text>
                     )}
-                </>
+                </React.Fragment>
             ))}
         </HStack>
     );
