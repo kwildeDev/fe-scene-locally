@@ -23,6 +23,7 @@ const HomePage: React.FC = () => {
         }
     };
 
+    
     return (
             <>
                 <CategoryList onCategoryClick={handleCategoryClick} />

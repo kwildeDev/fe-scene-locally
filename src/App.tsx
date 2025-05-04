@@ -44,7 +44,7 @@ const App: React.FC = () => {
         organisation_id: 3,
     });
 
-    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJvcmdhbmlzYXRpb25faWQiOjMsImlhdCI6MTc0NjEyODY5MSwiZXhwIjoxNzQ2MTMyMjkxfQ.acQvcfwbgg0KEWixuepdWmys0Lg74gieZzYHWrtc8xQ')
+    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJvcmdhbmlzYXRpb25faWQiOjMsImlhdCI6MTc0NjM0NzY2MCwiZXhwIjoxNzQ2MzUxMjYwfQ.pfLlEcH6v_sg0QN9NwE36MgqLorqSaenPOyfIlo83HE')
     
     /*
     // Simulate logged-out user

@@ -12,8 +12,13 @@ import {
 } from '@chakra-ui/react';
 import { BsBrightnessHighFill } from 'react-icons/bs';
 import MainMenu from './MainMenu';
+import { User } from '../contexts/userContext';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+    user?: User | null;
+}
+
+const Header: React.FC<HeaderProps> = ({ user }) => {
     const imageHeight = useBreakpointValue({ base: 30, md: 100 });
     const textFontSize = useBreakpointValue({
         base: 'xl',
@@ -34,7 +39,7 @@ const Header: React.FC = () => {
                 <Image
                     objectFit="contain"
                     height={imageHeight}
-                    src="../../src/assets/simple-tree-icon-6.jpg"
+                    src="/assets/simple-tree-icon-6.jpg"
                     alt="Logo"
                 />
 
@@ -53,7 +58,7 @@ const Header: React.FC = () => {
                 <IconButton variant='outline' color='teal.solid' borderColor='teal.solid' borderWidth={2} size="md">
                     <BsBrightnessHighFill />
                 </IconButton>
-                <MainMenu />
+                <MainMenu user={user} />
             </HStack>
         </Box>
     );

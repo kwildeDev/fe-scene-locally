@@ -45,6 +45,7 @@ export interface CategoryDetail {
 }
 
 export interface SubcategoryDetail {
+    subcategory_id: number;
     category_id: number;
     name: string;
     slug: string;
@@ -62,7 +63,8 @@ interface EventQueryParams {
     tags?: string;
 }
 
-interface VenueDetail {
+export interface VenueDetail {
+    venue_id: number;
     name: string;
 }
 
@@ -96,6 +98,28 @@ export interface OrganisationEventSummary {
     is_online: boolean;
 }
 
+export interface NewEventData {
+    event_id: number;
+    organisation_id: number;
+    title: string;
+    description: string;
+    start_datetime: string;
+    end_datetime: string;
+    venue_id: number;
+    category_id: number;
+    subcategory_id: number;
+    tags: string[] | null;
+    is_recurring: boolean;
+    recurring_schedule: RecurringSchedule | null;
+    created_at: string;
+    updated_at: string;
+    status: string;
+    image_url?: string;
+    access_link?: string;
+    is_online: boolean;
+    signup_required: boolean;
+}
+
 // Events
 const getEvents = (params: EventQueryParams): Promise<EventSummary[]> => {
     return api
@@ -116,7 +140,6 @@ const postAttendee = (event_id: number, signupCardData: SignupCardData ): Promis
     return api
         .post(`/events/${event_id}/attendees`, signupCardData )
         .then(({ data }) => {
-            console.log(data)
             return data.attendee
         });
 };
@@ -156,8 +179,18 @@ const getOrganisationEvents = (organisation_id: number): Promise<OrganisationEve
             },
         })
         .then(({ data }) => {
-            console.log(data)
             return data.events
         })
-}
-export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee, getOrganisationEvents };
+};
+
+const postEvent = (newEventData: NewEventData ): Promise<NewEventData> => {
+    console.log(newEventData)
+    return api
+        .post(`/events`, newEventData )
+        .then(({ data }) => {
+            console.log(data)
+            return data.event
+        });
+};
+
+export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee, getOrganisationEvents, postEvent };
