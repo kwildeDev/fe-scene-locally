@@ -26,6 +26,14 @@ interface RouteParams {
     event_id: string;
 }
 
+export interface GoogleCalendarEvent {
+    summary: string;
+    description: string;
+    start: { dateTime: string; timeZone: string };
+    end: { dateTime: string; timeZone: string };
+    location: string;
+}
+
 const IndividualEvent: React.FC = () => {
     const { event_id } = useParams<RouteParams>();
     const eventIdNumber = Number(event_id);
@@ -58,6 +66,14 @@ const IndividualEvent: React.FC = () => {
     const recurringScheduleExists: boolean =
         event.recurring_schedule === null ? false : true;
 
+    const googleEventProps: GoogleCalendarEvent = {
+        summary: event.title,
+        description: event.description,
+        start: { dateTime: event.start_datetime, timeZone: 'UTC' },
+        end: { dateTime: event.end_datetime, timeZone: 'UTC' },
+        location: event.venue_name,
+    };
+
     return (
         <>
             <Button
@@ -71,10 +87,7 @@ const IndividualEvent: React.FC = () => {
                 <FaArrowCircleLeft />
                 <Text textDecoration="underline">Back to list</Text>
             </Button>
-            <SimpleGrid
-                columns={[1, null, 2]}
-                gap={8}
-            >
+            <SimpleGrid columns={[1, null, 2]} gap={8}>
                 <Box>
                     <Box>
                         <Box>
@@ -86,10 +99,7 @@ const IndividualEvent: React.FC = () => {
                             />
                         </Box>
                         <Text>Category name / Subcategory name</Text>
-                        <HStack
-                            pb={8}
-                            pt={1}
-                        >
+                        <HStack pb={8} pt={1}>
                             {event.tags?.map((tag, index) => (
                                 <Tag.Root
                                     key={index}
@@ -101,16 +111,8 @@ const IndividualEvent: React.FC = () => {
                                 </Tag.Root>
                             ))}
                         </HStack>
-                        <Box
-                            bg="gray.100"
-                            borderRadius="md"
-                            p={4}
-                        >
-                            <Text
-                                fontSize="xl"
-                                fontWeight="bold"
-                                mb={2}
-                            >
+                        <Box bg="gray.100" borderRadius="md" p={4}>
+                            <Text fontSize="xl" fontWeight="bold" mb={2}>
                                 {event.title}
                             </Text>
                             <Text>{event.description}</Text>
@@ -119,29 +121,17 @@ const IndividualEvent: React.FC = () => {
                 </Box>
 
                 <Box>
-                    <Box
-                        bg="gray.100"
-                        borderRadius="md"
-                        p={4}
-                    >
+                    <Box bg="gray.100" borderRadius="md" p={4}>
                         <Box mb={2}>
-                            <Icon
-                                as={FaCalendarDays}
-                                marginRight="2"
-                            />
+                            <Icon as={FaCalendarDays} marginRight="2" />
                             <Text as="span">
-                                {formatDateTime(event.start_datetime)} to {formatDateTime(event.end_datetime)}
+                                {formatDateTime(event.start_datetime)} to{' '}
+                                {formatDateTime(event.end_datetime)}
                             </Text>
                         </Box>
                         {recurringScheduleExists && (
-                            <Box
-                                color="blue"
-                                mb={8}
-                            >
-                                <Icon
-                                    as={FaRotate}
-                                    marginRight="2"
-                                />
+                            <Box color="blue" mb={8}>
+                                <Icon as={FaRotate} marginRight="2" />
                                 <Text as="span">
                                     {event.recurring_schedule.frequency} on{' '}
                                     {event.recurring_schedule.day}s
@@ -149,36 +139,25 @@ const IndividualEvent: React.FC = () => {
                             </Box>
                         )}
                         <Box mb={2}>
-                            <Icon
-                                as={FaBuilding}
-                                marginRight="2"
-                            />
+                            <Icon as={FaBuilding} marginRight="2" />
                             <Text as="span">{event.organisation_name}</Text>
                         </Box>
                         <Box mb={2}>
-                            <Icon
-                                as={FaLocationDot}
-                                marginRight="2"
-                            />
+                            <Icon as={FaLocationDot} marginRight="2" />
                             <Text as="span">{event.venue_name}</Text>
                         </Box>
                     </Box>
 
-                    <Box
-                        p={8}
-                        pl={0}
-                    >
+                    <Box p={8} pl={0}>
                         {event.signup_required ? (
                             <SignupCard
                                 event_id={event.event_id}
                                 title={event.title}
+                                googleEventProps={googleEventProps}
                             />
                         ) : (
                             <Box color="blue">
-                                <Icon
-                                    as={FaInfoCircle}
-                                    marginRight="2"
-                                />
+                                <Icon as={FaInfoCircle} marginRight="2" />
                                 <Text as="span">
                                     No signup required - just turn up
                                 </Text>
@@ -192,5 +171,3 @@ const IndividualEvent: React.FC = () => {
 };
 
 export default IndividualEvent;
-
-/* Button onClick={handleSignupClick} colorPalette="blue">Sign Up</Button */
