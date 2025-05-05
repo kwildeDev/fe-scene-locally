@@ -1,22 +1,21 @@
 import {
     Box,
-    Button,
     Container,
-    Icon,
     Link,
     Mark,
     Stack,
     Table,
     Text,
-    Wrap,
 } from '@chakra-ui/react';
-import { FaPlus, FaXmark } from 'react-icons/fa6';
+import { FaXmark } from 'react-icons/fa6';
 import { FcCheckmark } from 'react-icons/fc'
 import { getOrganisationEvents, OrganisationEventSummary } from '../api';
 import { useEffect, useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { formatShortDate, formatShortTime } from '../utils';
+import { useNavigate } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
+
 
 interface OutletContextType {
     organisation_id: number | null | undefined;
@@ -26,9 +25,15 @@ const OrganisationEventList: React.FC = () => {
     const [events, setEvents] = useState<OrganisationEventSummary[]>([]);
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const navigate = useNavigate();
     const { organisation_id } = useOutletContext() as OutletContextType;
 
+
     useEffect(() => {
+        if (!organisation_id) {
+            navigate('/');
+            return;
+        }
         getOrganisationEvents(organisation_id)
             .then((events) => {
                 setEvents(events);
@@ -51,22 +56,16 @@ const OrganisationEventList: React.FC = () => {
         return property ? <FcCheckmark/> : <FaXmark color='red'/> 
     }
     return (
+        <>
+        {organisation_id ? (
         <Container p={1}>
-            <Wrap
-                justifyContent="space-between"
-                pt={8}
+            <Box
+                pt={14}
                 pb={8}
             >
                 <Text textStyle="lg">You have <Mark variant='subtle'>{events.length}</Mark> upcoming events</Text>
-                <Button
-                    bg='teal.solid'
-                >
-                    <Icon>
-                        <FaPlus />
-                    </Icon>
-                    Add New Event
-                </Button>
-            </Wrap>
+                
+            </Box>
             <Box
                 bg="bg"
                 borderRadius="md"
@@ -113,6 +112,10 @@ const OrganisationEventList: React.FC = () => {
                 </Stack>
             </Box>
         </Container>
+        ) : (
+            <Text>You are not authorised to view this page. If you are an organiser please log in.</Text>
+        )}
+        </>
     );
 };
 

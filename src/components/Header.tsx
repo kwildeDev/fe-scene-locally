@@ -1,34 +1,33 @@
 import {
     Box,
+    Center,
     Flex,
     HStack,
     IconButton,
     Image,
-    Link,
-    LinkBox,
-    LinkOverlay,
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { BsBrightnessHighFill } from 'react-icons/bs';
 import MainMenu from './MainMenu';
-import { User } from '../contexts/userContext';
+import { UserContext, User } from '../contexts/userContext';
+import LoginCard from './LoginCard';
+import { useContext, useEffect } from 'react';
 
-interface HeaderProps {
-    user?: User | null;
-}
-
-const Header: React.FC<HeaderProps> = ({ user }) => {
+const Header: React.FC = () => {
+    const { user } = useContext(UserContext);
     const imageHeight = useBreakpointValue({ base: 30, md: 100 });
     const textFontSize = useBreakpointValue({
         base: 'xl',
         md: 'sm',
         xl: '2xl',
     });
+
+    useEffect(() => {}, []);
+
     return (
         <Box
             as={Flex}
-            alignItems="center"
             justifyContent="space-between"
             w="100%"
             bg="gray.subtle"
@@ -43,6 +42,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                     alt="Logo"
                 />
 
+                <Center>
                 <Text
                     whiteSpace="nowrap"
                     fontSize={textFontSize}
@@ -52,13 +52,24 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 >
                     Meadowbridge Scene
                 </Text>
+                </Center>
             </HStack>
 
-            <HStack>
-                <IconButton variant='outline' color='teal.solid' borderColor='teal.solid' borderWidth={2} size="md">
+            <HStack alignItems="flex-start">
+                <IconButton
+                    variant="outline"
+                    color="teal.solid"
+                    borderColor="teal.solid"
+                    borderWidth={2}
+                    size="md"
+                >
                     <BsBrightnessHighFill />
                 </IconButton>
                 <MainMenu user={user} />
+                {!user && (
+                    <LoginCard />
+                    )
+                }
             </HStack>
         </Box>
     );
