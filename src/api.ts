@@ -120,6 +120,21 @@ export interface NewEventData {
     signup_required: boolean;
 }
 
+export interface LoginData {
+    email: string;
+    password: string;
+}
+
+export interface UserDetail {
+    user_id: number;
+    email: string;
+    first_name: string;
+    last_name: string;
+    role: string;
+    organisation_id: number;
+    organisation_name: string;
+}
+
 // Events
 const getEvents = (params: EventQueryParams): Promise<EventSummary[]> => {
     return api
@@ -168,7 +183,7 @@ const getVenues = (): Promise<VenueDetail[]> => {
 
 //Organisations
 const getOrganisationEvents = (organisation_id: number): Promise<OrganisationEventSummary[]> => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('jwtToken');
     if (!token) {
         throw new Error('Token not found');
     }
@@ -184,13 +199,47 @@ const getOrganisationEvents = (organisation_id: number): Promise<OrganisationEve
 };
 
 const postEvent = (newEventData: NewEventData ): Promise<NewEventData> => {
-    console.log(newEventData)
     return api
         .post(`/events`, newEventData )
         .then(({ data }) => {
-            console.log(data)
             return data.event
         });
 };
 
-export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee, getOrganisationEvents, postEvent };
+//Users
+
+const loginUser = (loginData: LoginData): Promise<LoginData> => {
+    return api
+        .post(`/auth/login`, loginData )
+        .then(({ data }) => {
+            return data.token
+        })
+        .catch((error) => {
+            if (error.response?.data) {
+                return Promise.reject(error.response.data);
+            } else {
+                console.error("An unexpected error occurred during login:", error);
+                return Promise.reject({ msg: "Login failed due to a network error or an issue with the server" });
+            }
+        });
+};
+
+
+const getUserDetails = (validToken: string): Promise<UserDetail> => {
+    return api
+        .get(`/users/me`, {
+            headers: {
+                Authorization: `Bearer ${validToken}`,
+            },
+        })
+        .then((response) => {
+            return response.data.user;
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            throw error;
+        });
+};
+
+
+export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee, getOrganisationEvents, postEvent, loginUser, getUserDetails };

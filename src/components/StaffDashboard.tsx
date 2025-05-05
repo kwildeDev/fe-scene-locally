@@ -8,12 +8,16 @@ import StaffSidebarMenu from './StaffSidebarMenu';
 
 import { useContext } from 'react';
 import { UserContext } from '../contexts/userContext';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 const StaffDashboard: React.FC = () => {
     const context = useContext(UserContext);
     const user = context?.user;
     const organisationId = user?.organisation_id;
+
+    if (!organisationId) {
+        return <Navigate to={`/`} replace />;
+    }
 
     return (
         <Stack

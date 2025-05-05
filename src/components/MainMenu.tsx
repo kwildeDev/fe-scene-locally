@@ -1,11 +1,17 @@
-import { HStack, Link, Text } from '@chakra-ui/react';
-import React from 'react';
+import { UserContext } from '../contexts/userContext';
+import {
+    HStack,
+    Link as ChakraLink,
+    Text,
+    Icon,
+    Menu,
+    Portal,
+    Link,
+} from '@chakra-ui/react';
+import { useContext } from 'react';
 
-interface LinkItem {
-    id: number;
-    text: string;
-    href: string;
-}
+import { FaUserCircle } from 'react-icons/fa';
+import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 
 interface MainMenuProps {
     user?: User | null;
@@ -13,45 +19,113 @@ interface MainMenuProps {
 
 export default function MainMenu({ user }: MainMenuProps) {
     const linkColour: string = 'colorPalette.600';
+    const context = useContext(UserContext)
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const linkItems: LinkItem[] = [
-        { id: 1, text: 'Browse all events', href: '/' },
-        { id: 2, text: 'Sign in', href: '' },
-        { id: 3, text: 'Profile', href: '' },
-        { id: 4, text: 'Help', href: '' },
-        {
-            id: 5,
-            text: 'Staff Dashboard',
-            href: user?.organisation_id
-                ? `/organisations/${user.organisation_id}/events`
-                : '#',
-        },
-    ];
+    function handleSignOutClick() {
+        localStorage.removeItem('jwtToken');
+        if (context && context.setUser) {
+            context.setUser(null);
+        }
+        if (location.pathname.includes('/organisations')) {
+            navigate(`/`);
+        }
+    }
+
     return (
         <HStack colorPalette="teal">
-            {linkItems.map((item) => (
-                <React.Fragment key={item.id}>
-                    <Link
-                        color={linkColour}
-                        variant="underline"
-                        textDecorationColor={linkColour}
-                        fontSize="lg"
-                        fontWeight="semibold"
-                        href={item.href}
-                    >
-                        {item.text}
-                    </Link>
-                    {item.id < 5 && (
-                        <Text
-                            color={linkColour}
-                            fontSize="2xl"
-                            fontWeight="semibold"
-                        >
-                            |
-                        </Text>
-                    )}
-                </React.Fragment>
-            ))}
+            {/* Browse all events */}
+            <ChakraLink
+                asChild
+                color={linkColour}
+                variant="underline"
+                textDecorationColor={linkColour}
+                fontSize="lg"
+                fontWeight="semibold"
+            >
+                <NavLink to="/">Browse all events</NavLink>
+            </ChakraLink>
+
+            <Text color={linkColour} fontSize="2xl" fontWeight="semibold">
+                |
+            </Text>
+
+            {/* Help */}
+            <ChakraLink
+                asChild
+                color={linkColour}
+                variant="underline"
+                textDecorationColor={linkColour}
+                fontSize="lg"
+                fontWeight="semibold"
+            >
+                <NavLink to="/help">Help</NavLink>
+            </ChakraLink>
+            <Text color={linkColour} fontSize="2xl" fontWeight="semibold">
+                |
+            </Text>
+
+            {/* Account */}
+            {user?.user_id && (
+                <>
+                    <Icon color={linkColour} size="lg">
+                        <FaUserCircle />
+                    </Icon>
+                    <Menu.Root positioning={{ placement: 'bottom-end' }}>
+                        <Menu.Trigger>
+                            <Text
+                                color={linkColour}
+                                fontSize="lg"
+                                fontWeight="semibold"
+                            >
+                                Account
+                            </Text>
+                        </Menu.Trigger>
+                        <Portal>
+                            <Menu.Positioner>
+                                <Menu.Content>
+                                    <Menu.Item 
+                                        asChild
+                                        value="profile"
+                                        fontSize="lg"
+                                        fontWeight="semibold"
+                                    >
+                                        <NavLink to="/users/me">Profile</NavLink>
+                                    </Menu.Item>
+                                    {user?.organisation_id && (
+                                        <Menu.Item 
+                                            asChild
+                                            value="staff-dashboard"
+                                            fontSize="lg"
+                                            fontWeight="semibold"
+                                        >
+                                            <NavLink to={`/organisations/${user.organisation_id}/events`}>
+                                                Staff Dashboard
+                                            </NavLink>
+                                        </Menu.Item>
+                                    )}
+                                    <Menu.Separator />
+                                    <Menu.Item 
+                                        asChild
+                                        value="sign-out"
+                                        fontSize="lg"
+                                        fontWeight="semibold"
+                                    >
+                                        <Link
+                                            variant="plain"
+                                            textDecoration="none"
+                                            onClick={handleSignOutClick}
+                                        >
+                                        Sign Out
+                                        </Link>
+                                    </Menu.Item>
+                                </Menu.Content>
+                            </Menu.Positioner>
+                        </Portal>
+                    </Menu.Root>
+                </>
+            )}
         </HStack>
     );
 }
