@@ -7,6 +7,7 @@ export interface User {
     last_name: string;
     role: string;
     organisation_id: number | null;
+    organisation_name: string | null;
 }
 
 export interface UserContextType {
