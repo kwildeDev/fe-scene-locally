@@ -135,6 +135,10 @@ export interface UserDetail {
     organisation_name: string;
 }
 
+export interface DataToUpdate {
+    status: string;
+}
+
 // Events
 const getEvents = (params: EventQueryParams): Promise<EventSummary[]> => {
     return api
@@ -151,12 +155,24 @@ const getEventById = (event_id: number): Promise<EventDetail> => {
 };
 
 const postAttendee = (event_id: number, signupCardData: SignupCardData ): Promise<AttendeeDetail> => {
-    console.log(event_id, signupCardData)
     return api
         .post(`/events/${event_id}/attendees`, signupCardData )
         .then(({ data }) => {
             return data.attendee
         });
+};
+
+const updateEventStatus = (event_id: number, dataToUpdate: DataToUpdate ) => {
+    return api
+        .patch(`/events/${event_id}`, dataToUpdate)
+        .then(({ data }) => {
+            return data.event
+        })
+};
+
+const deleteEvent = (event_id: number) => {
+    return api
+        .delete(`/events/${event_id}`)
 };
 
 //Categories
@@ -242,4 +258,4 @@ const getUserDetails = (validToken: string): Promise<UserDetail> => {
 };
 
 
-export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee, getOrganisationEvents, postEvent, loginUser, getUserDetails };
+export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee, getOrganisationEvents, postEvent, loginUser, getUserDetails, updateEventStatus, deleteEvent };
