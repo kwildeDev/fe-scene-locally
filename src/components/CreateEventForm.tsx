@@ -2,9 +2,7 @@ import {
     Box,
     Button,
     Container,
-    DataList,
     Field,
-    For,
     Heading,
     Separator,
     Stack,
@@ -204,7 +202,7 @@ const CreateEventForm: React.FC = () => {
         'yoga','fitness','outdoors','parenting','workshop','virtual','volunteer','environment','cleanup','poetry','culture','creative','health','wellness','fair',
         'books','reading','seniors','coding','youth','technology','hiking','nature','football','sports','tournament','gardening','community','baby','sleep',
         'biodiversity','talent','performance','pilates','art','online','movie','social','robots','teens','history','architecture','walk','trivia','games',
-    ];
+    ]; //temporary hardcoded tags as there needs to be a custom query to fetch tags
 
     const selectedTags: string[] = watch('selectedTags', []);
 
@@ -228,7 +226,7 @@ const CreateEventForm: React.FC = () => {
 
     useEffect(() => {
         if (isOnline) {
-            setValue('venue', 11); //Online Event is currently venue_id 11
+            setValue('venue', 11); //Online Event is currently venue_id 11 in dev data
         }
     }, [isOnline, setValue]);
 
