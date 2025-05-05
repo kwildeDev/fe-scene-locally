@@ -15,7 +15,7 @@ import {
     FaLocationDot,
     FaRotate,
 } from 'react-icons/fa6';
-import { formatDateTime } from '../utils.ts';
+import { formatDateTime } from '../utils/utils.ts';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaArrowCircleLeft, FaInfoCircle } from 'react-icons/fa';

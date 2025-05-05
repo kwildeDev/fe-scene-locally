@@ -14,7 +14,7 @@ import { UserContext } from '../contexts/userContext.ts';
 import { useContext, useState } from 'react';
 import { postAttendee } from '../api.ts';
 import { GoogleCalendarEvent } from './IndividualEvent.tsx';
-import supabase from '../supabaseClient.ts';
+import supabase from '../utils/supabaseClient.ts';
 
 
 interface SignupCardProps {

@@ -25,7 +25,7 @@ import {
     postEvent,
 } from '../api.ts';
 
-import { formatToTimestamp } from '../utils.ts';
+import { formatToTimestamp } from '../utils/utils.ts';
 
 import '../App.css';
 import NewEventConfirmation from './NewEventConfirmation.tsx';
@@ -90,26 +90,32 @@ const eventSchema = z
         startDate: z
             .string()
             .min(1, { message: 'Start date is required' })
-            .refine((date) => {
-                const inputDate = new Date(date);
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                return inputDate >= today;
-            }, {
-                message: 'Start date must be today or in the future',
-            }),
+            .refine(
+                (date) => {
+                    const inputDate = new Date(date);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    return inputDate >= today;
+                },
+                {
+                    message: 'Start date must be today or in the future',
+                }
+            ),
         startTime: z.string().min(1, { message: 'Start time is required' }),
         endDate: z
             .string()
             .min(1, { message: 'End date is required' })
-            .refine((date) => {
-                const inputDate = new Date(date);
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                return inputDate >= today;
-            }, {
-                message: 'End date must be today or in the future',
-            }),
+            .refine(
+                (date) => {
+                    const inputDate = new Date(date);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    return inputDate >= today;
+                },
+                {
+                    message: 'End date must be today or in the future',
+                }
+            ),
         endTime: z.string().min(1, { message: 'End time is required' }),
         venue: z.preprocess((value) => {
             if (value === '') return undefined;
@@ -167,7 +173,8 @@ type Formfields = z.infer<typeof eventSchema>;
 
 const CreateEventForm: React.FC = () => {
     const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
-    const [NewEventConfirmationProps, setNewEventConfirmationProps] = useState<NewEventData>();
+    const [NewEventConfirmationProps, setNewEventConfirmationProps] =
+        useState<NewEventData>();
 
     const { organisation_id } = useOutletContext() as OutletContextType;
     if (!organisation_id) {
@@ -275,13 +282,19 @@ const CreateEventForm: React.FC = () => {
     const venueId = watch('venue', undefined);
     const subcategoryId = watch('subcategory', undefined);
 
-    const selectedCategory = categoriesList.find((c) => c.category_id === Number(categoryId));
-    
+    const selectedCategory = categoriesList.find(
+        (c) => c.category_id === Number(categoryId)
+    );
+
     const categorySlug = selectedCategory?.slug;
 
-    const selectedVenue = venuesList.find((v) => v.venue_id === Number(venueId));
+    const selectedVenue = venuesList.find(
+        (v) => v.venue_id === Number(venueId)
+    );
 
-    const selectedSubcategory = subcategoriesList.find((s) => s.subcategory_id === Number(subcategoryId));
+    const selectedSubcategory = subcategoriesList.find(
+        (s) => s.subcategory_id === Number(subcategoryId)
+    );
 
     useEffect(() => {
         if (categoryId) {
@@ -303,7 +316,6 @@ const CreateEventForm: React.FC = () => {
     }, [categoryId]);
 
     const onSubmit: SubmitHandler<Formfields> = (data) => {
-
         const recurringSchedule: RecurringSchedule = {
             frequency: data.recurringFrequency,
             day: data.recurringDay,
@@ -360,7 +372,7 @@ const CreateEventForm: React.FC = () => {
             {!isFormSubmitted && (
                 <Box id="event-form">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                    <Separator size="md"></Separator>
+                        <Separator size="md"></Separator>
                         <Stack id="form-stack" mt={4}>
                             <label>Title</label>
                             <input
@@ -689,7 +701,7 @@ const CreateEventForm: React.FC = () => {
                             </Wrap>
                             <Separator size="md"></Separator>
                             {/*Image URL*/}
-                            
+
                             <label>Image</label>
                             <input
                                 {...register('imageUrl')}
@@ -714,7 +726,12 @@ const CreateEventForm: React.FC = () => {
                                 </div>
                             )}
 
-                            <Field.Root alignItems="flex-end" mb={4} mt={4} invalid={!!errors.root}>
+                            <Field.Root
+                                alignItems="flex-end"
+                                mb={4}
+                                mt={4}
+                                invalid={!!errors.root}
+                            >
                                 <Button
                                     disabled={isSubmitting || isFormSubmitted}
                                     type="submit"
@@ -745,7 +762,7 @@ const CreateEventForm: React.FC = () => {
                     <Button onClick={handleClose} bg="blue.solid">
                         Close
                     </Button>
-               </>
+                </>
             )}
         </Container>
     );

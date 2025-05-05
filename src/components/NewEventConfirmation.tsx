@@ -1,6 +1,6 @@
 import { Button, DataList, Link, Stack, Text } from '@chakra-ui/react';
 import { NewEventData } from '../api';
-import { formatDateTime } from '../utils';
+import { formatDateTime } from '../utils/utils';
 
 interface NewEventConfirmationProps {
     eventDetails: NewEventData;
