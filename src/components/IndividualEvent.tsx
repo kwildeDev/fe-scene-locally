@@ -98,7 +98,7 @@ const IndividualEvent: React.FC = () => {
                                 mb={4}
                             />
                         </Box>
-                        <Text>Category name / Subcategory name</Text>
+                        
                         <HStack pb={8} pt={1}>
                             {event.tags?.map((tag, index) => (
                                 <Tag.Root
@@ -112,7 +112,7 @@ const IndividualEvent: React.FC = () => {
                             ))}
                         </HStack>
                         <Box bg="gray.100" borderRadius="md" p={4}>
-                            <Text fontSize="xl" fontWeight="bold" mb={2}>
+                            <Text as="h2" fontSize="xl" fontWeight="bold" mb={2}>
                                 {event.title}
                             </Text>
                             <Text>{event.description}</Text>

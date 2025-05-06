@@ -1,5 +1,5 @@
 import { UserContext } from '../contexts/userContext';
-import { Box, Center, Heading, Image, Text, VStack } from '@chakra-ui/react';
+import { Center, Heading, Image, Separator, Text, VStack } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -14,22 +14,22 @@ const StaffSidebarMenu: React.FC = () => {
     return (
         <>
             {organisationId ? (
-                <VStack width="fit-content" alignItems="left">
-                    <Center>
-                        <Image width={50} src={organisationLogo}></Image>
+                <VStack as="nav" width="fit-content" alignItems="left">
+                    <Center p={1}>
+                        <Image width="65px" src={organisationLogo}></Image>
                     </Center>
                     <Heading>{organisationName}</Heading>
-                    <Text>Dashboard</Text>
-                    <Box height="2px" width={40} bg="gray.100"></Box>
-                    <Text>Events</Text>
-                    <>
+                    <Text fontSize="lg" fontWeight="semibold">Staff Dashboard</Text>
+                    <Separator></Separator>
+                    <Heading as="h3" size="md">Events</Heading>
+                    <VStack ml={4} alignItems="flex-start">
                         <Link to={`events`}>View Events</Link>
                         <Link to={`events/create`}>Add New Event</Link>
-                        <Link to={`settings`}>Organisation Settings</Link>
-                        <Link to={`support`}>Support</Link>
-                    </>
-                    <Text>Your Profile</Text>
-                    <Text>{`Signed in as ${user?.first_name} ${user?.last_name}`}</Text>
+                    </VStack>
+                    <Link to={`settings`}><Text fontWeight="semibold">Organisation Settings</Text></Link>                    
+                    <Link to={`support`}><Text fontWeight="semibold">Support</Text></Link>
+                    
+                    <Text color="teal.solid">{`Welcome back ${user?.first_name} ${user?.last_name} \u{1F44B}`}</Text>
                 </VStack>
             ) : (
                 <Text>You are not authorised to view this page</Text>
