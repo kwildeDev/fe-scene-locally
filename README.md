@@ -20,6 +20,10 @@ The frontend repository can be found here:
 The backend repository can be found here:
 [https://github.com/kwildeDev/be-scene-locally](https://github.com/kwildeDev/be-scene-locally)
 
+## Link to Project Plans and Diagrams
+
+[Events Platform Planning page on Notion](https://intelligent-violin-296.notion.site/ebd/1ebd5a94b8fe80d2a9ccdbd91ffd2c34)
+
 ## Technical Stack
 
 This app utilises Node.js, PostgreSQL, Express for the Backend, and React, Axios, TypeScript, Chakra UI, React Form Hook and Zod for the Frontend.
@@ -63,7 +67,3 @@ These errors will be resolved and the app deployed as soon as possible.
 ## Notes for the Evaluator
 
 "Please be aware that the application has significant build and runtime errors due to the unresolved TypeScript issues detailed above. Due to the extremely limited time for submission, a fully functional deployment was not achievable. The focus was on documenting these critical issues."
-
-
-
-<iframe src="https://intelligent-violin-296.notion.site/ebd/1ebd5a94b8fe80d2a9ccdbd91ffd2c34" width="100%" height="600" frameborder="0" allowfullscreen />
