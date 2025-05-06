@@ -4,10 +4,27 @@
 
 This is a mobile-first web app designed for local communities to share events organised by local organsations. It allows users to browse a list of events, select an event and sign up for it. There is an option to register for events as a guest or as a logged-in user.
 
+This app is designed to be easy to use for a wide target audience and provides a more community-focussed way to promote events. It provides the facility to include regular group meetings as well as one-off events and includes events that do not need a recorded sign up.
+
+The backend has been built ready to implement ratings and reviews, questions and answers, and frequently asked questions for events - features that can be included in future iterations. By focussing on local businesses and organisations, and implementing these interactive features, the platform encourages users to interact with each other and get involved in their local community. This is something that larger and more generic events platforms do not offer.
+
+### User Types
+
+There are three registered user types: Attendee, Organiser and Admin. An organiser has access to a staff dashboard for their organisation where they can view and manage events and create new ones. An organiser can still register for events in the same way as an attendee. Guest users can sign up for an event without an account. The system creates an attendee record with their name and email address.
+The admin user is designed to have access to all events, users and organisations management. This is a user who oversees the whole platform, moderates it, and resolves any queries. This feature will be implemented in future iterations.
+
+Some test accounts will be provided in order to use the platform as an attendee and an organiser.
+
+### Searching and Filtering
+
+Users are initially taken to the home page which lists all available published events. They can then filter these by clicking on the category buttons followed by the subcategory button links below. A range of filters are available. On a mobile the user can toggle the filters on and off to save space.
+
+For more information about the features planned please refer to the planning documentation on my Notion site as detailed below under **Link to Project Plans and Diagrams**.
+
+
 ## Link to Deployed Application
 
-This app will be deployed to Netlify. Currently, the deployment has failed due to some significant TypeScript errors during the build process.
-The link will be updated here as soon as it is available.
+This app is deployed to Netlify at [Scene Locally](https://scene-locally.netlify.app/)
 
 The link to the deployed backend can be found here:
 [https://scene-locally.onrender.com/api](https://scene-locally.onrender.com)
@@ -27,17 +44,6 @@ The backend repository can be found here:
 ## Technical Stack
 
 This app utilises Node.js, PostgreSQL, Express for the Backend, and React, Axios, TypeScript, Chakra UI, React Form Hook and Zod for the Frontend.
-
-## Build Status and Errors
-
-The build process encountered significant TypeScript errors that prevented the application from building and/or functioning correctly. The following critical errors were present:
-
-* **Module Resolution Errors:** The project could not find the following modules: `https://esm.sh/@supabase/supabase-js`, `vite`, `@vitejs/plugin-react`. This indicates potential configuration issues with module imports or missing dependencies.
-* **Property Access Errors:** Errors occurred when trying to access properties on objects (e.g., `user` in `Header.tsx`, `end_datetime` in `IndividualEvent.tsx`), suggesting these properties might be undefined or the object types are incorrect.
-* **Type Mismatches:** Multiple type assignment and argument passing errors (e.g., `TS2322`, `TS2345`) indicate inconsistencies in how data types are being used throughout the application, particularly in form handling and data fetching.
-* **Routing Errors:** An error in `routesConfig.ts` suggests potential issues with how the `SubcategoryList` component is being rendered by the router.
-
-**Due to the severe time constraint of the submission deadline, these critical errors could not be resolved.** The deployed application (if a build was successful enough to deploy) is likely to be non-functional or have significant issues.
 
 ## Known Issues and Limitations
 
@@ -59,11 +65,8 @@ The build process encountered significant TypeScript errors that prevented the a
 2.  The location pin in the header is a placeholder for a site logo.
 3.  There is an icon button indicating a dark mode/light mode toggle which is not yet functional.
 4.  There is backend logic for a search on events, but a search bar has not yet been implemented.
+5.  There is currently no functionality to create a user account but I will provide test accounts.
 
 ## Future Improvements
 
-These errors will be resolved and the app deployed as soon as possible.
-
-## Notes for the Evaluator
-
-"Please be aware that the application has significant build and runtime errors due to the unresolved TypeScript issues detailed above. Due to the extremely limited time for submission, a fully functional deployment was not achievable. The focus was on documenting these critical issues."
+The above issues will be resolved and the app will include the additional features listed above and in the documentation.
