@@ -63,3 +63,7 @@ These errors will be resolved and the app deployed as soon as possible.
 ## Notes for the Evaluator
 
 "Please be aware that the application has significant build and runtime errors due to the unresolved TypeScript issues detailed above. Due to the extremely limited time for submission, a fully functional deployment was not achievable. The focus was on documenting these critical issues."
+
+
+
+<iframe src="https://intelligent-violin-296.notion.site/ebd/1ebd5a94b8fe80d2a9ccdbd91ffd2c34" width="100%" height="600" frameborder="0" allowfullscreen />
