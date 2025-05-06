@@ -162,7 +162,7 @@ const SignupCard: React.FC<SignupCardProps> = ({
                                         }
                                         invalid={!!errors.lastName}
                                     >
-                                        <Field.Label>First name</Field.Label>
+                                        <Field.Label>Last name</Field.Label>
                                         <Input
                                             {...register('lastName')}
                                             type="text"
@@ -178,7 +178,7 @@ const SignupCard: React.FC<SignupCardProps> = ({
                                         }
                                         invalid={!!errors.email}
                                     >
-                                        <Field.Label>First name</Field.Label>
+                                        <Field.Label>Email</Field.Label>
                                         <Input
                                             {...register('email')}
                                             type="text"

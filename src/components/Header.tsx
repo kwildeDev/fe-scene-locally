@@ -1,10 +1,8 @@
 import {
     Box,
-    Center,
     Flex,
     HStack,
     IconButton,
-    Image,
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
@@ -13,10 +11,10 @@ import MainMenu from './MainMenu';
 import { UserContext, User } from '../contexts/userContext';
 import LoginCard from './LoginCard';
 import { useContext, useEffect } from 'react';
+import { FaLocationDot } from 'react-icons/fa6';
 
 const Header: React.FC = () => {
     const { user } = useContext(UserContext);
-    const imageHeight = useBreakpointValue({ base: 30, md: 100 });
     const textFontSize = useBreakpointValue({
         base: 'xl',
         md: 'sm',
@@ -35,15 +33,13 @@ const Header: React.FC = () => {
             py={2}
         >
             <HStack>
-                <Image
-                    objectFit="contain"
-                    height={imageHeight}
-                    src="/assets/simple-tree-icon-6.jpg"
-                    alt="Logo"
+                <IconButton alignSelf="flex-start" size={textFontSize} color="blue.solid" variant="plain" p={0}>
+                    <FaLocationDot
+                        size={textFontSize}
                 />
-
-                <Center>
+                </IconButton>
                 <Text
+                    as="h1"
                     whiteSpace="nowrap"
                     fontSize={textFontSize}
                     fontWeight="bold"
@@ -52,10 +48,9 @@ const Header: React.FC = () => {
                 >
                     Meadowbridge Scene
                 </Text>
-                </Center>
             </HStack>
 
-            <HStack alignItems="flex-start">
+            <HStack id="menu" alignItems="flex-start">
                 <IconButton
                     variant="outline"
                     color="teal.solid"
@@ -65,7 +60,9 @@ const Header: React.FC = () => {
                 >
                     <BsBrightnessHighFill />
                 </IconButton>
+                <Box>
                 <MainMenu user={user} />
+                </Box>
                 {!user && (
                     <LoginCard />
                     )

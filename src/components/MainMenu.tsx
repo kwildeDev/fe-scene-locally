@@ -7,10 +7,15 @@ import {
     Menu,
     Portal,
     Link,
+    IconButton,
+    VStack,
+    Collapsible,
+    useBreakpointValue,
+    Box,
 } from '@chakra-ui/react';
 import { useContext } from 'react';
 
-import { FaUserCircle } from 'react-icons/fa';
+import { FaBars, FaUserCircle } from 'react-icons/fa';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 
 interface MainMenuProps {
@@ -22,6 +27,7 @@ export default function MainMenu({ user }: MainMenuProps) {
     const context = useContext(UserContext)
     const navigate = useNavigate();
     const location = useLocation();
+    const isCollapsible = useBreakpointValue({ base: true, md: false });
 
     function handleSignOutClick() {
         localStorage.removeItem('jwtToken');
@@ -34,6 +40,100 @@ export default function MainMenu({ user }: MainMenuProps) {
     }
 
     return (
+        <>
+            {isCollapsible ? (
+            <Collapsible.Root as="nav" width="max-content" justifyItems="end">
+                <Collapsible.Trigger>
+                <IconButton 
+                    color="teal.solid"
+                    variant="outline"
+                    size="md"
+                    borderColor="teal.solid"
+                    borderWidth={2}
+                    >
+                    <FaBars />
+                </IconButton>
+                </Collapsible.Trigger>
+                <Collapsible.Content>
+                <VStack alignItems="end">
+                    {/* Browse all events */}
+                    <ChakraLink
+                        asChild
+                        color={linkColour}
+                        textDecorationColor={linkColour}
+                        fontSize="md"
+                        fontWeight="semibold"
+                    >
+                        <NavLink to="/">Browse all events</NavLink>
+                    </ChakraLink>
+
+                    {/* Help */}
+                    <ChakraLink
+                        asChild
+                        color={linkColour}
+                        textDecorationColor={linkColour}
+                        fontSize="md"
+                        fontWeight="semibold"
+                    >
+                        <NavLink to="/help">Help</NavLink>
+                    </ChakraLink>
+
+                    {/* Account */}
+                    {user?.user_id && (
+                        <>
+                            <ChakraLink asChild>
+                                <NavLink to="/users/me">
+                                    <HStack>
+                                        <Icon color={linkColour} size="md">
+                                            <FaUserCircle />
+                                        </Icon>
+                                        <Text
+                                            color={linkColour}
+                                            fontSize="md"
+                                            fontWeight="semibold"
+                                        >
+                                            Account
+                                        </Text>
+                                    </HStack>
+                                </NavLink>
+                            </ChakraLink>
+                            {user?.organisation_id && (
+                                <ChakraLink asChild>
+                                    <NavLink to={`/organisations/${user.organisation_id}/events`}>
+                                        <Text
+                                            marginLeft={6}
+                                            color={linkColour}
+                                            fontSize="md"
+                                            fontWeight="semibold"
+                                        >
+                                            Staff Dashboard
+                                        </Text>
+                                    </NavLink>
+                                </ChakraLink>
+                            )}
+                            <ChakraLink asChild>
+                                <Link
+                                    variant="plain"
+                                    textDecoration="none"
+                                    onClick={handleSignOutClick}
+                                >
+                                    <Text
+                                        marginLeft={6}
+                                        color={linkColour}
+                                        fontSize="md"
+                                        fontWeight="semibold"
+                                    >
+                                        Sign Out
+                                    </Text>
+                                </Link>
+                            </ChakraLink>
+                        </>
+                    )}
+                    </VStack>
+                </Collapsible.Content>
+            </Collapsible.Root>
+            ) : (
+
         <HStack colorPalette="teal">
             {/* Browse all events */}
             <ChakraLink
@@ -127,5 +227,7 @@ export default function MainMenu({ user }: MainMenuProps) {
                 </>
             )}
         </HStack>
+    )}
+</>
     );
 }

@@ -1,4 +1,4 @@
-import { Button, DataList, Link, Stack, Text } from '@chakra-ui/react';
+import { Button, DataList, Heading, Link, Stack, Text } from '@chakra-ui/react';
 import { NewEventData } from '../api';
 import { formatDateTime } from '../utils/utils';
 
@@ -24,6 +24,7 @@ const NewEventConfirmation: React.FC<NewEventConfirmationProps> = ({
     return (
         <>
             <Stack p={8}>
+                <Heading>New Event Details</Heading>
                 <DataList.Root
                     orientation="horizontal"
                     size="md"

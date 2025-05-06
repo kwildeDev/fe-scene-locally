@@ -5,10 +5,11 @@ import {
     Stack,
     Table,
     Text,
-    NativeSelect,
     Button,
     Dialog,
     Portal,
+    useBreakpointValue,
+    Heading,
 } from '@chakra-ui/react';
 import { FaXmark } from 'react-icons/fa6';
 import { FcCheckmark } from 'react-icons/fc';
@@ -44,6 +45,7 @@ const OrganisationEventList: React.FC = () => {
     const { organisation_id } = useOutletContext() as OutletContextType;
 
     const ref = useRef<HTMLButtonElement>(null);
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     useEffect(() => {
         if (!organisation_id) {
@@ -99,7 +101,6 @@ const OrganisationEventList: React.FC = () => {
                             : event
                     )
                 );
-                // Reset the selected status for this event
                 setSelectedStatuses((prevStatuses) => ({
                     ...prevStatuses,
                     [eventId]: '',
@@ -159,14 +160,20 @@ const OrganisationEventList: React.FC = () => {
         <>
             {organisation_id ? (
                 <Container p={1}>
-                    <Box pt={14} pb={8}>
+                    <Box pt={4} pb={4}>
+                    <Heading>Organisation Events</Heading>
                         <Text textStyle="lg">
                             You have{' '}
                             <Mark variant="subtle">{events.length}</Mark>{' '}
                             upcoming events
                         </Text>
                     </Box>
-                    <Box bg="bg" borderRadius="md" shadow="md">
+                    {isMobile && (
+                        <Text fontSize="sm" color="gray.500" mb={2}>
+                            ← Scroll left to see more →
+                        </Text>
+                    )}
+                    <Box overflowX="auto" bg="bg" borderRadius="md" shadow="md">
                         <Stack gap="10">
                             <Table.Root size="md">
                                 <Table.Header>
@@ -271,9 +278,6 @@ const OrganisationEventList: React.FC = () => {
                                                     </option>
                                                     <option value="completed">
                                                         Completed
-                                                    </option>
-                                                    <option value="draft">
-                                                        Draft
                                                     </option>
                                                 </select>
                                             </Table.Cell>
