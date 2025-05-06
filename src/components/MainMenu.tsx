@@ -11,12 +11,16 @@ import {
     VStack,
     Collapsible,
     useBreakpointValue,
-    Box,
 } from '@chakra-ui/react';
 import { useContext } from 'react';
 
 import { FaBars, FaUserCircle } from 'react-icons/fa';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
+
+interface User {
+    user_id: string;
+    organisation_id?: string;
+}
 
 interface MainMenuProps {
     user?: User | null;

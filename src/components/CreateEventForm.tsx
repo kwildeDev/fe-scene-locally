@@ -17,7 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { CategoryDetail, SubcategoryDetail, VenueDetail } from '../api.ts';
+import { CategoryDetail, NewEventRequest, SubcategoryDetail, VenueDetail } from '../api.ts';
 import {
     getCategories,
     getSubcategories,
@@ -35,8 +35,8 @@ interface OutletContextType {
 }
 
 interface RecurringSchedule {
-    frequency: string;
-    day: string;
+    frequency?: string | undefined;
+    day?: string;
 }
 
 interface NewEventData {
@@ -44,8 +44,8 @@ interface NewEventData {
     organisation_id: number;
     title: string;
     description: string;
-    start_datetime: string;
-    end_datetime: string;
+    start_datetime: string | null;
+    end_datetime: string | null;
     venue_id: number;
     category_id: number;
     subcategory_id: number;
@@ -59,14 +59,11 @@ interface NewEventData {
     access_link?: string;
     is_online: boolean;
     signup_required: boolean;
+    venueName?: string; // Added property
+    categoryName?: string; // Added property
+    subcategoryName?: string; // Added property
 }
 
-interface NewEventConfirmationProps {
-    eventDetails: NewEventData;
-    venueName?: string;
-    categoryName?: string;
-    subcategoryName?: string;
-}
 
 const capitaliseFirstCharacter = (
     name: string | undefined
@@ -82,11 +79,13 @@ const eventSchema = z
         title: z
             .string()
             .min(3, { message: 'Title is required' })
-            .transform(capitaliseFirstCharacter),
+            .transform((value) => capitaliseFirstCharacter(value) || '')
+            .refine((value) => (value ?? '').trim() !== '', { message: 'Title cannot be empty' }),
         description: z
             .string()
             .min(20, { message: 'Description is required' })
-            .transform(capitaliseFirstCharacter),
+            .transform((value) => capitaliseFirstCharacter(value) || '')
+            .refine((value) => value.trim() !== '', { message: 'Description cannot be empty' }),
         startDate: z
             .string()
             .min(1, { message: 'Start date is required' })
@@ -192,7 +191,7 @@ const CreateEventForm: React.FC = () => {
         getValues,
         formState: { errors, isSubmitting },
     } = useForm<Formfields>({
-        resolver: zodResolver(eventSchema),
+        resolver: zodResolver(eventSchema as z.ZodType<Formfields>),
     });
 
     const [venuesList, setVenuesList] = useState<VenueDetail[]>([]);
@@ -211,7 +210,7 @@ const CreateEventForm: React.FC = () => {
         'biodiversity','talent','performance','pilates','art','online','movie','social','robots','teens','history','architecture','walk','trivia','games',
     ]; //temporary hardcoded tags as there needs to be a custom query to fetch tags
 
-    const selectedTags: string[] = watch('selectedTags', []);
+    const selectedTags: string[] = watch('selectedTags') || [];
 
     const handleTagSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = event.target.value;
@@ -299,17 +298,19 @@ const CreateEventForm: React.FC = () => {
     useEffect(() => {
         if (categoryId) {
             setIsLoadingSubcategories(true);
-            getSubcategories(categorySlug)
-                .then((subcategoriesData) => {
-                    setSubcategoriesList(subcategoriesData);
-                    console.log('Fetched Subcategories:', subcategoriesData);
-                })
-                .catch((err) => {
-                    console.error('Error fetching subcategories:', err);
-                })
-                .finally(() => {
-                    setIsLoadingSubcategories(false);
-                });
+            if (categorySlug) {
+                getSubcategories(categorySlug)
+                    .then((subcategoriesData: SubcategoryDetail[]) => {
+                        setSubcategoriesList(subcategoriesData);
+                        console.log('Fetched Subcategories:', subcategoriesData);
+                    })
+                    .catch((err: unknown) => {
+                        console.error('Error fetching subcategories:', err);
+                    })
+                    .finally(() => {
+                        setIsLoadingSubcategories(false);
+                    });
+            }
         } else {
             setSubcategoriesList([]);
         }
@@ -317,20 +318,20 @@ const CreateEventForm: React.FC = () => {
 
     const onSubmit: SubmitHandler<Formfields> = (data) => {
         const recurringSchedule: RecurringSchedule = {
-            frequency: data.recurringFrequency,
-            day: data.recurringDay,
+            frequency: data.recurringFrequency || '',
+            day: data.recurringDay || '',
         };
 
-        const newEventData: NewEventData = {
+        const newEventData: NewEventRequest = {
             organisation_id: organisation_id,
             title: data.title,
-            description: data.description,
-            start_datetime: formatToTimestamp(data.startDate, data.startTime),
-            end_datetime: formatToTimestamp(data.endDate, data.endTime),
+            description: data.description || '',
+            start_datetime: formatToTimestamp(data.startDate, data.startTime) || '',
+            end_datetime: formatToTimestamp(data.endDate, data.endTime) || '',
             venue_id: data.venue,
             category_id: data.category,
             subcategory_id: data.subcategory,
-            tags: data.selectedTags,
+            tags: data.selectedTags ?? null,
             is_recurring: data.isRecurring,
             recurring_schedule: isRecurring ? recurringSchedule : null,
             status: 'draft',
@@ -344,13 +345,14 @@ const CreateEventForm: React.FC = () => {
             .then((event) => {
                 setIsFormSubmitted(true);
                 setNewEventConfirmationProps({
-                    eventDetails: event,
+                    ...event,
+                    start_datetime: event.start_datetime || '', // Ensure it's a string
                     venueName: selectedVenue?.name,
                     categoryName: selectedCategory?.name,
                     subcategoryName: selectedSubcategory?.name,
                 });
             })
-            .catch((error) => {
+            .catch((_error) => {
                 setError('root', {
                     message: 'Event could not be created',
                 });
@@ -758,7 +760,13 @@ const CreateEventForm: React.FC = () => {
                     <Text color="green" fontWeight="semibold">
                         Event successfully created!
                     </Text>
-                    <NewEventConfirmation {...NewEventConfirmationProps} />
+                    <NewEventConfirmation
+                        eventDetails={{
+                            ...NewEventConfirmationProps,
+                            start_datetime: NewEventConfirmationProps?.start_datetime || '',
+                            end_datetime: NewEventConfirmationProps?.end_datetime || '',
+                        }}
+                    />
                     <Button onClick={handleClose} bg="blue.solid">
                         Close
                     </Button>
@@ -769,3 +777,5 @@ const CreateEventForm: React.FC = () => {
 };
 
 export default CreateEventForm;
+// Removed the custom 'then' function as it is unnecessary and causes issues.
+

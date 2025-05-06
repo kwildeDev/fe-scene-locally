@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { UserContext } from '../contexts/userContext.ts';
 import { useContext, useState } from 'react';
-import { getUserDetails, loginUser, LoginData, UserDetail } from '../api.ts';
+import { getUserDetails, loginUser, LoginData } from '../api.ts';
 
 const schema = z.object({
     email: z.string().email(),
@@ -39,7 +39,11 @@ const LoginCard: React.FC = () => {
         setIsLoggingIn(true);
         loginUser(loginData)
             .then((token) => {
-                localStorage.setItem('jwtToken', token);
+                if (typeof token === 'string') {
+                    localStorage.setItem('jwtToken', token);
+                } else {
+                    throw new Error('Invalid token type received');
+                }
                 return getUserDetails(token);
             })
             .then((userData) => {

@@ -38,9 +38,6 @@ const OrganisationEventList: React.FC = () => {
     const [selectedStatuses, setSelectedStatuses] = useState<{
         [eventId: number]: string;
     }>({});
-    const [updatingStatusId, setUpdatingStatusId] = useState<number | null>(
-        null
-    );
     const navigate = useNavigate();
     const { organisation_id } = useOutletContext() as OutletContextType;
 
@@ -57,7 +54,7 @@ const OrganisationEventList: React.FC = () => {
                 setEvents(events);
                 setIsLoading(false);
             })
-            .catch((err) => {
+            .catch((_err) => {
                 setIsError(true);
                 setIsLoading(false);
             });
@@ -108,9 +105,6 @@ const OrganisationEventList: React.FC = () => {
             })
             .catch((error) => {
                 console.error('Error updating status:', error);
-            })
-            .finally(() => {
-                setUpdatingStatusId(null);
             });
     };
 

@@ -2,7 +2,6 @@ import {
     Box,
     Separator,
     Stack,
-    Text,
 } from '@chakra-ui/react';
 import StaffSidebarMenu from './StaffSidebarMenu';
 

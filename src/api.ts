@@ -25,6 +25,7 @@ export interface EventDetail extends EventSummary {
     description: string;
     venue_id: number;
     recurring_schedule: RecurringSchedule;
+    end_datetime: string; // Added this property
     updated_at: string;
     status: string;
     signup_required: boolean;
@@ -96,6 +97,25 @@ export interface OrganisationEventSummary {
     is_recurring: boolean;
     image_url: string;
     is_online: boolean;
+}
+
+export interface NewEventRequest {
+    organisation_id: number;
+    title: string;
+    description: string;
+    start_datetime: string | null;
+    end_datetime: string | null;
+    venue_id: number;
+    category_id: number;
+    subcategory_id: number;
+    tags: string[] | null;
+    is_recurring: boolean;
+    recurring_schedule: RecurringSchedule | null;
+    status: string;
+    image_url?: string;
+    access_link?: string;
+    is_online: boolean;
+    signup_required: boolean;
 }
 
 export interface NewEventData {
@@ -214,7 +234,7 @@ const getOrganisationEvents = (organisation_id: number): Promise<OrganisationEve
         })
 };
 
-const postEvent = (newEventData: NewEventData ): Promise<NewEventData> => {
+const postEvent = (newEventData: NewEventRequest ): Promise<NewEventData> => {
     return api
         .post(`/events`, newEventData )
         .then(({ data }) => {

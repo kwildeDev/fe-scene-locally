@@ -14,7 +14,7 @@ import { UserContext } from '../contexts/userContext.ts';
 import { useContext, useState } from 'react';
 import { postAttendee } from '../api.ts';
 import { GoogleCalendarEvent } from './IndividualEvent.tsx';
-import supabase from '../utils/supabaseClient.ts';
+//import supabase from '../utils/supabaseClient.ts';
 
 
 interface SignupCardProps {
@@ -40,8 +40,8 @@ const capitaliseFirstCharacter = (
 };
 
 const schema = z.object({
-    firstName: z.string().transform(capitaliseFirstCharacter),
-    lastName: z.string().transform(capitaliseFirstCharacter),
+    firstName: z.string().optional().transform((val) => val ? capitaliseFirstCharacter(val) : undefined),
+    lastName: z.string().optional().transform((val) => val ? capitaliseFirstCharacter(val) : undefined),
     email: z.string().email(),
 });
 
@@ -66,37 +66,43 @@ const SignupCard: React.FC<SignupCardProps> = ({
         formState: { errors, isSubmitting },
     } = useForm<Formfields>({
         defaultValues: {
-            firstName: user?.first_name,
-            lastName: user?.last_name,
-            email: user?.email,
+            firstName: user?.first_name ?? '',
+            lastName: user?.last_name ?? '',
+            email: user?.email ?? '',
         },
         resolver: zodResolver(schema),
     });
 
-    const handleAddToCalendarClick = async (googleEventProps) => {
+    interface AddToCalendarResponse {
+        success: boolean;
+        message: string;
+        [key: string]: any; // To handle any additional properties in the response
+    }
+
+    interface AddToCalendarError {
+        message: string;
+        [key: string]: any; // To handle any additional properties in the error
+    }
+
+    const handleAddToCalendarClick = async (
+        googleEventProps: GoogleCalendarEvent
+    ): Promise<void> => {
         try {
-            const response = await fetch(
+            const response: Response = await fetch(
                 'https://ocqrrsxycaqegtbztqal.supabase.co/functions/v1/add-to-calendar',
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    
-                    //headers: {
-                    //    Authorization: `Bearer ${
-                    //        supabase.auth.getSession().data.session.access_token
-                    //    }`,
-                    //    'Content-Type': 'application/json',
-                    //},
                     body: JSON.stringify(googleEventProps),
                 }
             );
-            const result = await response.json();
+            const result: AddToCalendarResponse = await response.json();
             console.log('Event added:', result);
-        }
-        catch (error) {
-            console.error('Failed to add event:', error);
+        } catch (error: unknown) {
+            const err = error as AddToCalendarError;
+            console.error('Failed to add event:', err.message);
         }
     };
 
@@ -112,7 +118,7 @@ const SignupCard: React.FC<SignupCardProps> = ({
                 setIsFormSubmitted(true);
                 console.log(attendee);
             })
-            .catch((error) => {
+            .catch((_error) => {
                 setError('root', {
                     message: 'Event registration could not be submitted',
                 });
@@ -218,7 +224,7 @@ const SignupCard: React.FC<SignupCardProps> = ({
                                             for signing up!
                                         </Text>
                                         <Button
-                                            onClick={handleAddToCalendarClick}>
+                                            onClick={() => handleAddToCalendarClick(googleEventProps)}>
                                             Add to calendar
                                         </Button>
                                         </>

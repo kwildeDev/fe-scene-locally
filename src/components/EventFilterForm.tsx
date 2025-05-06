@@ -1,8 +1,8 @@
 import { Box, Center, Button, Wrap, Text } from '@chakra-ui/react';
 import { useState, useCallback } from 'react';
 import { MdFilterAltOff } from 'react-icons/md';
-import Select from 'react-select';
-import makeAnimated, { SingleValue } from 'react-select/animated'
+import Select, { MultiValue, CSSObjectWithLabel } from 'react-select';
+import makeAnimated from 'react-select/animated'
 
 interface EventFilterProps {
     filters: Record<string, string>;
@@ -58,8 +58,8 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
     );
 
     const handleTagChange = useCallback(
-        (newSelectedOptions: { value: string; label: string }[]) => {
-        const newTags = newSelectedOptions.map((option) => option.value);
+        (newSelectedOptions: MultiValue<{ value: string; label: string }>) => {
+        const newTags: string[] = newSelectedOptions.map((option: { value: string; label: string }) => option.value);
         setSelectedTags(newTags);
         onFilterChange('tags', newTags.join(','));
         }, 
@@ -78,27 +78,6 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
         (option: { value: string, label: string } | null) => {
             setSelectedOrder(option?.value || null);
             onFilterChange('order', option?.value || '');
-        },
-        [onFilterChange]
-    );
-
-    const clearVenue = useCallback(() => {
-        setSelectedVenue(null);
-        onFilterChange('venue', '');
-        },
-        [onFilterChange]
-    );
-
-    const clearOrganiser = useCallback(() => {
-        setSelectedOrganiser(null);
-        onFilterChange('organiser', '');
-        },
-        [onFilterChange]
-    );
-
-    const clearTags = useCallback(() => {
-        setSelectedTags([]);
-        onFilterChange('tags', '');
         },
         [onFilterChange]
     );
@@ -140,11 +119,11 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
     ]
 
     const customStyles = {
-        control: (provided) => ({
+        control: (provided: CSSObjectWithLabel) => ({
             ...provided,
             width: 200,
         }),
-        singleValue: (provided) => ({
+        singleValue: (provided: CSSObjectWithLabel) => ({
             ...provided,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -220,7 +199,7 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
                     <Select
                         id="organiser"
                         options={organiserOptions}
-                        value={organiserOptions.find((option) => option.organiser === selectedOrganiser)}
+                        value={organiserOptions.find((option) => option.value === selectedOrganiser)}
                         onChange={handleOrganiserChange}
                         placeholder="Select organiser..."
                         styles={customStyles}

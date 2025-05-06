@@ -1,7 +1,6 @@
 import StaffDashboard from '../components/StaffDashboard';
 import HomePage from '../components/HomePage';
 import IndividualEvent from '../components/IndividualEvent';
-import SubcategoryList from '../components/SubcategoryList';
 import OrganisationEventList from '../components/OrganisationEventList';
 import CreateEventForm from '../components/CreateEventForm';
 import OrganisationSettings from '../components/OrganisationSettings';
@@ -18,7 +17,7 @@ interface RouteConfig {
 const routesConfig: RouteConfig[] = [
     { path: '/', element: HomePage },
     { path: '/events/:event_id', element: IndividualEvent },
-    { path: '/categories/:category_slug', element: SubcategoryList },
+    
     { 
         path: '/organisations/:organisation_id',
         element: StaffDashboard,

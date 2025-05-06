@@ -7,7 +7,6 @@ const HomePage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const category = searchParams.get("category");
-    const subcategory = searchParams.get("subcategory");
 
     const handleCategoryClick = (categorySlug: string) => {
         if (categorySlug === "") {

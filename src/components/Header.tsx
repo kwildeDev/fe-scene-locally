@@ -8,14 +8,20 @@ import {
 } from '@chakra-ui/react';
 import { BsBrightnessHighFill } from 'react-icons/bs';
 import MainMenu from './MainMenu';
-import { UserContext, User } from '../contexts/userContext';
+import { UserContext } from '../contexts/userContext';
 import LoginCard from './LoginCard';
 import { useContext, useEffect } from 'react';
 import { FaLocationDot } from 'react-icons/fa6';
 
 const Header: React.FC = () => {
-    const { user } = useContext(UserContext);
-    const textFontSize = useBreakpointValue({
+    const userContext = useContext(UserContext);
+
+    if (!userContext) {
+        throw new Error('UserContext is undefined. Make sure it is properly provided.');
+    }
+
+    const { user } = userContext;
+    const textFontSize = useBreakpointValue<"2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | undefined>({
         base: 'xl',
         md: 'sm',
         xl: '2xl',
@@ -61,7 +67,11 @@ const Header: React.FC = () => {
                     <BsBrightnessHighFill />
                 </IconButton>
                 <Box>
-                <MainMenu user={user} />
+                <MainMenu user={user ? { 
+                    ...user, 
+                    user_id: user.user_id.toString(), 
+                    organisation_id: user.organisation_id !== null ? user.organisation_id.toString() : undefined 
+                } : null} />
                 </Box>
                 {!user && (
                     <LoginCard />

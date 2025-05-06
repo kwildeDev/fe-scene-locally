@@ -13,6 +13,7 @@ interface SubcategoryDetail {
 }
 
 interface SubcategoryListProps {
+    category: string;
     onSubcategoryClick: (subcategorySlug: string) => void;
 }
 
@@ -29,7 +30,7 @@ const SubcategoryList: React.FC<SubcategoryListProps> = ({
             .then((subcategories) => {
                 setSubcategories(subcategories);
             })
-            .catch((err) => {
+            .catch((_err) => {
                 setIsError(true);
             });
     }, [category]);

@@ -1,4 +1,4 @@
-import { Button, DataList, Heading, Link, Stack, Text } from '@chakra-ui/react';
+import { DataList, Heading, Link, Stack } from '@chakra-ui/react';
 import { NewEventData } from '../api';
 import { formatDateTime } from '../utils/utils';
 
@@ -18,7 +18,7 @@ const NewEventConfirmation: React.FC<NewEventConfirmationProps> = ({
     const formattedSchedule: string = eventDetails.is_recurring
         ? `${eventDetails.recurring_schedule?.frequency} on ${eventDetails.recurring_schedule?.day}s`
         : '';
-    const booleanLookup: (boolean) => string = (boolean) =>
+    const booleanLookup: (arg0: boolean) => string = (boolean) =>
         boolean ? 'Yes' : 'No';
 
     return (

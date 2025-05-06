@@ -22,9 +22,6 @@ import { FaArrowCircleLeft, FaInfoCircle } from 'react-icons/fa';
 import LoadingSpinner from './LoadingSpinner.tsx';
 import SignupCard from './SignupCard.tsx';
 
-interface RouteParams {
-    event_id: string;
-}
 
 export interface GoogleCalendarEvent {
     summary: string;
@@ -35,7 +32,7 @@ export interface GoogleCalendarEvent {
 }
 
 const IndividualEvent: React.FC = () => {
-    const { event_id } = useParams<RouteParams>();
+    const { event_id } = useParams<{ event_id: string }>();
     const eventIdNumber = Number(event_id);
     const [event, setEvent] = useState<EventDetail>({} as EventDetail);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -48,7 +45,7 @@ const IndividualEvent: React.FC = () => {
                 setEvent(fetchedEvent);
                 setIsLoading(false);
             })
-            .catch((err) => {
+            .catch((_err) => {
                 setIsError(true);
                 setIsLoading(false);
             });

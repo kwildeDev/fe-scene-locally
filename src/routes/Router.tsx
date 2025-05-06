@@ -1,12 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import routesConfig from './routesConfig';
-import { FC } from 'react';
-
-interface RouteConfig {
-    path: string;
-    element: FC;
-    children?: RouteConfig[];
-}
 
 const Router = () => {
     return (

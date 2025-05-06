@@ -62,7 +62,10 @@ const EventList: React.FC = () => {
         setIsLoading(true);
         getEvents(filters)
             .then((events) => {
-                setEvents(events);
+                setEvents(events.map(event => ({
+                    ...event,
+                    tags: event.tags || [],
+                })));
                 setIsLoading(false);
 
                 if (events.length > 0) {
@@ -88,7 +91,7 @@ const EventList: React.FC = () => {
                     setUniqueVenues([]);
                 }
             })
-            .catch((err) => {
+            .catch((_err) => {
                 setIsError(true);
                 setIsLoading(false);
             });

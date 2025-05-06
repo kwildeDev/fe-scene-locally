@@ -6,7 +6,7 @@ import {
     LinkOverlay,
     Text,
 } from '@chakra-ui/react';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Image } from '@chakra-ui/react';
 import { EventSummary } from '../api.ts';
 import { FaCalendarDays, FaLocationDot } from 'react-icons/fa6';

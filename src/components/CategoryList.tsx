@@ -32,9 +32,8 @@ const CategoryList: React.FC<CategoryListProps> = ({ onCategoryClick }) => {
             .then((categories) => {
                 setCategories(categories);
             })
-            .catch((err) => {
+            .catch((_err) => {
                 setIsError(true);
-                setIsLoading(false);
             });
     }, []);
 
