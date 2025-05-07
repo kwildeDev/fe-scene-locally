@@ -29,6 +29,31 @@ This app is deployed to Netlify at [Scene Locally](https://scene-locally.netlify
 The link to the deployed backend can be found here:
 [https://scene-locally.onrender.com/api](https://scene-locally.onrender.com)
 
+
+### Test accounts
+
+Please use the following test accounts to use the app as an attendee or an organiser:
+
+**Attendee:**
+* Name: Rajesh Kumar 
+* Email: attendee7@example.com
+* Password: `chocolate99`
+
+**Attendee:**
+* Name: Aisha Malik
+* Email: attendee8@example.com
+* Password: `musicfan1`
+
+**Organiser:**
+* Name: Charlotte Anderson
+* Email: organiser3@riverbankconservation.org
+* Password: `chips123cat`
+
+**Organiser:**
+* Name: Daniel Stewart
+* Email: organiser5@meadowbridgewellbeing.org
+* Password: `25fluffyducks`
+
 ## Link to GitHub Repository
 
 The frontend repository can be found here:
@@ -43,7 +68,13 @@ The backend repository can be found here:
 
 ## Technical Stack
 
-This app utilises Node.js, PostgreSQL, Express for the Backend, and React, Axios, TypeScript, Chakra UI, React Form Hook and Zod for the Frontend.
+### Backend
+
+Node.js, PostgreSQL, Express
+
+### Frontend
+
+React, Axios, TypeScript, Chakra UI, React Form Hook, Zod, React Select.
 
 ## Known Issues and Limitations
 
