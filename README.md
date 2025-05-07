@@ -118,7 +118,7 @@ These instructions will guide you on how to run the frontend application on your
 
 1.  **Clone the frontend repository:**
     ```
-    git clone <https://github.com/kwildeDev/fe-scene-locally.git>
+    git clone https://github.com/kwildeDev/fe-scene-locally.git
     cd fe-scene-locally
     ```
 
