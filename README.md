@@ -101,3 +101,54 @@ React, Axios, TypeScript, Chakra UI, React Form Hook, Zod, React Select.
 ## Future Improvements
 
 The above issues will be resolved and the app will include the additional features listed above and in the documentation.
+
+## Frontend Local Development Setup
+
+These instructions will guide you on how to run the frontend application on your local machine. For instructions on setting up the backend, please refer to the [backend repository README](https://github.com/kwildeDev/be-scene-locally).
+
+### Prerequisites
+
+* **Node.js:** (Recommended v22.14.0). Download from [https://nodejs.org/](https://nodejs.org/)
+* **npm** or **Yarn:**.
+    * **npm:** Comes with Node.js. Check version with `npm -v`.
+    * **Yarn:** Installation: [https://yarnpkg.com/getting-started](https://yarnpkg.com/getting-started)
+* **Git:** For cloning the repository. [https://git-scm.com/downloads](https://git-scm.com/downloads)
+
+### Setup
+
+1.  **Clone the frontend repository:**
+    ```
+    git clone <https://github.com/kwildeDev/fe-scene-locally.git>
+    cd fe-scene-locally
+    ```
+
+2.  **Install frontend dependencies:**
+    ```
+    npm install
+    # or
+    yarn install
+    ```
+
+3.  **Backend Configuration:**
+    * This frontend project is configured to work with a deployed backend on Render. The code can be found at the top of `api.ts`
+    ```
+    const api = axios.create({
+        baseURL: 'https://scene-locally.onrender.com/api',
+    });
+    ```
+    To run it with a local backend you need to create a `.env.local` file in the root of the frontend project. Add the following environment variable, ensuring it points to your backend API:
+        ```
+        VITE_API_BASE_URL=http://localhost:<your_backend_port>/api
+        ```
+        *(Replace `<your_backend_port>` with the port your backend server will run on. The default is often `3000` or `8080`, but check your backend configuration.)*
+    * You may need to configure other frontend-specific environment variables as well. Refer to the project code or any `.env.example` file for more details.
+
+4.  **Run the frontend development server:**
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    ```
+    * The frontend application should now be running, typically at `http://localhost:5173` (or a similar address) in your web browser.
+
+**Important:** For the frontend to function correctly in your local development environment, you will also need to have the backend server running. Please follow the setup instructions in the [backend repository README](https://github.com/kwildeDev/be-scene-locally).

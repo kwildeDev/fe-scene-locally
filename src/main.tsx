@@ -10,5 +10,3 @@ createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
   </StrictMode>,
 )
-
-// Is Theme actually supposed to wrap around the App?
