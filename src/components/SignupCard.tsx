@@ -14,7 +14,8 @@ import { UserContext } from '../contexts/userContext.ts';
 import { useContext, useState } from 'react';
 import { postAttendee } from '../api.ts';
 import { GoogleCalendarEvent } from './IndividualEvent.tsx';
-//import supabase from '../utils/supabaseClient.ts';
+import { FaGoogle } from 'react-icons/fa';
+import { formatDateForGoogleCalendarLocal } from '../utils/utils.ts';
 
 
 interface SignupCardProps {
@@ -73,37 +74,21 @@ const SignupCard: React.FC<SignupCardProps> = ({
         resolver: zodResolver(schema),
     });
 
-    interface AddToCalendarResponse {
-        success: boolean;
-        message: string;
-        [key: string]: any; // To handle any additional properties in the response
-    }
+    const createGoogleCalendarURL = (googleEventProps: GoogleCalendarEvent) => {
+        const formattedStartDate = formatDateForGoogleCalendarLocal(googleEventProps.startTimeUTC, googleEventProps.relevantTimezone);
+        const formattedEndDate = formatDateForGoogleCalendarLocal(googleEventProps.endTimeUTC, googleEventProps.relevantTimezone);
+        const baseURL = 'https://calendar.google.com/calendar/u/0/r/eventedit';
+        const dates = `dates=${formattedStartDate}/${formattedEndDate}`;
+        const ctz = `ctz=${encodeURIComponent(googleEventProps.relevantTimezone)}`;
+        const text = `text=${encodeURIComponent(googleEventProps.eventTitle)}`;
+        const locationParam = googleEventProps.locationName ? `&location=${encodeURIComponent(googleEventProps.locationName)}` : '';
+        const details = `details=${encodeURIComponent(googleEventProps.eventDescription)}`;
 
-    interface AddToCalendarError {
-        message: string;
-        [key: string]: any; // To handle any additional properties in the error
+        return `${baseURL}?${dates}&${ctz}&${text}${locationParam}&${details}`;
     }
-
-    const handleAddToCalendarClick = async (
-        googleEventProps: GoogleCalendarEvent
-    ): Promise<void> => {
-        try {
-            const response: Response = await fetch(
-                'https://ocqrrsxycaqegtbztqal.supabase.co/functions/v1/add-to-calendar',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(googleEventProps),
-                }
-            );
-            const result: AddToCalendarResponse = await response.json();
-            console.log('Event added:', result);
-        } catch (error: unknown) {
-            const err = error as AddToCalendarError;
-            console.error('Failed to add event:', err.message);
-        }
+    const handleAddToCalendarClick = (googleEventProps: GoogleCalendarEvent) => {
+        const googleCalendarURL = createGoogleCalendarURL(googleEventProps);
+        window.open(googleCalendarURL, '_blank');
     };
 
     const onSubmit: SubmitHandler<Formfields> = (data) => {
@@ -225,7 +210,8 @@ const SignupCard: React.FC<SignupCardProps> = ({
                                         </Text>
                                         <Button
                                             onClick={() => handleAddToCalendarClick(googleEventProps)}>
-                                            Add to calendar
+                                            <FaGoogle/>
+                                            Add to Google Calendar
                                         </Button>
                                         </>
                                     )}
@@ -266,24 +252,3 @@ const SignupCard: React.FC<SignupCardProps> = ({
 
 export default SignupCard;
 
-/*
-
-const addToCalendar = async (googleEventProps) => {
-  try {
-    const response = await fetch("https://ocqrrsxycaqegtbztqal.supabase.co/functions/v1/add-to-calendar", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${supabase.auth.getSession().data.session.access_token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(googleEventProps),
-    });
-
-    const result = await response.json();
-    console.log("Event added:", result);
-  } catch (error) {
-    console.error("Failed to add event:", error);
-  }
-};
-
-*/

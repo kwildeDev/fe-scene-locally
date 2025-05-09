@@ -65,3 +65,20 @@ export function formatToTimestamp(date: string, time: string): string | null {
         return null;
     }
 }
+
+export function formatDateForGoogleCalendarLocal(dateTimeStringUTC: string, eventTimezone: string) {
+    try {
+        const utcDate = parseISO(dateTimeStringUTC);
+        const zonedDate = toZonedTime(utcDate, eventTimezone);
+        const year = zonedDate.getFullYear();
+        const month = String(zonedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(zonedDate.getDate()).padStart(2, '0');
+        const hours = String(zonedDate.getHours()).padStart(2, '0');
+        const minutes = String(zonedDate.getMinutes()).padStart(2, '0');
+        const seconds = String(zonedDate.getSeconds()).padStart(2, '0');
+        return `${year}${month}${day}T${hours}${minutes}${seconds}`;
+    } catch (error) {
+        console.error('Error formatting date for Google Calendar:', error);
+        return '';
+    }
+}

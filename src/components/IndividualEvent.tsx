@@ -24,11 +24,12 @@ import SignupCard from './SignupCard.tsx';
 
 
 export interface GoogleCalendarEvent {
-    summary: string;
-    description: string;
-    start: { dateTime: string; timeZone: string };
-    end: { dateTime: string; timeZone: string };
-    location: string;
+    eventTitle: string;
+    eventDescription: string;
+    startTimeUTC: string;
+    endTimeUTC: string;
+    locationName?: string;
+    relevantTimezone: string;
 }
 
 const IndividualEvent: React.FC = () => {
@@ -64,11 +65,12 @@ const IndividualEvent: React.FC = () => {
         event.recurring_schedule === null ? false : true;
 
     const googleEventProps: GoogleCalendarEvent = {
-        summary: event.title,
-        description: event.description,
-        start: { dateTime: event.start_datetime, timeZone: 'UTC' },
-        end: { dateTime: event.end_datetime, timeZone: 'UTC' },
-        location: event.venue_name,
+        eventTitle: event.title,
+        eventDescription: event.description,
+        startTimeUTC: event.start_datetime,
+        endTimeUTC: event.end_datetime,
+        locationName: event.venue_name,
+        relevantTimezone: 'Europe/London',
     };
 
     return (

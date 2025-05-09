@@ -85,10 +85,10 @@ React, Axios, TypeScript, Chakra UI, React Form Hook, Zod, React Select.
 
 **Missing Features from the MVP**
 
-1.  Currently, there is the functionality to delete an event if it is a draft event and to change the status of a draft event to published, published to cancelled, or completed. There isn't yet a way for organizers to update anything else on the event or even view individual events from the staff dashboard.
-2.  Organizers are not yet able to view attendees for an event.
+1.  Currently, there is the functionality to delete an event if it is a draft event and to change the status of a draft event to published, published to cancelled, or completed. There isn't yet a way for organisers to update anything else on the event or even view individual events from the staff dashboard.
+2.  Organisers are not yet able to view attendees for an event.
 3.  The app has not yet been thoroughly checked for accessibility and is lacking some semantic tags and alt text.
-4.  I was unable to complete the integration with Google Calendar. The button appears after a user signs up for an event, but the function is not yet working. Now that I have a better understanding of the process, it might be more efficient to use Google authentication to replace the app's own system of logging in. Alternatives to an "Add to calendar" button could be the option to download an ICS file so that the user can easily add the event to their Google Calendar with this file.
+4.  **UPDATE**: The integration with Google Calendar has been partially completed. An "Add to Google Calendar" button now appears after a user signs up for an event and will open the event details in the user's Google Calendar, allowing them to easily add it. Further improvements may include exploring Google authentication to replace the app's own login system and the potential addition of an ICS file download option as an alternative way to add events to calendars.
 
 **Other Missing Features**
 
