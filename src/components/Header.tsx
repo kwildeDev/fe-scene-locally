@@ -3,6 +3,7 @@ import {
     Flex,
     HStack,
     IconButton,
+    Image,
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
@@ -11,7 +12,7 @@ import MainMenu from './MainMenu';
 import { UserContext } from '../contexts/userContext';
 import LoginCard from './LoginCard';
 import { useContext, useEffect } from 'react';
-import { FaLocationDot } from 'react-icons/fa6';
+import homeIcon from '/home-icon.png'
 
 const Header: React.FC = () => {
     const userContext = useContext(UserContext);
@@ -21,11 +22,13 @@ const Header: React.FC = () => {
     }
 
     const { user } = userContext;
-    const textFontSize = useBreakpointValue<"2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | undefined>({
+    const textFontSize = useBreakpointValue<"2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | undefined>({
         base: 'xl',
-        md: 'sm',
-        xl: '2xl',
+        md: '2xl',
+        xl: '3xl',
     });
+
+    const iconImageSize = useBreakpointValue({ base: '48px', md: '48px', xl: '48px' });
 
     useEffect(() => {}, []);
 
@@ -39,18 +42,20 @@ const Header: React.FC = () => {
             py={2}
         >
             <HStack>
-                <IconButton alignSelf="flex-start" size={textFontSize} color="blue.solid" variant="plain" p={0}>
-                    <FaLocationDot
-                        size={textFontSize}
-                />
+                <IconButton alignSelf="flex-start" size="md" color="blue.solid" variant="plain" p={0}>
+                    <Image
+                        src={homeIcon}
+                        alt="Home"
+                        boxSize={iconImageSize}
+                    />
                 </IconButton>
                 <Text
                     as="h1"
                     whiteSpace="nowrap"
                     fontSize={textFontSize}
-                    fontWeight="bold"
-                    color={'black'}
+                    color={'blue.fg'}
                     hideBelow={'sm'}
+                    fontFamily="Handlee, cursive"
                 >
                     Meadowbridge Scene
                 </Text>

@@ -47,7 +47,7 @@ export default function MainMenu({ user }: MainMenuProps) {
         <>
             {isCollapsible ? (
             <Collapsible.Root as="nav" width="max-content" justifyItems="end">
-                <Collapsible.Trigger>
+                <Collapsible.Trigger asChild>
                 <IconButton 
                     color="teal.solid"
                     variant="outline"
