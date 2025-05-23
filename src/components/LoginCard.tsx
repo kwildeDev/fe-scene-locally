@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { UserContext } from '../contexts/userContext.ts';
 import { useContext, useState } from 'react';
 import { getUserDetails, loginUser, LoginData } from '../api.ts';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const schema = z.object({
     email: z.string().email(),
@@ -14,10 +15,12 @@ const schema = z.object({
 type Formfields = z.infer<typeof schema>;
 
 const LoginCard: React.FC = () => {
+    const { pathname } = useLocation();
+    const navigate = useNavigate();
     const context = useContext(UserContext);
     const user = context?.user;
     const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
-
+    
     const {
         register,
         handleSubmit,
@@ -69,15 +72,18 @@ const LoginCard: React.FC = () => {
 
     return (
         <Dialog.Root
+            defaultOpen={!user && pathname === "/users/me"}
             closeOnEscape={false}
             closeOnInteractOutside={false}
             modal={true}
         >
+            {pathname !== "/users/me" && (
             <Dialog.Trigger asChild>
                 <Button size="lg" colorPalette="blue">
                     Sign In
                 </Button>
             </Dialog.Trigger>
+            )}
             <Portal>
                 <Dialog.Backdrop />
                 <Dialog.Positioner>
@@ -136,7 +142,12 @@ const LoginCard: React.FC = () => {
                                 <Button
                                     variant="subtle"
                                     size="lg"
-                                    onClick={() => reset()}
+                                    onClick={() => {
+                                        reset();
+                                        if (pathname === "/users/me") {
+                                            navigate("/");
+                                        } 
+                                    }}
                                 >
                                     Cancel
                                 </Button>
