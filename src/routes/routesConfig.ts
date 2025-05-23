@@ -7,6 +7,7 @@ import OrganisationSettings from '../components/OrganisationSettings';
 import OrganisationSupport from '../components/OrganisationSupport';
 import UserHelpPage from '../components/UserHelpPage';
 import { FC } from 'react';
+import UserProfile from '../components/UserProfile';
 
 interface RouteConfig {
     path: string;
@@ -28,6 +29,7 @@ const routesConfig: RouteConfig[] = [
             { path: 'events/create', element: CreateEventForm },
         ],
     },
+    { path: '/users/me', element: UserProfile},
     { path: '/help', element: UserHelpPage },
 ];
 
