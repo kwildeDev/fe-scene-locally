@@ -1,9 +1,11 @@
 import {
     Box,
     Flex,
+    Heading,
     HStack,
     IconButton,
     Image,
+    Stack,
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
@@ -22,13 +24,20 @@ const Header: React.FC = () => {
     }
 
     const { user } = userContext;
-    const textFontSize = useBreakpointValue<"2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | undefined>({
+    const headingFontSize = useBreakpointValue<"2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | undefined>({
         base: 'xl',
         md: '2xl',
-        xl: '3xl',
+        lg: '3xl',
+        xl: '4xl',
     });
 
-    const iconImageSize = useBreakpointValue({ base: '48px', md: '48px', xl: '48px' });
+    const subheadingFontSize = useBreakpointValue<"2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | undefined>({
+        base: '2xs',
+        md: 'xs',
+        lg: 'sm',
+        xl: 'md',
+    });
+    const iconImageSize = useBreakpointValue({ base: '32px', md: '48px', lg: '56px', xl: '72px' });
 
     useEffect(() => {}, []);
 
@@ -40,26 +49,40 @@ const Header: React.FC = () => {
             bg="gray.subtle"
             px={3}
             py={2}
+            alignItems="center"
         >
-            <HStack>
-                <IconButton alignSelf="flex-start" size="md" color="blue.solid" variant="plain" p={0}>
+            <Stack direction={{ base: "row", md: "row" }} gap={{ base: 0, md: 4 }}>
+                <IconButton minH="fit-content" maxW="fit-content" variant="plain" p={0} m={0} alignSelf="center">
                     <Image
+                        
                         src={homeIcon}
-                        alt="Home"
+                        alt="Scene Locally Icon"
                         boxSize={iconImageSize}
                     />
                 </IconButton>
-                <Text
+                <Box>
+                <Heading
                     as="h1"
                     whiteSpace="nowrap"
-                    fontSize={textFontSize}
-                    color={'blue.fg'}
-                    hideBelow={'sm'}
-                    fontFamily="Handlee, cursive"
+                    textStyle={headingFontSize}
+                    color={'gray.700'}
+                    fontWeight={500}
+                    fontFamily="Lora, serif"
                 >
-                    Meadowbridge Scene
+                    Scene Locally
+                </Heading>
+                <Text
+                    as="h2"
+                    whiteSpace="nowrap"
+                    textStyle={subheadingFontSize}
+                    color={'gray.700'}
+                    fontFamily="Quicksand, sans-serif"
+                    letterSpacing="0.4em"
+                >
+                    MEADOWBRIDGE
                 </Text>
-            </HStack>
+                </Box>
+            </Stack>
 
             <HStack id="menu" alignItems="flex-start">
                 <IconButton
@@ -68,6 +91,7 @@ const Header: React.FC = () => {
                     borderColor="teal.solid"
                     borderWidth={2}
                     size="md"
+                    aria-label='Toggle Brightness'
                 >
                     <BsBrightnessHighFill />
                 </IconButton>

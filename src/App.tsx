@@ -5,7 +5,6 @@ import {
     defaultConfig,
     defineConfig,
 } from '@chakra-ui/react';
-import Layout from './components/Layout';
 import Router from './routes/Router';
 import { UserContext, UserContextType, User } from './contexts/userContext';
 import { useState } from 'react';
@@ -32,9 +31,7 @@ const App: React.FC = () => {
     return (
         <UserContext.Provider value={userContextValue}>
             <ChakraProvider value={system}>
-                <Layout>
-                    <Router />
-                </Layout>
+                <Router />
             </ChakraProvider>
         </UserContext.Provider>
     );
