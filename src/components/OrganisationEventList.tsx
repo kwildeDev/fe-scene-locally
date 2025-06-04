@@ -10,6 +10,7 @@ import {
     Portal,
     useBreakpointValue,
     Heading,
+    Badge,
 } from '@chakra-ui/react';
 import { FaXmark } from 'react-icons/fa6';
 import { FcCheckmark } from 'react-icons/fc';
@@ -19,10 +20,10 @@ import {
     updateEventStatus,
     deleteEvent,
 } from '../api';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { formatShortDate, formatShortTime } from '../utils/utils';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { Toaster, toaster } from './ui/toaster';
 
 interface OutletContextType {
@@ -59,6 +60,11 @@ const OrganisationEventList: React.FC = () => {
                 setIsLoading(false);
             });
     }, []);
+
+    const upcomingEvents = useMemo(() => {
+        return events.filter(event => new Date(event.start_datetime).getTime() >= Date.now() &&
+        event.status !== "cancelled");
+    }, [events]);
 
     if (isError) {
         return <p>Failed to load events.</p>;
@@ -155,10 +161,10 @@ const OrganisationEventList: React.FC = () => {
             {organisation_id ? (
                 <Container p={1}>
                     <Box pt={4} pb={4}>
-                    <Heading>Organisation Events</Heading>
+                        <Heading>Organisation Events</Heading>
                         <Text textStyle="lg">
                             You have{' '}
-                            <Mark variant="subtle">{events.length}</Mark>{' '}
+                            <Mark variant="subtle">{upcomingEvents.length}</Mark>{' '}
                             upcoming events
                         </Text>
                     </Box>
@@ -200,100 +206,129 @@ const OrganisationEventList: React.FC = () => {
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
-                                    {events.map((event) => (
-                                        <Table.Row key={event.event_id}>
-                                            <Table.Cell>
-                                                {event.title}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {event.venue}
-                                            </Table.Cell>
-                                            <Table.Cell textAlign="end">
-                                                {formatShortDate(
-                                                    event.start_datetime
-                                                )}
-                                            </Table.Cell>
-                                            <Table.Cell textAlign="end">
-                                                {formatShortTime(
-                                                    event.start_datetime
-                                                )}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {iconType(event.is_recurring)}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {iconType(event.is_online)}
-                                            </Table.Cell>
-                                            <Table.Cell textTransform="capitalize">
-                                                {event.status}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <label htmlFor="status-dropdown"></label>
-                                                <select
-                                                    id="status-dropdown"
-                                                    value={
-                                                        selectedStatuses[
-                                                            event.event_id
-                                                        ] || ''
-                                                    }
-                                                    onChange={(e) => {
-                                                        const newStatus =
-                                                            e.currentTarget
-                                                                .value;
-                                                        setSelectedStatuses(
-                                                            (prevStatuses) => ({
-                                                                ...prevStatuses,
-                                                                [event.event_id]:
-                                                                    newStatus,
-                                                            })
-                                                        );
-                                                        handleStatusChange(
-                                                            event.event_id,
-                                                            newStatus
-                                                        );
-                                                    }}
-                                                    size={0}
-                                                    style={{
-                                                        color: 'teal',
-                                                        borderColor: 'teal',
-                                                        font: 'inherit',
-                                                        width: 148,
-                                                        marginBottom: 7,
-                                                    }}
+                                    {upcomingEvents.map((event) => {
+                                        const badgeColour =
+                                            event.status === 'draft'
+                                                ? 'gray'
+                                                : event.status === 'published'
+                                                ? 'orange'
+                                                : event.status === 'cancelled'
+                                                ? 'purple'
+                                                : event.status === 'completed'
+                                                ? 'blue'
+                                                : 'gray';
+                                        return (
+                                            <Table.Row key={event.event_id}>
+                                                <Table.Cell
+                                                    textDecoration="underline"
+                                                    color="blue.fg"
                                                 >
-                                                    <option value="">
-                                                        Update Status
-                                                    </option>
-                                                    <option value="published">
-                                                        Published
-                                                    </option>
-                                                    <option value="cancelled">
-                                                        Cancelled
-                                                    </option>
-                                                    <option value="completed">
-                                                        Completed
-                                                    </option>
-                                                </select>
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <Button
-                                                    m={0}
-                                                    size="sm"
-                                                    bg="red.solid"
-                                                    disabled={
-                                                        event.status !== 'draft'
-                                                    }
-                                                    onClick={() =>
-                                                        handleDeleteClick(
-                                                            event.event_id
-                                                        )
-                                                    }
-                                                >
-                                                    Delete
-                                                </Button>
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    ))}
+                                                    <Link
+                                                        to={`${event.event_id}`}
+                                                    >
+                                                        {event.title}
+                                                    </Link>
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    {event.venue}
+                                                </Table.Cell>
+                                                <Table.Cell textAlign="end">
+                                                    {formatShortDate(
+                                                        event.start_datetime
+                                                    )}
+                                                </Table.Cell>
+                                                <Table.Cell textAlign="end">
+                                                    {formatShortTime(
+                                                        event.start_datetime
+                                                    )}
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    {iconType(
+                                                        event.is_recurring
+                                                    )}
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    {iconType(event.is_online)}
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Badge
+                                                        colorPalette={badgeColour}
+                                                        textTransform="capitalize"
+                                                    >
+                                                        {event.status}
+                                                    </Badge>
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <label htmlFor="status-dropdown"></label>
+                                                    <select
+                                                        id="status-dropdown"
+                                                        value={
+                                                            selectedStatuses[
+                                                                event.event_id
+                                                            ] || ''
+                                                        }
+                                                        onChange={(e) => {
+                                                            const newStatus =
+                                                                e.currentTarget
+                                                                    .value;
+                                                            setSelectedStatuses(
+                                                                (
+                                                                    prevStatuses
+                                                                ) => ({
+                                                                    ...prevStatuses,
+                                                                    [event.event_id]:
+                                                                        newStatus,
+                                                                })
+                                                            );
+                                                            handleStatusChange(
+                                                                event.event_id,
+                                                                newStatus
+                                                            );
+                                                        }}
+                                                        size={0}
+                                                        style={{
+                                                            color: 'teal',
+                                                            borderColor: 'teal',
+                                                            font: 'inherit',
+                                                            width: 148,
+                                                            marginBottom: 7,
+                                                        }}
+                                                    >
+                                                        <option value="">
+                                                            Update Status
+                                                        </option>
+                                                        <option value="published">
+                                                            Published
+                                                        </option>
+                                                        <option value="cancelled">
+                                                            Cancelled
+                                                        </option>
+                                                        <option value="completed">
+                                                            Completed
+                                                        </option>
+                                                    </select>
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    <Button
+                                                        m={0}
+                                                        size="sm"
+                                                        bg="red.solid"
+                                                        disabled={
+                                                            event.status !==
+                                                            'draft'
+                                                        }
+                                                        onClick={() =>
+                                                            handleDeleteClick(
+                                                                event.event_id
+                                                            )
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        );
+                                    })}
                                 </Table.Body>
                             </Table.Root>
                         </Stack>

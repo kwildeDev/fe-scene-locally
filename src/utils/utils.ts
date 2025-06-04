@@ -1,6 +1,7 @@
 import { parseISO, format } from 'date-fns';
 import { fromZonedTime, toZonedTime } from 'date-fns-tz';
 
+
 export function formatDateTime(dateTime: string) {
     try {
         const utcDate = parseISO(dateTime);
@@ -82,3 +83,12 @@ export function formatDateForGoogleCalendarLocal(dateTimeStringUTC: string, even
         return '';
     }
 }
+
+export const formatRelativeDate = (date: string) => {
+    const formatted = new Date(date);
+    const now = new Date();
+    const formattedDate = new Date(formatted.getFullYear(), formatted.getMonth(), formatted.getDate());
+    const todaysDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const diff = Math.floor((todaysDate.getTime() - formattedDate.getTime()) / (1000 * 60 * 60 * 24));
+    return diff === 0 ? "Today" : `${diff} days ago`;
+};

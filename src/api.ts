@@ -4,38 +4,45 @@ const api = axios.create({
     baseURL: 'https://scene-locally.onrender.com/api',
 });
 
-// Types
-export interface EventSummary {
+export interface RecurringSchedule {
+    frequency?: string;
+    day?: string;
+}
+
+export interface Event {
     event_id: number;
+    organisation_id: number;
     title: string;
+    description: string;
     start_datetime: string;
-    is_recurring: boolean;
+    end_datetime: string;
+    venue_id: number;
     category_id: number;
     subcategory_id: number;
-    tags?: string[];
+    tags: string[] | null;
+    is_recurring: boolean;
+    recurring_schedule: RecurringSchedule | null;
     created_at: string;
-    image_url: string;
+    updated_at: string;
+    status: string;
+    image_url?: string;
+    access_link?: string;
     is_online: boolean;
+    signup_required: boolean;
+}
+
+export interface EventSummary extends Omit<Event,
+    'organisation_id' | 'description' | 'venue_id' | 'recurring_schedule' |
+    'end_datetime' | 'updated_at' | 'status' | 'signup_required' |
+    'access_link' 
+> {
     organiser: string;
     venue: string;
 }
 
-export interface EventDetail extends EventSummary {
-    organisation_id: number;
-    description: string;
-    venue_id: number;
-    recurring_schedule: RecurringSchedule;
-    end_datetime: string; // Added this property
-    updated_at: string;
-    status: string;
-    signup_required: boolean;
+export interface EventDetail extends Event {
     organisation_name: string;
     venue_name: string;
-}
-
-export interface RecurringSchedule {
-    frequency?: string;
-    day?: string;
 }
 
 export interface CategoryDetail {
@@ -79,24 +86,14 @@ interface SignupCardData {
 interface AttendeeDetail {
     registration_id: number;
     event_id: number;
-    user_id: string | null;
+    user_id: number | null;
     name: string;
     email: string;
     is_registered_user: boolean;
 }
 
-export interface OrganisationEventSummary {
-    organisation_id: number;
-    event_id: number;
-    title: string;
+export interface OrganisationEventSummary extends Omit<EventSummary, 'organiser'> {
     status: string;
-    start_datetime: string;
-    venue: string;
-    category_id: number;
-    subcategory_id: number;
-    is_recurring: boolean;
-    image_url: string;
-    is_online: boolean;
 }
 
 export interface NewEventRequest {
@@ -139,6 +136,10 @@ export interface NewEventData {
     is_online: boolean;
     signup_required: boolean;
 }
+
+export type UpdatedEventRequest = Partial<
+    Omit<Event, 'event_id' | 'organisation_id' | 'created_at' | 'updated_at'>
+>
 
 export interface LoginData {
     email: string;
@@ -210,6 +211,30 @@ const getSubcategories = (category_slug: string): Promise<SubcategoryDetail[]> =
         });
 };
 
+const getSubcategoriesById = (category_id: number): Promise<SubcategoryDetail[]> => {
+    return api
+        .get(`/categories/id/${category_id}/subcategories`)
+        .then(({ data }) => {
+            return data.subcategories
+        });
+};
+
+const getCategoryById = (category_id: number): Promise<CategoryDetail> => {
+    return api
+        .get(`/categories/id/${category_id}`)
+        .then(({ data }) => {
+            return data.category
+        });
+};
+
+const getSubcategoryById = (category_id: number, subcategory_id: number): Promise<SubcategoryDetail> => {
+    return api
+        .get(`/categories/id/${category_id}/subcategories/${subcategory_id}`)
+        .then(({ data }) => {
+            return data.subcategory
+        });
+};
+
 //Venues
 const getVenues = (): Promise<VenueDetail[]> => {
     return api.get('/venues').then(({ data }) => {
@@ -234,7 +259,23 @@ const getOrganisationEvents = (organisation_id: number): Promise<OrganisationEve
         })
 };
 
-const postEvent = (newEventData: NewEventRequest ): Promise<NewEventData> => {
+const getOrganisationTags = (organisation_id: number): Promise<string[]> => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+        throw new Error('Token not found');
+    }
+    return api
+        .get(`/organisations/${organisation_id}/tags`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(({ data }) => {
+            return data.tags
+        })
+};
+
+const postEvent = (newEventData: NewEventRequest ): Promise<Event> => {
     return api
         .post(`/events`, newEventData )
         .then(({ data }) => {
@@ -242,9 +283,17 @@ const postEvent = (newEventData: NewEventRequest ): Promise<NewEventData> => {
         });
 };
 
+const updateEvent = (event_id: number, updatedEventData: UpdatedEventRequest ): Promise<Event> => {
+    return api
+        .patch(`/events/${event_id}`, updatedEventData )
+        .then(({ data }) => {
+            return data.event
+        });
+};
+
 //Users
 
-const loginUser = (loginData: LoginData): Promise<LoginData> => {
+const loginUser = (loginData: LoginData): Promise<string> => {
     return api
         .post(`/auth/login`, loginData )
         .then(({ data }) => {
@@ -278,4 +327,22 @@ const getUserDetails = (validToken: string): Promise<UserDetail> => {
 };
 
 
-export { getEvents, getEventById, getCategories, getSubcategories, getVenues, postAttendee, getOrganisationEvents, postEvent, loginUser, getUserDetails, updateEventStatus, deleteEvent };
+export { 
+    getEvents, 
+    getEventById,
+    getCategories,
+    getSubcategories,
+    getSubcategoriesById,
+    getCategoryById,
+    getSubcategoryById,
+    getVenues,
+    postAttendee,
+    getOrganisationEvents,
+    getOrganisationTags,
+    postEvent,
+    loginUser,
+    getUserDetails,
+    updateEventStatus,
+    deleteEvent,
+    updateEvent
+};

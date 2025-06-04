@@ -132,8 +132,8 @@ const IndividualEvent: React.FC = () => {
                             <Box color="blue" mb={8}>
                                 <Icon as={FaRotate} marginRight="2" />
                                 <Text as="span">
-                                    {event.recurring_schedule.frequency} on{' '}
-                                    {event.recurring_schedule.day}s
+                                    {event.recurring_schedule?.frequency} on{' '}
+                                    {event.recurring_schedule?.day}s
                                 </Text>
                             </Box>
                         )}
