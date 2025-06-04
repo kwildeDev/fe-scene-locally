@@ -65,6 +65,7 @@ const EventList: React.FC = () => {
                 setEvents(events.map(event => ({
                     ...event,
                     tags: event.tags || [],
+                    image_url: event.image_url ?? '',
                 })));
                 setIsLoading(false);
 
