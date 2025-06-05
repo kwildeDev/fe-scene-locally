@@ -1,6 +1,8 @@
 import { UserContext } from '../contexts/userContext';
-import { Center, Heading, Image, Separator, Text, VStack } from '@chakra-ui/react';
+import { Box, Center, Heading, HStack, Image, Separator, Text, VStack } from '@chakra-ui/react';
 import { useContext } from 'react';
+import { FaCog, FaQuestionCircle, FaUserCircle } from 'react-icons/fa';
+import { FaBell, FaGrip, FaUsers } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 
 const StaffSidebarMenu: React.FC = () => {
@@ -18,18 +20,49 @@ const StaffSidebarMenu: React.FC = () => {
                     <Center p={1}>
                         <Image width="65px" src={organisationLogo}></Image>
                     </Center>
-                    <Heading>{organisationName}</Heading>
-                    <Text fontSize="lg" fontWeight="semibold">Staff Dashboard</Text>
+                    <Heading color="gray.600">{organisationName}</Heading>
+                    <HStack gap={2} as="span" whiteSpace="nowrap">
+                        <Box as={FaGrip} aria-hidden="true" />
+                        <Text fontSize="lg" fontWeight="semibold">Staff Dashboard</Text>
+                    </HStack>
+                    
                     <Separator></Separator>
-                    <Heading as="h3" size="md">Events</Heading>
-                    <VStack ml={4} alignItems="flex-start">
+                    <Heading display="flex" as="h3" size="md">
+                        <HStack gap={2} as="span" whiteSpace="nowrap">
+                            <Box as={FaBell} aria-hidden="true" />
+                            <Text as="span">Events</Text>
+                        </HStack>
+                    </Heading>
+                    <VStack ml={6} alignItems="flex-start">
                         <Link to={`events`}>View Events</Link>
                         <Link to={`events/create`}>Add New Event</Link>
                     </VStack>
-                    <Link to={`settings`}><Text fontWeight="semibold">Organisation Settings</Text></Link>                    
-                    <Link to={`support`}><Text fontWeight="semibold">Support</Text></Link>
-                    
-                    <Text color="teal.solid">{`Welcome back ${user?.first_name} ${user?.last_name} \u{1F44B}`}</Text>
+                    <Heading display="flex" as="h3" size="md">
+                        <HStack gap={2} as="span" whiteSpace="nowrap">
+                            <Box as={FaUsers} aria-hidden="true" />
+                            <Text as="span">Attendees</Text>
+                        </HStack>
+                    </Heading>
+                    <VStack ml={6} alignItems="flex-start">
+                        <Text>Attendee Lists</Text>
+                    </VStack>
+                    <Link to={`settings`}>
+                        <HStack gap={2} as="span" whiteSpace="nowrap">
+                            <Box as={FaCog} aria-hidden="true" /> 
+                            <Text as="span" fontWeight="semibold">Organisation Settings</Text>
+                        </HStack>
+                    </Link>                    
+                    <Link to={`support`}>
+                        <HStack gap={2} as="span" whiteSpace="nowrap">
+                            <Box as={FaQuestionCircle} aria-hidden="true" /> 
+                            <Text as="span" fontWeight="semibold">Support</Text>
+                        </HStack>
+                    </Link>
+                    <Separator></Separator>
+                    <HStack gap={2} as="span" whiteSpace="nowrap">
+                        <Box color="teal.solid" as={FaUserCircle} aria-hidden="true" />
+                        <Text color="teal.solid">{`Welcome ${user?.first_name} ${user?.last_name} \u{1F44B}`}</Text>
+                    </HStack>
                 </VStack>
             ) : (
                 <Text>You are not authorised to view this page</Text>

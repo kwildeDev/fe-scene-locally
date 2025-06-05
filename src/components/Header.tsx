@@ -25,7 +25,7 @@ const Header: React.FC = () => {
 
     const { user } = userContext;
     const headingFontSize = useBreakpointValue<"2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | undefined>({
-        base: 'xl',
+        base: 'sm',
         md: '2xl',
         lg: '3xl',
         xl: '4xl',
@@ -37,7 +37,7 @@ const Header: React.FC = () => {
         lg: 'sm',
         xl: 'md',
     });
-    const iconImageSize = useBreakpointValue({ base: '32px', md: '48px', lg: '56px', xl: '72px' });
+    const iconImageSize = useBreakpointValue({ base: '40px', md: '48px', lg: '56px', xl: '72px' });
 
     useEffect(() => {}, []);
 
@@ -49,12 +49,11 @@ const Header: React.FC = () => {
             bg="gray.subtle"
             px={3}
             py={2}
-            alignItems="center"
+            alignItems="flex-start"
         >
-            <Stack direction={{ base: "row", md: "row" }} gap={{ base: 0, md: 4 }}>
+            <Stack direction="row" gap={{ base: 0, md: 4 }} alignItems="center">
                 <IconButton minH="fit-content" maxW="fit-content" variant="plain" p={0} m={0} alignSelf="center">
                     <Image
-                        
                         src={homeIcon}
                         alt="Scene Locally Icon"
                         boxSize={iconImageSize}
@@ -77,7 +76,7 @@ const Header: React.FC = () => {
                     textStyle={subheadingFontSize}
                     color={'gray.700'}
                     fontFamily="Quicksand, sans-serif"
-                    letterSpacing="0.4em"
+                    letterSpacing={{ md: "0.4em" }}
                 >
                     MEADOWBRIDGE
                 </Text>

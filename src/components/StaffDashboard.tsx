@@ -21,8 +21,10 @@ const StaffDashboard: React.FC = () => {
     return (
         <Stack
             id='staff-dashboard'
-            direction={{ base: 'column', sm: 'row' }}
-            align='stretch'
+            direction={{ base: 'column', lg: 'row' }}
+            //align='stretch'
+            flex="1"
+            minW="0"
         >
             <Box flex={{ base: '1 0 auto', sm: '0 0 auto' }} w={{ base: '100%', sm: 'auto' }}>
                 <StaffSidebarMenu />
@@ -30,7 +32,11 @@ const StaffDashboard: React.FC = () => {
 
             <Separator orientation={{ base: 'horizontal', sm: 'vertical' }} />
 
-            <Box id='staff-dashboard-outlet' flex='1'>
+            <Box
+                id='staff-dashboard-outlet'
+                flex='1'
+                minW="0"
+            >
                 <Outlet context={{ organisation_id: organisationId}}/>
             </Box>
         </Stack>

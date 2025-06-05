@@ -79,7 +79,7 @@ const LoginCard: React.FC = () => {
         >
             {pathname !== "/users/me" && (
             <Dialog.Trigger asChild>
-                <Button size="lg" colorPalette="blue">
+                <Button size="md" colorPalette="blue">
                     Sign In
                 </Button>
             </Dialog.Trigger>

@@ -22,12 +22,12 @@ const UserProfile: React.FC = () => {
                 <Heading as="h1" mb={6}>
                     User Profile
                 </Heading>
-                <Card.Root variant='elevated' width='fit-content'>
+                <Card.Root variant='elevated'>
                     <Card.Header bg='gray.100'>
                         <Card.Title>Personal Info</Card.Title>
                     </Card.Header>
                     <Card.Body>
-                <DataList.Root orientation="horizontal" divideY="1px" maxW="md">
+                <DataList.Root orientation={{ sm: "horizontal" }} divideY="1px" maxW="md">
                     <DataList.Item pt="4">
                         <DataList.ItemLabel>First Name</DataList.ItemLabel>
                         <DataList.ItemValue>{user?.first_name}</DataList.ItemValue>
