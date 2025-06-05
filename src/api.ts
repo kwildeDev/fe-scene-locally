@@ -196,6 +196,23 @@ const deleteEvent = (event_id: number) => {
         .delete(`/events/${event_id}`)
 };
 
+const postEvent = (newEventData: NewEventRequest ): Promise<Event> => {
+    return api
+        .post(`/events`, newEventData )
+        .then(({ data }) => {
+            return data.event
+        });
+};
+
+const updateEvent = (event_id: number, updatedEventData: UpdatedEventRequest ): Promise<Event> => {
+    return api
+        .patch(`/events/${event_id}`, updatedEventData )
+        .then(({ data }) => {
+            return data.event
+        });
+};
+
+
 //Categories
 const getCategories = (): Promise<CategoryDetail[]> => {
     return api.get('/categories').then(({ data }) => {
@@ -275,21 +292,6 @@ const getOrganisationTags = (organisation_id: number): Promise<string[]> => {
         })
 };
 
-const postEvent = (newEventData: NewEventRequest ): Promise<Event> => {
-    return api
-        .post(`/events`, newEventData )
-        .then(({ data }) => {
-            return data.event
-        });
-};
-
-const updateEvent = (event_id: number, updatedEventData: UpdatedEventRequest ): Promise<Event> => {
-    return api
-        .patch(`/events/${event_id}`, updatedEventData )
-        .then(({ data }) => {
-            return data.event
-        });
-};
 
 //Users
 

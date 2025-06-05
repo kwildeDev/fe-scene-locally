@@ -8,7 +8,6 @@ import {
     Button,
     Dialog,
     Portal,
-    useBreakpointValue,
     Heading,
     Badge,
 } from '@chakra-ui/react';
@@ -17,7 +16,7 @@ import { FcCheckmark } from 'react-icons/fc';
 import {
     getOrganisationEvents,
     OrganisationEventSummary,
-    updateEventStatus,
+    updateEvent,
     deleteEvent,
 } from '../api';
 import { useEffect, useState, useRef, useMemo } from 'react';
@@ -43,7 +42,6 @@ const OrganisationEventList: React.FC = () => {
     const { organisation_id } = useOutletContext() as OutletContextType;
 
     const ref = useRef<HTMLButtonElement>(null);
-    const isMobile = useBreakpointValue({ base: true, md: false });
 
     useEffect(() => {
         if (!organisation_id) {
@@ -78,7 +76,7 @@ const OrganisationEventList: React.FC = () => {
     };
 
     const handleStatusChange = (eventId: number, status: string) => {
-        const updatePromise = updateEventStatus(eventId, { status });
+        const updatePromise = updateEvent(eventId, { status });
 
         toaster.promise(updatePromise, {
             loading: {
@@ -168,12 +166,15 @@ const OrganisationEventList: React.FC = () => {
                             upcoming events
                         </Text>
                     </Box>
-                    {isMobile && (
-                        <Text fontSize="sm" color="gray.500" mb={2}>
-                            ← Scroll left to see more →
-                        </Text>
-                    )}
-                    <Box overflowX="auto" bg="bg" borderRadius="md" shadow="md">
+                    <Text
+                        fontSize="sm"
+                        color="gray.500"
+                        mb={2}
+                        display={{ base: 'block', xl: 'none' }}
+                    >
+                        ← Scroll left to see more →
+                    </Text>
+                    <Box overflowX={{ base: "auto", md: "scroll"  }} bg="bg" borderRadius="md" shadow="md">
                         <Stack gap="10">
                             <Table.Root size="md">
                                 <Table.Header>
@@ -297,13 +298,13 @@ const OrganisationEventList: React.FC = () => {
                                                         <option value="">
                                                             Update Status
                                                         </option>
-                                                        <option value="published">
+                                                        <option value="published" disabled={event.status === "published" || event.status === "completed"}>
                                                             Published
                                                         </option>
-                                                        <option value="cancelled">
+                                                        <option value="cancelled" disabled={event.status !== "published"}>
                                                             Cancelled
                                                         </option>
-                                                        <option value="completed">
+                                                        <option value="completed" disabled={event.status !== "published"}>
                                                             Completed
                                                         </option>
                                                     </select>
