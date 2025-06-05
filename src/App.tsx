@@ -6,8 +6,7 @@ import {
     defineConfig,
 } from '@chakra-ui/react';
 import Router from './routes/Router';
-import { UserContext, UserContextType, User } from './contexts/userContext';
-import { useState } from 'react';
+import { UserProvider } from './contexts/UserProvider';
 
 const config = defineConfig({
     theme: {
@@ -20,20 +19,13 @@ const config = defineConfig({
 const system = createSystem(defaultConfig, config);
 
 const App: React.FC = () => {
-    
-    const [user, setUser] = useState<User | null>(null);
-
-    const userContextValue: UserContextType = {
-    user,
-    setUser,
-};
 
     return (
-        <UserContext.Provider value={userContextValue}>
-            <ChakraProvider value={system}>
+        <ChakraProvider value={system}>
+            <UserProvider>
                 <Router />
-            </ChakraProvider>
-        </UserContext.Provider>
+            </UserProvider>
+        </ChakraProvider>
     );
 };
 

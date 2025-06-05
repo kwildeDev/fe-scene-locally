@@ -1,5 +1,3 @@
-import { createContext } from "react";
-
 export interface User {
     user_id: number;
     email: string;
@@ -13,7 +11,6 @@ export interface User {
 export interface UserContextType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
+    login: (data: any) => Promise<void>;
+    logout: () => void;
 }
-
-export const UserContext = createContext<UserContextType | undefined>(undefined);
-

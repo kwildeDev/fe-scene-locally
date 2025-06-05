@@ -10,13 +10,12 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { UserContext } from '../contexts/userContext.ts';
-import { useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { postAttendee } from '../api.ts';
 import { GoogleCalendarEvent } from './IndividualEvent.tsx';
 import { FaGoogle } from 'react-icons/fa';
 import { formatDateForGoogleCalendarLocal } from '../utils/utils.ts';
-
+import { useUser } from '../contexts/UserProvider.tsx';
 
 interface SignupCardProps {
     event_id: number;
@@ -54,8 +53,7 @@ const SignupCard: React.FC<SignupCardProps> = ({
     googleEventProps,
 }) => {
     const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
-    const context = useContext(UserContext);
-    const user = context?.user;
+    const { user } = useUser();
     const userId: number | null = user?.user_id ?? null;
     const isRegisteredUser: boolean = !!user?.user_id;
 
@@ -73,6 +71,15 @@ const SignupCard: React.FC<SignupCardProps> = ({
         },
         resolver: zodResolver(schema),
     });
+
+    useEffect(() => {
+        console.log("RHF useEffect: User changed. Resetting form...");
+        reset({
+            firstName: user?.first_name ?? '',
+            lastName: user?.last_name ?? '',
+            email: user?.email ?? '',
+        });
+    }, [user, reset]);
 
     const createGoogleCalendarURL = (googleEventProps: GoogleCalendarEvent) => {
         const formattedStartDate = formatDateForGoogleCalendarLocal(googleEventProps.startTimeUTC, googleEventProps.relevantTimezone);

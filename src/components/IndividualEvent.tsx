@@ -22,7 +22,6 @@ import { FaArrowCircleLeft, FaInfoCircle } from 'react-icons/fa';
 import LoadingSpinner from './LoadingSpinner.tsx';
 import SignupCard from './SignupCard.tsx';
 
-
 export interface GoogleCalendarEvent {
     eventTitle: string;
     eventDescription: string;

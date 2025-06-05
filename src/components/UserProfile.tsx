@@ -4,14 +4,16 @@ import {
     DataList,
     Heading,
 } from '@chakra-ui/react';
-import { useContext } from 'react';
-import { UserContext } from '../contexts/userContext';
+//import { useContext } from 'react';
+//import { UserContext } from '../contexts/userContext';
+import { useUser } from '../contexts/UserProvider';
 import LoginCard from './LoginCard';
 
 
 const UserProfile: React.FC = () => {
-    const context = useContext(UserContext);
-    const user = context?.user;
+    //const context = useContext(UserContext);
+    //const user = context?.user;
+    const { user } = useUser();
     
     return (
         <>
