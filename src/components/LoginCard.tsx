@@ -2,10 +2,10 @@ import { Button, Dialog, Field, Input, Portal, Stack } from '@chakra-ui/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { UserContext } from '../contexts/userContext.ts';
-import { useContext, useState } from 'react';
-import { getUserDetails, loginUser, LoginData } from '../api.ts';
+import { useState } from 'react';
+import { LoginData } from '../api.ts';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useUser } from '../contexts/UserProvider.tsx';
 
 const schema = z.object({
     email: z.string().email(),
@@ -17,8 +17,7 @@ type Formfields = z.infer<typeof schema>;
 const LoginCard: React.FC = () => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
-    const context = useContext(UserContext);
-    const user = context?.user;
+    const { user, login } = useUser();
     const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
     
     const {
@@ -40,33 +39,15 @@ const LoginCard: React.FC = () => {
             password: data.password,
         };
         setIsLoggingIn(true);
-        loginUser(loginData)
-            .then((token) => {
-                if (typeof token === 'string') {
-                    localStorage.setItem('jwtToken', token);
-                } else {
-                    throw new Error('Invalid token type received');
-                }
-                return getUserDetails(token);
-            })
-            .then((userData) => {
-                if (context && context.setUser) {
-                    context.setUser({
-                        user_id: userData.user_id,
-                        email: userData.email,
-                        first_name: userData.first_name,
-                        last_name: userData.last_name,
-                        role: userData.role,
-                        organisation_id: userData.organisation_id,
-                        organisation_name: userData.organisation_name
-                    });
-                }
+        login(loginData)
+            .then(() => {
                 setIsLoggingIn(false);
             })
             .catch((error) => {
                 setError('root', {
-                    message: `${error?.msg || 'An unexpected error occurred during login.'}`,
+                    message: `${(error as any)?.msg || 'An unexpected error occurred during login.'}`,
                 });
+                setIsLoggingIn(false);
             });
     };
 

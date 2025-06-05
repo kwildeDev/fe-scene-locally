@@ -1,13 +1,11 @@
-import { UserContext } from '../contexts/userContext';
 import { Box, Center, Heading, HStack, Image, Separator, Text, VStack } from '@chakra-ui/react';
-import { useContext } from 'react';
 import { FaCog, FaQuestionCircle, FaUserCircle } from 'react-icons/fa';
 import { FaBell, FaGrip, FaUsers } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import { useUser } from '../contexts/UserProvider';
 
 const StaffSidebarMenu: React.FC = () => {
-    const context = useContext(UserContext);
-    const user = context?.user;
+    const { user } = useUser();
     const organisationId = user?.organisation_id;
     const organisationName = user?.organisation_name;
     const organisationLogo =

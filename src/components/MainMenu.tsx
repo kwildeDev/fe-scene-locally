@@ -1,4 +1,3 @@
-import { UserContext } from '../contexts/userContext';
 import {
     HStack,
     Link as ChakraLink,
@@ -15,24 +14,17 @@ import {
     Image,
     Box,
 } from '@chakra-ui/react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import { FaBars, FaUserCircle } from 'react-icons/fa';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import homeIcon from '/home-icon.png';
+import { useUser } from '../contexts/UserProvider';
 
-interface User {
-    user_id: string;
-    organisation_id?: string;
-}
-
-interface MainMenuProps {
-    user?: User | null;
-}
-
-export default function MainMenu({ user }: MainMenuProps) {
+export default function MainMenu() {
     const linkColour: string = 'colorPalette.600';
-    const context = useContext(UserContext)
+    const { user, logout } = useUser();
+
     const navigate = useNavigate();
     const location = useLocation();
     const isMobileBreakpoint = useBreakpointValue({ base: true, md: false });
@@ -40,13 +32,11 @@ export default function MainMenu({ user }: MainMenuProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     function handleSignOutClick() {
-        localStorage.removeItem('jwtToken');
-        if (context && context.setUser) {
-            context.setUser(null);
-        }
+        logout();
         if (location.pathname.includes('/organisations')) {
             navigate(`/`);
         }
+        setIsOpen(false);
     }
 
     return (

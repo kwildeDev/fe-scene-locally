@@ -5,13 +5,15 @@ import {
 } from '@chakra-ui/react';
 import StaffSidebarMenu from './StaffSidebarMenu';
 
-import { useContext } from 'react';
-import { UserContext } from '../contexts/userContext';
+//import { useContext } from 'react';
+//import { UserContext } from '../contexts/userContext';
 import { Navigate, Outlet } from 'react-router-dom';
+import { useUser } from '../contexts/UserProvider';
 
 const StaffDashboard: React.FC = () => {
-    const context = useContext(UserContext);
-    const user = context?.user;
+    //const context = useContext(UserContext);
+    //const user = context?.user;
+    const { user } = useUser();
     const organisationId = user?.organisation_id;
 
     if (!organisationId) {
