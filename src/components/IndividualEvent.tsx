@@ -73,17 +73,18 @@ const IndividualEvent: React.FC = () => {
     };
 
     return (
-        <>
+        <article>
             <Button
                 size="lg"
                 ml={4}
                 variant="plain"
+                textDecoration="underline"
                 onClick={() => {
                     navigate(-1);
                 }}
             >
                 <FaArrowCircleLeft />
-                <Text textDecoration="underline">Back to list</Text>
+                <Text>Back to list</Text>
             </Button>
             <SimpleGrid columns={[1, null, 2]} gap={8}>
                 <Box>
@@ -91,7 +92,7 @@ const IndividualEvent: React.FC = () => {
                         <Box>
                             <Image
                                 src={event.image_url || placeholderImageUrl}
-                                alt="Event Image"
+                                alt="Promotional image for event"
                                 borderRadius="md"
                                 mb={4}
                             />
@@ -164,7 +165,7 @@ const IndividualEvent: React.FC = () => {
                     </Box>
                 </Box>
             </SimpleGrid>
-        </>
+        </article>
     );
 };
 

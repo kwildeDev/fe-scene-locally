@@ -278,6 +278,7 @@ const CreateEventForm: React.FC = () => {
                         <Button
                             size="lg"
                             variant="plain"
+                            textDecoration="underline"
                             padding={0}
                             onClick={() => {
                                 handleNavigation('../events');
@@ -285,11 +286,11 @@ const CreateEventForm: React.FC = () => {
                         >
                             <FaArrowCircleLeft />
                             {isFormSubmitted ? (
-                                <Text textDecoration="underline">
+                                <Text>
                                     Back to list
                                 </Text>
                             ) : (
-                                <Text textDecoration="underline">
+                                <Text>
                                     Cancel and go back
                                 </Text>
                             )}
@@ -307,9 +308,11 @@ const CreateEventForm: React.FC = () => {
                                         <EventFormField
                                             label="Title"
                                             error={errors.title}
+                                            htmlFor='title'
                                         >
                                             <input
                                                 {...register('title')}
+                                                id='title'
                                                 type="text"
                                                 placeholder="Title"
                                                 disabled={isFormSubmitted}
@@ -318,9 +321,12 @@ const CreateEventForm: React.FC = () => {
                                         <EventFormField
                                             label="Description"
                                             error={errors.description}
+                                            htmlFor='description'
                                         >
                                             <textarea
                                                 {...register('description')}
+                                                id='description'
+                                                rows={4}
                                                 placeholder="Description"
                                                 disabled={isFormSubmitted}
                                             />
@@ -352,6 +358,7 @@ const CreateEventForm: React.FC = () => {
                                         <EventFormField
                                             label="Venue"
                                             error={errors.venue}
+                                            htmlFor='venue'
                                         >
                                             <div>
                                                 {venuesError && (
@@ -363,6 +370,7 @@ const CreateEventForm: React.FC = () => {
                                                 )}
                                                 <select
                                                     {...register('venue')}
+                                                    id='venue'
                                                     disabled={
                                                         isOnline ||
                                                         isFormSubmitted
@@ -441,9 +449,11 @@ const CreateEventForm: React.FC = () => {
                                             label="Event Image Link (Optional)"
                                             helperText="Enter a valid link to your event image"
                                             error={errors.imageUrl}
+                                            htmlFor='imageUrl'
                                         >
                                             <input
                                                 {...register('imageUrl')}
+                                                id='imageUrl'
                                                 type="text"
                                                 placeholder="https://example.com/event-image.jpg"
                                                 disabled={isFormSubmitted}
@@ -465,9 +475,11 @@ const CreateEventForm: React.FC = () => {
                                         <EventFormField
                                             label="Does this event require sign-up?"
                                             error={errors.signupRequired}
+                                            htmlFor='signupRequired'
                                         >
                                             <input
                                                 {...register('signupRequired')}
+                                                id='signupRequired'
                                                 type="checkbox"
                                                 disabled={isFormSubmitted}
                                             />

@@ -97,7 +97,7 @@ export const OnlineEventFields: React.FC<OnlineEventFieldsProps> = ({
                 </WrapItem>
                 {getValues('accessLink') && (
                     <WrapItem display="block">
-                        <label>Clear access link</label>
+                        <Text fontSize="sm" mb={2}>Clear access link</Text>
                         <IconButton
                             variant="surface"
                             colorPalette="red"

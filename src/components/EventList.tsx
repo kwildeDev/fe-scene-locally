@@ -27,19 +27,12 @@ const EventList: React.FC = () => {
     const [events, setEvents] = useState<EventSummary[]>([]);
     const [uniqueTags, setUniqueTags] = useState<string[]>([]);
     const [uniqueVenues, setUniqueVenues] = useState<string[]>([]);
-    const [uniqueOrganisers, setUniqueOrganisers] = useState<string[]>([])
+    const [uniqueOrganisers, setUniqueOrganisers] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<boolean>(false);
     const [searchParams, setSearchParams] = useSearchParams();
 
     const isCollapsible = useBreakpointValue({ base: true, md: false });
-
-    const filters = useMemo(() => {
-        return Object.fromEntries(
-            Array.from(searchParams.entries()) 
-            .filter(([, value]) => value)
-        );
-    }, [searchParams]);
 
     const handleFilterChange = (key: string, value: string) => {
         const updatedParams = new URLSearchParams(searchParams);
@@ -51,29 +44,48 @@ const EventList: React.FC = () => {
             }
             updatedParams.delete('resetAll');
         } else if (value) {
-          updatedParams.set(key, value);
+            updatedParams.set(key, value);
         } else {
-          updatedParams.delete(key);
+            updatedParams.delete(key);
         }
         setSearchParams(updatedParams);
-      };
+    };
+    
+    const filters = useMemo(() => {
+        return Object.fromEntries(
+            Array.from(searchParams.entries()).filter(([, value]) => value)
+        );
+    }, [searchParams]);    
+    
+    const filterForm = useMemo(() => (
+        <EventFilterForm
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            availableTags={uniqueTags.length > 0 ? uniqueTags : []}
+            availableVenues={uniqueVenues.length > 0 ? uniqueVenues : []}
+            availableOrganisers={uniqueOrganisers.length > 0 ? uniqueOrganisers : []}
+        />
+    ), [filters, handleFilterChange, uniqueTags, uniqueVenues, uniqueOrganisers]);
+
 
     useEffect(() => {
         setIsLoading(true);
         getEvents(filters)
             .then((events) => {
-                setEvents(events.map(event => ({
-                    ...event,
-                    tags: event.tags || [],
-                    image_url: event.image_url ?? '',
-                })));
+                setEvents(
+                    events.map((event) => ({
+                        ...event,
+                        tags: event.tags || [],
+                        image_url: event.image_url ?? '',
+                    }))
+                );
                 setIsLoading(false);
 
                 if (events.length > 0) {
                     const allTags: string[] = [];
                     const allVenues: string[] = [];
                     const allOrganisers: string[] = [];
-                    events.forEach(event => {
+                    events.forEach((event) => {
                         if (Array.isArray(event.tags)) {
                             allTags.push(...event.tags);
                         }
@@ -83,7 +95,7 @@ const EventList: React.FC = () => {
                         if (event.organiser) {
                             allOrganisers.push(event.organiser);
                         }
-                    })
+                    });
                     setUniqueTags([...new Set(allTags)]);
                     setUniqueVenues([...new Set(allVenues)]);
                     setUniqueOrganisers([...new Set(allOrganisers)]);
@@ -99,61 +111,53 @@ const EventList: React.FC = () => {
     }, [filters]);
 
     if (isError) {
-        return <p>Failed to load events.</p>;
-    }
-    if (isLoading) {
         return (
-            <LoadingSpinner />
+            <>
+                {/* {filterForm} */}
+                <Text>Failed to load events.</Text>
+            </>
         );
     }
-    if (events.length === 0) {
-        return <Text>No events available.</Text>
+
+    if (isLoading) {
+        return (
+            <>
+                {/* {filterForm} */}
+                <LoadingSpinner />    
+            </>
+        );
     }
 
     return (
-            <>
-                {isCollapsible ? (
-                    <Collapsible.Root>
-                        <Collapsible.Trigger padding={2} borderWidth="1px">
-                            <Group>
+        <>
+            {isCollapsible ? (
+                <Collapsible.Root>
+                    <Collapsible.Trigger padding={2} borderWidth="1px">
+                        <Group>
                             <FaFilter />
                             <Text>Toggle Filters</Text>
-                            </Group>
-                        </Collapsible.Trigger>
-                        <Collapsible.Content>
-                            <Box padding="4">
-                                <EventFilterForm 
-                                    filters={filters} 
-                                    onFilterChange={handleFilterChange} 
-                                    availableTags={uniqueTags} 
-                                    availableVenues={uniqueVenues} 
-                                    availableOrganisers={uniqueOrganisers} 
-                                />
-                            </Box>
-                        </Collapsible.Content>
-                    </Collapsible.Root>
-                ) : (
-                    <EventFilterForm
-                        filters={filters} 
-                        onFilterChange={handleFilterChange} 
-                        availableTags={uniqueTags} 
-                        availableVenues={uniqueVenues} 
-                        availableOrganisers={uniqueOrganisers} 
-                    />
-                )}
-                <SimpleGrid
-                    columns={[1, 2, 3]}
-                    columnGap="2"
-                    rowGap="4"
-                >
+                        </Group>
+                    </Collapsible.Trigger>
+                    <Collapsible.Content>
+                        <Box padding="4">
+                            {filterForm}
+                        </Box>
+                    </Collapsible.Content>
+                </Collapsible.Root>
+            ) : (
+                filterForm
+            )}
+
+            {events.length === 0 ? (
+                <Text>No events available.</Text>
+            ) : (
+                <SimpleGrid columns={[1, 2, 3]} columnGap="2" rowGap="4">
                     {events.map((event) => (
-                        <EventCard
-                            key={event.event_id}
-                            event={event}
-                        />
+                        <EventCard key={event.event_id} event={event} />
                     ))}
                 </SimpleGrid>
-            </>
+            )}
+        </>
     );
 };
 
