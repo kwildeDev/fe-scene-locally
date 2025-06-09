@@ -135,6 +135,9 @@ export interface NewEventData {
     access_link?: string;
     is_online: boolean;
     signup_required: boolean;
+    venueName?: string;
+    categoryName?: string;
+    subcategoryName?: string;
 }
 
 export type UpdatedEventRequest = Partial<

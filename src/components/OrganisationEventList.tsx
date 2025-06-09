@@ -10,6 +10,7 @@ import {
     Portal,
     Heading,
     Badge,
+    VisuallyHidden,
 } from '@chakra-ui/react';
 import { FaXmark } from 'react-icons/fa6';
 import { FcCheckmark } from 'react-icons/fc';
@@ -174,7 +175,12 @@ const OrganisationEventList: React.FC = () => {
                     >
                         ← Scroll left to see more →
                     </Text>
-                    <Box overflowX={{ base: "auto", md: "scroll"  }} bg="bg" borderRadius="md" shadow="md">
+                    <Box 
+                        overflowX={{ base: "auto", md: "scroll" }} 
+                        bg="bg" 
+                        borderRadius="md" 
+                        shadow="md"
+                    >
                         <Stack gap="10">
                             <Table.Root size="md">
                                 <Table.Header>
@@ -200,7 +206,11 @@ const OrganisationEventList: React.FC = () => {
                                         <Table.ColumnHeader fontWeight="semibold">
                                             Status
                                         </Table.ColumnHeader>
-                                        <Table.ColumnHeader fontWeight="semibold"></Table.ColumnHeader>
+                                        <Table.ColumnHeader fontWeight="semibold">
+                                            <VisuallyHidden>
+                                                Update Status Dropdown Menu
+                                            </VisuallyHidden>
+                                        </Table.ColumnHeader>
                                         <Table.ColumnHeader fontWeight="semibold">
                                             Actions
                                         </Table.ColumnHeader>
@@ -221,11 +231,11 @@ const OrganisationEventList: React.FC = () => {
                                         return (
                                             <Table.Row key={event.event_id}>
                                                 <Table.Cell
-                                                    textDecoration="underline"
                                                     color="blue.fg"
                                                 >
                                                     <Link
                                                         to={`${event.event_id}`}
+                                                        style={{ textDecoration: 'underline' }}
                                                     >
                                                         {event.title}
                                                     </Link>
@@ -260,9 +270,8 @@ const OrganisationEventList: React.FC = () => {
                                                     </Badge>
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <label htmlFor="status-dropdown"></label>
                                                     <select
-                                                        id="status-dropdown"
+                                                        aria-label='Update status dropdown menu'
                                                         value={
                                                             selectedStatuses[
                                                                 event.event_id

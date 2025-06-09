@@ -9,6 +9,11 @@ const capitaliseFirstCharacter = (
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 };
 
+const numberOrUndefined = z.preprocess((value) => {
+    if (value === '') return undefined;
+    return Number(value);
+}, z.number().int().optional());
+
 export const organisationEventSchema = z.object({
         title: z
             .string()
@@ -54,10 +59,7 @@ export const organisationEventSchema = z.object({
                 }
             ),
         endTime: z.string().min(1, { message: 'End time is required' }),
-        venue: z.preprocess((value) => {
-            if (value === '') return undefined;
-            return Number(value);
-        }, z.number({ required_error: 'Venue is required' }).int()),
+        venue: numberOrUndefined,
         isOnline: z.boolean(),
         accessLink: z
             .string()
@@ -69,14 +71,8 @@ export const organisationEventSchema = z.object({
                     message: 'Invalid URL',
                 }
             ),
-        category: z.preprocess((value) => {
-            if (value === '') return undefined;
-            return Number(value);
-        }, z.number({ required_error: 'Category is required' }).int()),
-        subcategory: z.preprocess((value) => {
-            if (value === '') return undefined;
-            return Number(value);
-        }, z.number({ required_error: 'Subcategory is required' }).int()),
+        category: numberOrUndefined,
+        subcategory: numberOrUndefined,
         selectedTags: z.array(z.string().toLowerCase()).optional(),
         isRecurring: z.boolean(),
         recurringFrequency: z.string().optional(),
@@ -93,6 +89,18 @@ export const organisationEventSchema = z.object({
             ),
         signupRequired: z.boolean(),
     })
+     .refine((values) => values.venue !== undefined, {
+        message: 'Venue is required',
+        path: ['venue'],
+    })
+    .refine((values) => values.category !== undefined, {
+        message: 'Category is required',
+        path: ['category'],
+    })
+    .refine((values) => values.subcategory !== undefined, {
+        message: 'Subcategory is required',
+        path: ['subcategory'],
+    })
     .refine(
         (values) => {
             const startDateTime = new Date(
@@ -103,5 +111,18 @@ export const organisationEventSchema = z.object({
         },
         {
             message: `End time must be after start time`,
+            path: ['endTime'],
+        }
+    )
+    .refine(
+        (values) => {
+            if (values.isRecurring) {
+                return !!values.recurringFrequency && !!values.recurringDay;
+            }
+            return true;
+        },
+        {
+            message: 'Recurring frequency and day are required for recurring events',
+            path: ['recurringDay'],
         }
     );

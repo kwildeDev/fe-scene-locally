@@ -1,4 +1,4 @@
-import { Box, Center, Heading, HStack, Image, Separator, Text, VStack } from '@chakra-ui/react';
+import { Avatar, Box, Heading, HStack, Separator, Text, VStack } from '@chakra-ui/react';
 import { FaCog, FaQuestionCircle, FaUserCircle } from 'react-icons/fa';
 import { FaBell, FaGrip, FaUsers } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
@@ -15,10 +15,13 @@ const StaffSidebarMenu: React.FC = () => {
         <>
             {organisationId ? (
                 <VStack as="nav" width="fit-content" alignItems="left">
-                    <Center p={1}>
-                        <Image width="65px" src={organisationLogo}></Image>
-                    </Center>
-                    <Heading color="gray.600">{organisationName}</Heading>
+                    <HStack mt={4}>
+                        <Avatar.Root>
+                            <Avatar.Fallback name={organisationName ?? undefined} />
+                            <Avatar.Image src={organisationLogo} alt="Organisation Logo"/>
+                        </Avatar.Root>
+                    <Heading size="lg" color="fg.muted" maxW={{ lg: 250 }}>{organisationName}</Heading>
+                    </HStack>
                     <HStack gap={2} as="span" whiteSpace="nowrap">
                         <Box as={FaGrip} aria-hidden="true" />
                         <Text fontSize="lg" fontWeight="semibold">Staff Dashboard</Text>
