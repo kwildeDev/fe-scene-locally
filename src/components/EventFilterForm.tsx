@@ -1,14 +1,10 @@
 import {
     Box,
     Button,
-    Wrap,
     Text,
-    Fieldset,
     Field,
-    Input,
     Checkbox,
     Flex,
-    WrapItem,
 } from '@chakra-ui/react';
 import { useState, useCallback } from 'react';
 import { MdFilterAltOff } from 'react-icons/md';
