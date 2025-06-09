@@ -42,17 +42,18 @@ const CategoryList: React.FC<CategoryListProps> = ({ onCategoryClick }) => {
     }
 
     return (
-        <Container p={0}>
+        <Container as="section" aria-label='Filter events by category' p={0}>
             <Box overflowX="auto" whiteSpace="nowrap" pb={4} mb={4}>
                 <Button
                     variant="plain"
+                    textDecoration="underline"
                     p={0}
                     pb={2}
                     onClick={() => {
                         onCategoryClick('');
                     }}
                 >
-                    <Text textStyle="lg" textDecoration="underline">
+                    <Text textStyle="lg">
                         All Categories
                     </Text>
                 </Button>

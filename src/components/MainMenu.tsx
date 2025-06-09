@@ -14,6 +14,7 @@ import {
     Image,
     Box,
     Separator,
+    Button,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -23,7 +24,7 @@ import homeIcon from '/home-icon.png';
 import { useUser } from '../contexts/UserProvider';
 
 export default function MainMenu() {
-    const linkColour: string = 'colorPalette.600';
+    const linkColour: string = 'colorPalette.700';
     const { user, logout } = useUser();
 
     const navigate = useNavigate();
@@ -51,10 +52,11 @@ export default function MainMenu() {
                     >
                         <Drawer.Trigger asChild>
                             <IconButton
-                                color="teal.solid"
+                                aria-label="Open navigation menu"
+                                color="teal.fg"
                                 variant="outline"
                                 size="md"
-                                borderColor="teal.solid"
+                                borderColor="teal.fg"
                                 borderWidth={2}
                                 onClick={() => setIsOpen(true)}
                             >
@@ -205,14 +207,19 @@ export default function MainMenu() {
                                 <FaUserCircle />
                             </Icon>
                             <Menu.Root positioning={{ placement: 'bottom-end' }}>
-                                <Menu.Trigger>
-                                    <Text
+                                <Menu.Trigger asChild>
+                                    <Button
+                                        p={0}
+                                        variant="plain"
                                         color={linkColour}
                                         fontSize="lg"
                                         fontWeight="semibold"
+                                        textDecoration="underline"
+                                        textUnderlineOffset={3}
+                                        
                                     >
                                         Account
-                                    </Text>
+                                    </Button>
                                 </Menu.Trigger>
                                 <Portal>
                                     <Menu.Positioner>

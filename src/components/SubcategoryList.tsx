@@ -24,26 +24,36 @@ const SubcategoryList: React.FC<SubcategoryListProps> = ({
     const category = searchParams.get('category');
     const [subcategories, setSubcategories] = useState<SubcategoryDetail[]>([]);
     const [isError, setIsError] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        setIsLoading(true);
+        setIsError(false);
         getSubcategories(category as string)
             .then((subcategories) => {
                 setSubcategories(subcategories);
+                setIsLoading(false);
             })
             .catch((_err) => {
                 setIsError(true);
+                setIsLoading(false);
             });
     }, [category]);
 
     if (isError) {
-        return <p>Failed to load subcategories.</p>;
+        return <Text pt={2}>Failed to load subcategories.</Text>;
     }
+
+    if (isLoading) {
+        return <Text pt={2}>Loading subcategories...</Text>;
+}
+
     if (subcategories.length === 0) {
-        return <Text>No subcategories available for this category.</Text>;
+        return <Text pt={2}>No subcategories available for this category.</Text>;
     }
 
     return (
-        <Box overflowX="auto" whiteSpace="nowrap" mb={2}>
+        <Box as="section" aria-label='Filter events by subcategory' overflowX="auto" whiteSpace="nowrap" mb={2}>
             <HStack>
                 {subcategories.map((subcategory) => {
                     const isActive =

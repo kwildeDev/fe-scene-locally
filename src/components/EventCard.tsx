@@ -5,8 +5,9 @@ import {
     LinkBox,
     LinkOverlay,
     Text,
+    VisuallyHidden,
 } from '@chakra-ui/react';
-import { NavLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { Image } from '@chakra-ui/react';
 import { EventSummary } from '../api.ts';
 import { FaCalendarDays, FaLocationDot } from 'react-icons/fa6';
@@ -22,10 +23,15 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     return (
         <LinkBox as="article">
             <Card.Root maxW="sm">
-                <Image src={event.image_url || placeholderImageUrl}></Image>
+                <Image
+                    alt="Promotional image for event"
+                    src={event.image_url || placeholderImageUrl}
+                ></Image>
                 <Card.Header>
                     <LinkOverlay asChild>
-                        <NavLink to={`/events/${event.event_id}`}></NavLink>
+                        <RouterLink to={`/events/${event.event_id}`}>
+                            <VisuallyHidden>{event.title}</VisuallyHidden>
+                        </RouterLink>
                     </LinkOverlay>
                     <Card.Title>{event.title}</Card.Title>
                 </Card.Header>

@@ -1,8 +1,19 @@
-import { Box, Center, Button, Wrap, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Wrap,
+    Text,
+    Fieldset,
+    Field,
+    Input,
+    Checkbox,
+    Flex,
+    WrapItem,
+} from '@chakra-ui/react';
 import { useState, useCallback } from 'react';
 import { MdFilterAltOff } from 'react-icons/md';
 import Select, { MultiValue, CSSObjectWithLabel } from 'react-select';
-import makeAnimated from 'react-select/animated'
+import makeAnimated from 'react-select/animated';
 
 interface EventFilterProps {
     filters: Record<string, string>;
@@ -12,29 +23,55 @@ interface EventFilterProps {
     availableOrganisers: string[];
 }
 
-const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, availableTags, availableVenues, availableOrganisers}) => {
-    const [selectedTags, setSelectedTags] = useState<string[]>(filters.tags ? filters.tags.split(',') : []);
-    const [selectedVenue, setSelectedVenue] = useState<string | null>(filters.venue || null);
-    const [selectedOrganiser, setSelectedOrganiser] = useState<string | null>(filters.organiser || null);
-    const [selectedSortBy, setSelectedSortBy] = useState<string | null>(filters.sort_by || null);
-    const [selectedOrder, setSelectedOrder] = useState<string | null>(filters.order || null);
-    const [online, setOnline] = useState<boolean>(filters.online === 'true' || false);
-    const [recurring, setRecurring] = useState<boolean>(filters.recurring === 'true' || false);
+const EventFilterForm: React.FC<EventFilterProps> = ({
+    filters,
+    onFilterChange,
+    availableTags,
+    availableVenues,
+    availableOrganisers,
+}) => {
+    const [selectedTags, setSelectedTags] = useState<string[]>(
+        filters.tags ? filters.tags.split(',') : []
+    );
+    const [selectedVenue, setSelectedVenue] = useState<string | null>(
+        filters.venue || null
+    );
+    const [selectedOrganiser, setSelectedOrganiser] = useState<string | null>(
+        filters.organiser || null
+    );
+    const [selectedSortBy, setSelectedSortBy] = useState<string | null>(
+        filters.sort_by || null
+    );
+    const [selectedOrder, setSelectedOrder] = useState<string | null>(
+        filters.order || null
+    );
+    const [online, setOnline] = useState<boolean>(
+        filters.online === 'true' || false
+    );
+    const [recurring, setRecurring] = useState<boolean>(
+        filters.recurring === 'true' || false
+    );
 
     const animatedComponents = makeAnimated();
 
     const handleOnlineChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const checked = e.target.checked;
+        (details: { checked: boolean | string }) => {
+            const checked =
+                typeof details.checked === 'boolean'
+                    ? details.checked
+                    : details.checked === 'true';
             setOnline(checked);
             onFilterChange('online', checked ? 'true' : '');
         },
         [onFilterChange]
     );
-    
+
     const handleRecurringChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const checked = e.target.checked;
+        (details: { checked: boolean | string }) => {
+            const checked =
+                typeof details.checked === 'boolean'
+                    ? details.checked
+                    : details.checked === 'true';
             setRecurring(checked);
             onFilterChange('recurring', checked ? 'true' : '');
         },
@@ -59,15 +96,17 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
 
     const handleTagChange = useCallback(
         (newSelectedOptions: MultiValue<{ value: string; label: string }>) => {
-        const newTags: string[] = newSelectedOptions.map((option: { value: string; label: string }) => option.value);
-        setSelectedTags(newTags);
-        onFilterChange('tags', newTags.join(','));
-        }, 
+            const newTags: string[] = newSelectedOptions.map(
+                (option: { value: string; label: string }) => option.value
+            );
+            setSelectedTags(newTags);
+            onFilterChange('tags', newTags.join(','));
+        },
         [onFilterChange]
     );
 
     const handleSortByChange = useCallback(
-        (option: { value: string, label: string } | null) => {
+        (option: { value: string; label: string } | null) => {
             setSelectedSortBy(option?.value || null);
             onFilterChange('sort_by', option?.value || '');
         },
@@ -75,7 +114,7 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
     );
 
     const handleOrderChange = useCallback(
-        (option: { value: string, label: string } | null) => {
+        (option: { value: string; label: string } | null) => {
             setSelectedOrder(option?.value || null);
             onFilterChange('order', option?.value || '');
         },
@@ -91,32 +130,36 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
         setSelectedSortBy(null);
         setSelectedOrder(null);
         const resetValues = {
-                venue: '',
-                organiser: '',
-                tags: '',
-                online: '',
-                recurring: '',
-                sort_by: '',
-                order: '',
-            }    
+            venue: '',
+            organiser: '',
+            tags: '',
+            online: '',
+            recurring: '',
+            sort_by: '',
+            order: '',
+        };
         onFilterChange('resetAll', JSON.stringify(resetValues));
-        },
-        [onFilterChange]
-    );
+    }, [onFilterChange]);
 
     const tagOptions = availableTags.map((tag) => ({ value: tag, label: tag }));
-    const venueOptions = availableVenues.map((venue) => ({ value: venue, label: venue }));
-    const organiserOptions = availableOrganisers.map((organiser) => ({ value: organiser, label: organiser }));
+    const venueOptions = availableVenues.map((venue) => ({
+        value: venue,
+        label: venue,
+    }));
+    const organiserOptions = availableOrganisers.map((organiser) => ({
+        value: organiser,
+        label: organiser,
+    }));
     const sortByOptions = [
-        { value: "start_datetime", label: "Start Date" },
-        { value: "created_at", label: "Date Created" },
-        { value: "organiser", label: "Organiser" },
-        { value: "venue", label: "Venue" }
-    ]
+        { value: 'start_datetime', label: 'Start Date' },
+        { value: 'created_at', label: 'Date Created' },
+        { value: 'organiser', label: 'Organiser' },
+        { value: 'venue', label: 'Venue' },
+    ];
     const orderOptions = [
-        { value: "asc", label: "Ascending" },
-        { value: "desc", label: "Descending" }
-    ]
+        { value: 'asc', label: 'Ascending' },
+        { value: 'desc', label: 'Descending' },
+    ];
 
     const customStyles = {
         control: (provided: CSSObjectWithLabel) => ({
@@ -132,136 +175,144 @@ const EventFilterForm: React.FC<EventFilterProps> = ({ filters, onFilterChange, 
     };
 
     return (
-        <Box mb={8}>
-        <Text fontWeight="semibold">Filters</Text>
-        <Wrap>
-        {/*<Stack direction={{ base: "column", md: "row" }} gap="4">*/}
-            <Center>
-                <input
-                    type="checkbox"
+        <form>
+            <Text as="legend" mb={4} fontWeight="semibold">Filters</Text>
+            <Flex wrap="wrap" gap={4} mb={8}>
+                <Box flex={1} display="flex" flexDirection="column" justifyContent="space-evenly">
+                <Checkbox.Root
                     id="online"
                     checked={online}
-                    onChange={handleOnlineChange}
-                />
-                <label htmlFor="online" style={{ marginLeft: '5px' }}>
-                    Online
-                </label>
-            </Center>
-            <Center>
-                <input
-                    type="checkbox"
+                    onCheckedChange={handleOnlineChange}
+                >
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control />
+                    <Checkbox.Label style={{ marginLeft: '5px' }}>
+                        Online
+                    </Checkbox.Label>
+                </Checkbox.Root>
+
+                <Checkbox.Root
                     id="recurring"
                     checked={recurring}
-                    onChange={handleRecurringChange}
-                />
-                <label htmlFor="recurring" style={{ marginLeft: '5px' }}>
-                    Recurring
-                </label>
-            </Center>
-            <Box>
-                <label htmlFor="tags">Tags</label>
-                <Select
-                    isMulti
-                    id="tags"
-                    components={animatedComponents}
-                    options={tagOptions}
-                    value={tagOptions.filter((option) => selectedTags.includes(option.value))}
-                    onChange={handleTagChange}
-                    placeholder="Select tags..."
-                    styles={{
-                        ...customStyles,
-                        control: (provided) => ({
-                          ...customStyles.control(provided),
-                          width: 300,
-                        }),
-                      }}
-                    isClearable
-                />
-            </Box>
-            <Box>
-                <label htmlFor="venue">Venue</label>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    onCheckedChange={handleRecurringChange}
+                >
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control />
+                    <Checkbox.Label style={{ marginLeft: '5px' }}>
+                        Recurring
+                    </Checkbox.Label>
+                </Checkbox.Root>
+                </Box>
+
+                <Field.Root flex={1} minW="fit-content">
+                    <Field.Label mt={0.5} htmlFor="tags">Tags</Field.Label>
                     <Select
-                        id="venue"
+                        inputId="tags"
+                        isMulti
+                        components={animatedComponents}
+                        options={tagOptions}
+                        value={tagOptions.filter((option) =>
+                            selectedTags.includes(option.value)
+                        )}
+                        onChange={handleTagChange}
+                        placeholder="Select tags..."
+                        styles={{
+                            ...customStyles,
+                            control: (provided) => ({
+                                ...customStyles.control(provided),
+                                width: 300,
+                            }),
+                        }}
+                        isClearable
+                    />
+                </Field.Root>
+
+                <Field.Root flex={1} minW="fit-content">
+                    <Field.Label mt={0.5} htmlFor="venue">Venue</Field.Label>
+                    <Select
+                        inputId="venue"
                         options={venueOptions}
-                        value={venueOptions.find((option) => option.value === selectedVenue)}
+                        value={venueOptions.find(
+                            (option) => option.value === selectedVenue
+                        )}
                         onChange={handleVenueChange}
                         placeholder="Select venue..."
                         styles={customStyles}
                         isDisabled={online}
                         isClearable
                     />
-                </div>
-            </Box>
-            <Box>
-                <label htmlFor="organiser">Organiser</label>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                </Field.Root>
+
+                <Field.Root flex={1} minW="fit-content">
+                    <Field.Label mt={0.5} htmlFor="organiser">Organiser</Field.Label>
                     <Select
-                        id="organiser"
+                        inputId="organiser"
                         options={organiserOptions}
-                        value={organiserOptions.find((option) => option.value === selectedOrganiser)}
+                        value={organiserOptions.find(
+                            (option) => option.value === selectedOrganiser
+                        )}
                         onChange={handleOrganiserChange}
                         placeholder="Select organiser..."
                         styles={customStyles}
                         isClearable
                     />
-                </div>
-            </Box>
-            <Box>
-                <label htmlFor="sort_by">Sort By</label>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                </Field.Root>
+
+                <Field.Root flex={1} minW="fit-content">
+                    <Field.Label mt={0.5} htmlFor="sort_by">Sort By</Field.Label>
                     <Select
-                        id="sort_by"
+                        inputId="sort_by"
                         options={sortByOptions}
                         defaultValue={sortByOptions[0]}
-                        value={sortByOptions.find((option) => option.value === selectedSortBy)}
+                        value={sortByOptions.find(
+                            (option) => option.value === selectedSortBy
+                        )}
                         onChange={handleSortByChange}
                         placeholder="Sort by..."
                         styles={{
                             ...customStyles,
                             control: (provided) => ({
-                              ...customStyles.control(provided),
-                              width: 195,
+                                ...customStyles.control(provided),
+                                width: 195,
                             }),
-                          }}
+                        }}
                         isClearable
                     />
-                </div>
-            </Box>
-            <Box>
-                <label htmlFor="order">Order</label>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                </Field.Root>
+
+                <Field.Root flex={1} minW="fit-content">
+                    <Field.Label mt={0.5} htmlFor="order">Order</Field.Label>
                     <Select
-                        id="order"
+                        inputId="order"
                         options={orderOptions}
                         defaultValue={orderOptions[0]}
-                        value={orderOptions.find((option) => option.value === selectedOrder)}
+                        value={orderOptions.find(
+                            (option) => option.value === selectedOrder
+                        )}
                         onChange={handleOrderChange}
                         placeholder="Order..."
                         styles={{
                             ...customStyles,
                             control: (provided) => ({
-                              ...customStyles.control(provided),
-                              width: 140,
+                                ...customStyles.control(provided),
+                                width: 140,
                             }),
-                          }}
+                        }}
                         isClearable
                     />
-                </div>
-            </Box>
-            <Box alignContent="end">
+                </Field.Root>
                 <Button
+                    alignSelf="end"
+                    size="sm"
                     variant="surface"
                     rounded="md"
-                    onClick={resetAllFilters}   
+                    onClick={resetAllFilters}
                 >
                     <MdFilterAltOff />
                     <Text>RESET</Text>
                 </Button>
-            </Box>
-            </Wrap>
-        {/*</Stack>*/}
-        </Box>
+            </Flex>
+        </form>
     );
 };
 

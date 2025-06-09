@@ -23,9 +23,10 @@ export const RecurringEventFields: React.FC<RecurringEventFieldsProps> = ({
 
     return (
         <Box mt={4}>
-            <EventFormField label="Is this a recurring event?" error={errors.isRecurring}>
+            <EventFormField label="Is this a recurring event?" error={errors.isRecurring} htmlFor='isRecurring'>
                 <input
                     {...register('isRecurring')}
+                    id='isRecurring'
                     type="checkbox"
                     disabled={isDisabled || isPublished}
                 />
@@ -36,11 +37,13 @@ export const RecurringEventFields: React.FC<RecurringEventFieldsProps> = ({
                     <EventFormField
                         label="Frequency"
                         error={errors.recurringFrequency}
+                        htmlFor='recurringFrequency'
                         focusWarningMessage="This event is already published. Changing the frequency may impact attendees who planned around the original schedule."
                         shouldWarn={isPublished}
                     >
                         <select
                             {...register('recurringFrequency')}
+                            id='recurringFrequency'
                             disabled={isDisabled}
                         >
                             <option value="">Select frequency</option>
@@ -52,11 +55,13 @@ export const RecurringEventFields: React.FC<RecurringEventFieldsProps> = ({
                     <EventFormField
                         label="Day"
                         error={errors.recurringDay}
+                        htmlFor='recurringDay'
                         focusWarningMessage="This event is already published. Changing the day may impact attendees who planned around the original schedule."
                         shouldWarn={isPublished}
                     >
                         <select
                             {...register('recurringDay')}
+                            id='recurringDay'
                             disabled={isDisabled}
                         >
                             <option value="">Select day</option>

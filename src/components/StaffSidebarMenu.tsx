@@ -12,7 +12,7 @@ const StaffSidebarMenu: React.FC = () => {
         'https://avatars.githubusercontent.com/u/43854511?s=200&v=4';
 
     return (
-        <>
+        <aside>
             {organisationId ? (
                 <VStack as="nav" width="fit-content" alignItems="left">
                     <HStack mt={4}>
@@ -61,14 +61,14 @@ const StaffSidebarMenu: React.FC = () => {
                     </Link>
                     <Separator></Separator>
                     <HStack gap={2} as="span" whiteSpace="nowrap">
-                        <Box color="teal.solid" as={FaUserCircle} aria-hidden="true" />
-                        <Text color="teal.solid">{`Welcome ${user?.first_name} ${user?.last_name} \u{1F44B}`}</Text>
+                        <Box color="teal.fg" as={FaUserCircle} aria-hidden="true" />
+                        <Text color="teal.fg">{`Welcome ${user?.first_name} ${user?.last_name} \u{1F44B}`}</Text>
                     </HStack>
                 </VStack>
             ) : (
                 <Text>You are not authorised to view this page</Text>
             )}
-        </>
+        </aside>
     );
 };
 

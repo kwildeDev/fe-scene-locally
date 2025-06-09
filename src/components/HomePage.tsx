@@ -25,6 +25,7 @@ const HomePage: React.FC = () => {
     
     return (
             <>
+                <section>
                 <CategoryList onCategoryClick={handleCategoryClick} />
                 {category && (
                     <SubcategoryList
@@ -32,6 +33,7 @@ const HomePage: React.FC = () => {
                         onSubcategoryClick={handleSubcategoryClick}
                     />
                 )}
+                </section>
                 <EventList/>
             </>
     );

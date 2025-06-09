@@ -365,13 +365,14 @@ const OrganisationEventDetail: React.FC = () => {
                         <Button
                             size="lg"
                             variant="plain"
+                            textDecoration="underline"
                             padding={0}
                             onClick={() => {
                                 handleNavigation("../events");
                             }}
                         >
                             <FaArrowCircleLeft />
-                            <Text textDecoration="underline">Back to list</Text>
+                            <Text>Back to list</Text>
                         </Button>
                     </Box>
                     <Card.Root>
@@ -386,11 +387,13 @@ const OrganisationEventDetail: React.FC = () => {
                                     <EventFormField
                                         label="Title"
                                         error={errors.title}
+                                        htmlFor='title'
                                         focusWarningMessage="This event is already published. Ensure any changes do not confuse attendees."
                                         shouldWarn={isPublished}
                                     >
                                         <input
                                             {...register('title')}
+                                            id='title'
                                             type="text"
                                             placeholder="Title"
                                             disabled={isDisabled}
@@ -400,9 +403,11 @@ const OrganisationEventDetail: React.FC = () => {
                                     <EventFormField
                                         label="Description"
                                         error={errors.description}
+                                        htmlFor='description'
                                     >
                                         <textarea
                                             {...register('description')}
+                                            id='description'
                                             rows={4}
                                             placeholder="Description"
                                             disabled={isDisabled}
@@ -435,6 +440,7 @@ const OrganisationEventDetail: React.FC = () => {
                                     <EventFormField
                                         label="Venue"
                                         error={errors.venue}
+                                        htmlFor='venue'
                                         focusWarningMessage="This event is already published. Changing the venue will require attendee notifications and may affect turnout."
                                         shouldWarn={isPublished}
                                     >
@@ -447,6 +453,7 @@ const OrganisationEventDetail: React.FC = () => {
                                             )}
                                             <select
                                                 {...register('venue')}
+                                                id='venue'
                                                 disabled={isOnline || isDisabled}
                                             >
                                                 <option value="">
@@ -517,9 +524,11 @@ const OrganisationEventDetail: React.FC = () => {
                                         label="Event Image Link (Optional)"
                                         helperText="Enter a valid link to your event image"
                                         error={errors.imageUrl}
+                                        htmlFor='imageUrl'
                                     >
                                         <input
                                             {...register('imageUrl')}
+                                            id='imageUrl'
                                             type="text"
                                             placeholder="https://example.com/event-image.jpg"
                                             disabled={isDisabled}
@@ -534,7 +543,7 @@ const OrganisationEventDetail: React.FC = () => {
                                                 src={watchedImageUrl}
                                                 h={240}
                                                 fit="contain"
-                                                alt="Event Image"
+                                                alt="Event Image Preview"
                                             />
                                         </Box>
                                     )}
@@ -542,9 +551,11 @@ const OrganisationEventDetail: React.FC = () => {
                                     <EventFormField
                                         label="Does this event require sign-up?"
                                         error={errors.signupRequired}
+                                        htmlFor='signupRequired'
                                     >
                                         <input
                                             {...register('signupRequired')}
+                                            id='signupRequired'
                                             type="checkbox"
                                             disabled={isDisabled || isPublished && !event.signup_required}
                                         />

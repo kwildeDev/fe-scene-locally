@@ -86,6 +86,7 @@ export const TagsInput: React.FC<TagsInputProps> = ({
                             ? errors.selectedTags[0]
                             : errors.selectedTags
                     }
+                    htmlFor='tags'
                     focusWarningMessage="This event is already published. Changing tags may affect how attendees find it and understand its purpose."
                     shouldWarn={isPublished}
                     
@@ -98,6 +99,7 @@ export const TagsInput: React.FC<TagsInputProps> = ({
                             </Text>
                         )}
                         <CreatableSelect
+                            inputId='tags'
                             isMulti
                             options={tagOptions}
                             value={selectedTags.map((tag) => ({
