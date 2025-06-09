@@ -71,7 +71,7 @@ const OrganisationEventDetail: React.FC = () => {
         subcategoriesError,
         setEvent,
         setSubcategories,
-    } = useEventData(eventIdNumber, organisation_id);
+    } = useEventData(false, organisation_id, eventIdNumber);
 
     const {
         register,
@@ -152,8 +152,8 @@ const OrganisationEventDetail: React.FC = () => {
 
     useEffect(() => {
         if (!isRecurring) {
-            setValue('recurringFrequency', undefined);
-            setValue('recurringDay', undefined);
+            setValue('recurringFrequency', undefined, {shouldDirty: true });
+            setValue('recurringDay', undefined, {shouldDirty: true });
         }
     }, [isRecurring, setValue]);
 
@@ -166,7 +166,12 @@ const OrganisationEventDetail: React.FC = () => {
     }, [endDate, resetField]);
 
     useEffect(() => {
-        if (startDate && !endDate) {
+        if (!startDate) return;
+
+        const currentStartDate = new Date(startDate);
+        const currentEndDate = endDate ? new Date(endDate) : null;
+
+        if (!endDate || (currentEndDate && currentStartDate > currentEndDate)) {
             setValue('endDate', startDate);
         }
     }, [startDate, endDate, setValue]);
@@ -196,13 +201,9 @@ const OrganisationEventDetail: React.FC = () => {
     const handleNavigation = (path: string) => {
         if (blocker.state === "blocked") {
             blocker.reset();
-        } else {
-            if (path === "-1") {
-                navigate(-1);
-            } else {
-                navigate(path);
-            }
-        }
+            return;
+        } 
+        navigate(path);
     };
 
     if (isLoadingEvent) {
@@ -366,7 +367,7 @@ const OrganisationEventDetail: React.FC = () => {
                             variant="plain"
                             padding={0}
                             onClick={() => {
-                                handleNavigation("-1");
+                                handleNavigation("../events");
                             }}
                         >
                             <FaArrowCircleLeft />

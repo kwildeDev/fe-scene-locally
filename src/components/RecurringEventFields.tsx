@@ -1,4 +1,3 @@
-// components/RecurringEventFields.tsx
 import React from 'react';
 import { UseFormRegister, FieldErrors, UseFormWatch } from 'react-hook-form';
 import { Box } from '@chakra-ui/react';

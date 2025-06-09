@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
 import {
-    getEventById,
-    getCategories,
-    getVenues,
-    getOrganisationTags,
     EventDetail,
     CategoryDetail,
     VenueDetail,
     SubcategoryDetail,
-    getSubcategoriesById,
 } from '../api';
+import { useCategories } from './useCategories';
+import { useEvent } from './useEvent';
+import { useVenues } from './useVenues';
+import { useOrganisationTags } from './useOrganisatonTags';
+import { useSubcategories } from './useSubcategories';
 
 interface EventDataHook {
     event: EventDetail | null;
@@ -32,62 +31,15 @@ interface EventDataHook {
 }
 
 export const useEventData = (
-    eventId: number,
+    isNewEvent: boolean,
     organisationId: number | null | undefined,
+    eventId?: number,
 ): EventDataHook => {
-    const [event, setEvent] = useState<EventDetail | null>(null);
-    const [venues, setVenues] = useState<VenueDetail[]>([]);
-    const [categories, setCategories] = useState<CategoryDetail[]>([]);
-    const [subcategories, setSubcategories] = useState<SubcategoryDetail[]>([]);
-    const [tags, setTags] = useState<string[]>([]);
-    
-    const [isLoadingEvent, setIsLoadingEvent] = useState<boolean>(false);
-    const [isLoadingVenues, setIsLoadingVenues] = useState<boolean>(false);
-    const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(false);
-    const [isLoadingSubcategories, setIsLoadingSubcategories] = useState<boolean>(false);
-    const [isLoadingTags, setIsLoadingTags] = useState<boolean>(false);
-
-    const [eventError, setEventError] = useState<boolean>(false);
-    const [venuesError, setVenuesError] = useState<boolean>(false);
-    const [categoriesError, setCategoriesError] = useState<boolean>(false);
-    const [tagsError, setTagsError] = useState<boolean>(false);
-    const [subcategoriesError, setSubcategoriesError] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (!eventId || isNaN(eventId) || organisationId == null) {
-            setEventError(true);
-            return;
-        }
-        setIsLoadingEvent(true);
-        setIsLoadingVenues(true);
-        setIsLoadingCategories(true);
-        setIsLoadingTags(true);
-        
-        Promise.all([
-            getVenues().then(setVenues).catch(() => setVenuesError(true)),
-            getCategories().then(setCategories).catch(() => setCategoriesError(true)),
-            getOrganisationTags(organisationId).then(setTags).catch(() => setTagsError(true)),
-            getEventById(eventId).then(setEvent).catch(() => setEventError(true)),
-        ])
-        .finally(() => {
-            setIsLoadingEvent(false);
-            setIsLoadingVenues(false);
-            setIsLoadingCategories(false);
-            setIsLoadingTags(false);
-        })
-    }, [eventId, organisationId]);
-
-    useEffect(() => {
-        if (event?.category_id) {
-            setIsLoadingSubcategories(true);
-            getSubcategoriesById(event.category_id)
-                .then(setSubcategories)
-                .catch(() => setSubcategoriesError(true))
-                .finally(() => setIsLoadingSubcategories(false));
-        } else {
-            setSubcategories([]);
-        }
-    }, [event?.category_id]);
+    const { event, setEvent, isLoadingEvent, eventError, } = useEvent(eventId, isNewEvent, organisationId);
+    const { venues, isLoadingVenues, venuesError, } = useVenues();
+    const { categories, isLoadingCategories, categoriesError, } = useCategories();
+    const { tags, isLoadingTags, tagsError, } = useOrganisationTags(organisationId);
+    const { subcategories, setSubcategories, isLoadingSubcategories, subcategoriesError, } = useSubcategories(event?.category_id);
 
     return {
         event,

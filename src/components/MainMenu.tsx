@@ -13,6 +13,7 @@ import {
     CloseButton,
     Image,
     Box,
+    Separator,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -184,10 +185,7 @@ export default function MainMenu() {
                     >
                         <NavLink to="/">Browse all events</NavLink>
                     </ChakraLink>
-
-                    <Text color={linkColour} fontSize="2xl" fontWeight="semibold">
-                        |
-                    </Text>
+                    <Separator orientation="vertical" size="lg" height="4"></Separator>
 
                     <ChakraLink
                         asChild
@@ -199,9 +197,7 @@ export default function MainMenu() {
                     >
                         <NavLink to="/help">Help</NavLink>
                     </ChakraLink>
-                    <Text color={linkColour} fontSize="2xl" fontWeight="semibold">
-                        |
-                    </Text>
+                    <Separator orientation="vertical" size="lg" height="4"></Separator>
 
                     {user?.user_id && (
                         <>
