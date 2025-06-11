@@ -376,7 +376,7 @@ const OrganisationEventDetail: React.FC = () => {
                         </Button>
                     </Box>
                     <Card.Root>
-                        <Card.Header bg="gray.100">
+                        <Card.Header bg="gray.subtle">
                             <Card.Title>Event Details</Card.Title>
                         </Card.Header>
                         <Card.Body>
@@ -446,7 +446,7 @@ const OrganisationEventDetail: React.FC = () => {
                                     >
                                         <div>
                                             {venuesError && (
-                                                <Text color="red.500">
+                                                <Text color="fg.error">
                                                     Failed to load venues. Some
                                                     options may be missing.
                                                 </Text>
@@ -582,7 +582,7 @@ const OrganisationEventDetail: React.FC = () => {
                                             type="submit"
                                             loading={isSubmitting}
                                             disabled={isSubmitting || !isDirty}
-                                            colorPalette="blue"
+                                            bg="blue.fg"
                                         >
                                             Update Event
                                         </Button>

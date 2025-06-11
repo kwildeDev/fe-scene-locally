@@ -102,7 +102,7 @@ const IndividualEvent: React.FC = () => {
                             {event.tags?.map((tag, index) => (
                                 <Tag.Root
                                     key={index}
-                                    variant="solid"
+                                    variant="subtle"
                                     size="lg"
                                     colorPalette="green"
                                 >
@@ -110,7 +110,7 @@ const IndividualEvent: React.FC = () => {
                                 </Tag.Root>
                             ))}
                         </HStack>
-                        <Box bg="gray.100" borderRadius="md" p={4}>
+                        <Box bg="gray.subtle" borderRadius="md" p={4}>
                             <Text as="h2" fontSize="xl" fontWeight="bold" mb={2}>
                                 {event.title}
                             </Text>
@@ -120,7 +120,7 @@ const IndividualEvent: React.FC = () => {
                 </Box>
 
                 <Box>
-                    <Box bg="gray.100" borderRadius="md" p={4}>
+                    <Box bg="gray.subtle" borderRadius="md" p={4}>
                         <Box mb={2}>
                             <Icon as={FaCalendarDays} marginRight="2" />
                             <Text as="span">
@@ -129,7 +129,7 @@ const IndividualEvent: React.FC = () => {
                             </Text>
                         </Box>
                         {recurringScheduleExists && (
-                            <Box color="blue" mb={8}>
+                            <Box color="blue.fg" mb={8}>
                                 <Icon as={FaRotate} marginRight="2" />
                                 <Text as="span">
                                     {event.recurring_schedule?.frequency} on{' '}
@@ -155,7 +155,7 @@ const IndividualEvent: React.FC = () => {
                                 googleEventProps={googleEventProps}
                             />
                         ) : (
-                            <Box color="blue">
+                            <Box color="blue.fg">
                                 <Icon as={FaInfoCircle} marginRight="2" />
                                 <Text as="span">
                                     No signup required - just turn up

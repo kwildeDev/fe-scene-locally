@@ -69,7 +69,7 @@ const SubcategoryList: React.FC<SubcategoryListProps> = ({
                                     ? `${getIconColour(
                                           subcategory.subcategory_id
                                       )}.solid`
-                                    : 'gray.800'
+                                    : 'gray.fg'
                             }
                             fontWeight="bold"
                             fontSize={['xs', 'sm', 'md']}

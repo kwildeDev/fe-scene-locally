@@ -60,7 +60,7 @@ const LoginCard: React.FC = () => {
         >
             {pathname !== "/users/me" && (
             <Dialog.Trigger asChild>
-                <Button size="md" colorPalette="blue">
+                <Button size="md" bg="blue.fg">
                     Sign In
                 </Button>
             </Dialog.Trigger>
@@ -76,7 +76,7 @@ const LoginCard: React.FC = () => {
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <Stack>
                                     <Field.Root invalid={!!errors.email}>
-                                        <Field.Label>Email</Field.Label>
+                                        <Field.Label color="gray.fg">Email</Field.Label>
                                         <Input
                                             {...register('email')}
                                             type="text"
@@ -89,7 +89,7 @@ const LoginCard: React.FC = () => {
                                         </Field.ErrorText>
                                     </Field.Root>
                                     <Field.Root invalid={!!errors.password}>
-                                        <Field.Label>Password</Field.Label>
+                                        <Field.Label color="gray.fg">Password</Field.Label>
                                         <Input
                                             {...register('password')}
                                             type="password"
@@ -106,7 +106,7 @@ const LoginCard: React.FC = () => {
                                             disabled={isLoggingIn}
                                             loading={isLoggingIn}
                                             type="submit"
-                                            bg="blue.solid"
+                                            bg="blue.fg"
                                             size="lg"
                                         >
                                             Log In

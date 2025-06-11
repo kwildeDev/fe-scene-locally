@@ -21,7 +21,7 @@ const UserProfile: React.FC = () => {
                     User Profile
                 </Heading>
                 <Card.Root variant='elevated'>
-                    <Card.Header bg='gray.100'>
+                    <Card.Header bg='gray.subtle'>
                         <Card.Title>Personal Info</Card.Title>
                     </Card.Header>
                     <Card.Body>

@@ -8,7 +8,11 @@ import {
 } from 'react-hook-form';
 import { Wrap, WrapItem, Text } from '@chakra-ui/react';
 import CreatableSelect from 'react-select/creatable';
-import type { MultiValue, StylesConfig } from 'react-select';
+import type {
+    CSSObjectWithLabel,
+    MultiValue,
+    StylesConfig,
+} from 'react-select';
 import { EventFormField } from './EventFormField';
 import { Formfields } from '../types/forms';
 
@@ -58,21 +62,42 @@ export const TagsInput: React.FC<TagsInputProps> = ({
     };
 
     const styles: StylesConfig<{ value: string; label: string }, true> = {
-        multiValue: (base) => ({ ...base, backgroundColor: '#16a34a', borderRadius: '6px', 
+        multiValue: (base) => ({
+            ...base,
+            backgroundColor: '#116932',
+            borderRadius: '6px',
             marginRight: '8px',
             marginTop: '6px',
             marginBottom: '6px',
             ':hover': {
-                backgroundColor: '#116932',
+                backgroundColor: '#124a28',
                 color: 'white',
-            }, }),
-        multiValueLabel: (base) => ({ ...base, color: 'white', fontSize: '0.875rem',}),
-        multiValueRemove: (base) => ({ ...base, 
+            },
+        }),
+        multiValueLabel: (base) => ({
+            ...base,
+            color: 'white',
+            fontSize: '0.875rem',
+        }),
+        multiValueRemove: (base) => ({
+            ...base,
             color: 'white',
             ':hover': {
                 backgroundColor: '#116932',
                 color: 'white',
-            }, 
+            },
+        }),
+        placeholder: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            color: '#27272a',
+        }),
+        dropdownIndicator: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            color: '#27272a',
+        }),
+        clearIndicator: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            color: '#27272a',
         }),
     };
 
@@ -86,20 +111,19 @@ export const TagsInput: React.FC<TagsInputProps> = ({
                             ? errors.selectedTags[0]
                             : errors.selectedTags
                     }
-                    htmlFor='tags'
+                    htmlFor="tags"
                     focusWarningMessage="This event is already published. Changing tags may affect how attendees find it and understand its purpose."
                     shouldWarn={isPublished}
-                    
                 >
                     <div>
                         {tagsError && (
-                            <Text color="red.500">
-                                Tags could not be loaded. You may need to add them
-                                manually.
+                            <Text color="fg.error">
+                                Tags could not be loaded. You may need to add
+                                them manually.
                             </Text>
                         )}
                         <CreatableSelect
-                            inputId='tags'
+                            inputId="tags"
                             isMulti
                             options={tagOptions}
                             value={selectedTags.map((tag) => ({
@@ -117,7 +141,6 @@ export const TagsInput: React.FC<TagsInputProps> = ({
                     </div>
                 </EventFormField>
             </WrapItem>
-            
         </Wrap>
     );
 };
