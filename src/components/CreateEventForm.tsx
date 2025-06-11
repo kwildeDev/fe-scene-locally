@@ -299,7 +299,7 @@ const CreateEventForm: React.FC = () => {
 
                     {!isFormSubmitted && (
                         <Card.Root id="event-form">
-                            <Card.Header bg="gray.100">
+                            <Card.Header bg="gray.subtle">
                                 <Card.Title>Add New Event</Card.Title>
                             </Card.Header>
                             <Card.Body>
@@ -316,6 +316,7 @@ const CreateEventForm: React.FC = () => {
                                                 type="text"
                                                 placeholder="Title"
                                                 disabled={isFormSubmitted}
+                                                color="black"
                                             />
                                         </EventFormField>
                                         <EventFormField

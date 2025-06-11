@@ -25,29 +25,29 @@ export const EventFormHeader: React.FC<EventHeaderProps> = ({ event }) => {
     return (
         <Stack direction={{ base: 'column', md: 'row' }} gap={6}>
             <Box minW="1/3">
-                <Text fontWeight="bold" color="gray.600">
+                <Text fontWeight="bold" color="fg.muted">
                     Created on
                 </Text>
                 <Text fontSize="md">{formatDateTime(event.created_at)}</Text>
-                <Text fontSize="sm" color="gray.500">
+                <Text fontSize="sm" color="fg.muted">
                     Created {formatRelativeDate(event.created_at)}
                 </Text>
             </Box>
 
             <Box minW="1/3">
-                <Text fontWeight="bold" color="gray.600">
+                <Text fontWeight="bold" color="fg.muted">
                     Updated on
                 </Text>
-                <Text fontSize="md" color="blue.500">
+                <Text fontSize="md" color="fg.info">
                     {formatDateTime(event.updated_at)}
                 </Text>
-                <Text fontSize="sm" color="gray.500">
+                <Text fontSize="sm" color="fg.muted">
                     Last modified {formatRelativeDate(event.updated_at)}
                 </Text>
             </Box>
 
             <Box minW="1/3">
-                <Text fontWeight="bold" color="gray.600">
+                <Text fontWeight="bold" color="fg.muted">
                     Status
                 </Text>
                 <Badge colorPalette={badgeColour} size="lg" fontSize="md" textTransform="capitalize">

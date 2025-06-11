@@ -169,7 +169,7 @@ const OrganisationEventList: React.FC = () => {
                     </Box>
                     <Text
                         fontSize="sm"
-                        color="gray.500"
+                        color="fg.muted"
                         mb={2}
                         display={{ base: 'block', xl: 'none' }}
                     >
@@ -266,7 +266,7 @@ const OrganisationEventList: React.FC = () => {
                                                         colorPalette={badgeColour}
                                                         textTransform="capitalize"
                                                     >
-                                                        {event.status}
+                                                        {event.status === 'draft' ? `⚠️ ${event.status}` : event.status}   
                                                     </Badge>
                                                 </Table.Cell>
                                                 <Table.Cell>
@@ -297,8 +297,8 @@ const OrganisationEventList: React.FC = () => {
                                                         }}
                                                         size={0}
                                                         style={{
-                                                            color: 'teal',
-                                                            borderColor: 'teal',
+                                                            color: 'teal.fg',
+                                                            borderColor: 'teal.fg',
                                                             font: 'inherit',
                                                             width: 148,
                                                             marginBottom: 7,
@@ -322,7 +322,7 @@ const OrganisationEventList: React.FC = () => {
                                                     <Button
                                                         m={0}
                                                         size="sm"
-                                                        bg="red.solid"
+                                                        variant="surface"
                                                         disabled={
                                                             event.status !==
                                                             'draft'

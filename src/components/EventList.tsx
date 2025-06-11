@@ -64,6 +64,7 @@ const EventList: React.FC = () => {
             availableTags={uniqueTags.length > 0 ? uniqueTags : []}
             availableVenues={uniqueVenues.length > 0 ? uniqueVenues : []}
             availableOrganisers={uniqueOrganisers.length > 0 ? uniqueOrganisers : []}
+            
         />
     ), [filters, handleFilterChange, uniqueTags, uniqueVenues, uniqueOrganisers]);
 
@@ -113,7 +114,7 @@ const EventList: React.FC = () => {
     if (isError) {
         return (
             <>
-                {/* {filterForm} */}
+                {filterForm}
                 <Text>Failed to load events.</Text>
             </>
         );
@@ -122,7 +123,7 @@ const EventList: React.FC = () => {
     if (isLoading) {
         return (
             <>
-                {/* {filterForm} */}
+                {filterForm}
                 <LoadingSpinner />    
             </>
         );
@@ -131,15 +132,15 @@ const EventList: React.FC = () => {
     return (
         <>
             {isCollapsible ? (
-                <Collapsible.Root>
-                    <Collapsible.Trigger padding={2} borderWidth="1px">
+                <Collapsible.Root mb={1} >
+                    <Collapsible.Trigger p={2} borderWidth="1px" borderColor="gray.600" rounded="sm">
                         <Group>
                             <FaFilter />
                             <Text>Toggle Filters</Text>
                         </Group>
                     </Collapsible.Trigger>
                     <Collapsible.Content>
-                        <Box padding="4">
+                        <Box p={4}>
                             {filterForm}
                         </Box>
                     </Collapsible.Content>
@@ -151,7 +152,7 @@ const EventList: React.FC = () => {
             {events.length === 0 ? (
                 <Text>No events available.</Text>
             ) : (
-                <SimpleGrid columns={[1, 2, 3]} columnGap="2" rowGap="4">
+                <SimpleGrid minChildWidth="sm" gap={6}>
                     {events.map((event) => (
                         <EventCard key={event.event_id} event={event} />
                     ))}

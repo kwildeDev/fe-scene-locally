@@ -24,7 +24,7 @@ import homeIcon from '/home-icon.png';
 import { useUser } from '../contexts/UserProvider';
 
 export default function MainMenu() {
-    const linkColour: string = 'colorPalette.700';
+    const linkColour: string = 'teal.fg';
     const { user, logout } = useUser();
 
     const navigate = useNavigate();
@@ -229,6 +229,7 @@ export default function MainMenu() {
                                                 value="profile"
                                                 fontSize="lg"
                                                 fontWeight="semibold"
+                                                cursor="pointer"
                                             >
                                                 <NavLink to="/users/me">Profile</NavLink>
                                             </Menu.Item>
@@ -238,6 +239,7 @@ export default function MainMenu() {
                                                     value="staff-dashboard"
                                                     fontSize="lg"
                                                     fontWeight="semibold"
+                                                    cursor="pointer"
                                                 >
                                                     <NavLink to={`/organisations/${user.organisation_id}/events`}>
                                                         Staff Dashboard
@@ -250,6 +252,7 @@ export default function MainMenu() {
                                                 value="sign-out"
                                                 fontSize="lg"
                                                 fontWeight="semibold"
+                                                cursor="pointer"
                                             >
                                                 <Link
                                                     variant="plain"

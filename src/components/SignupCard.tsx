@@ -73,7 +73,6 @@ const SignupCard: React.FC<SignupCardProps> = ({
     });
 
     useEffect(() => {
-        console.log("RHF useEffect: User changed. Resetting form...");
         reset({
             firstName: user?.first_name ?? '',
             lastName: user?.last_name ?? '',
@@ -98,23 +97,43 @@ const SignupCard: React.FC<SignupCardProps> = ({
         window.open(googleCalendarURL, '_blank');
     };
 
-    const onSubmit: SubmitHandler<Formfields> = (data) => {
+    // const onSubmit: SubmitHandler<Formfields> = (data) => {
+    //     const signupCardData: SignupCardData = {
+    //         user_id: userId,
+    //         name: `${data.firstName} ${data.lastName}`,
+    //         email: data.email,
+    //         is_registered_user: isRegisteredUser,
+    //     };
+    //     postAttendee(event_id, signupCardData)
+    //         .then((attendee) => {
+    //             setIsFormSubmitted(true);
+    //             console.log(attendee);
+    //         })
+    //         .catch((_error) => {
+    //             setError('root', {
+    //                 message: 'Event registration could not be submitted',
+    //             });
+    //         });
+    // };
+
+    const onSubmit: SubmitHandler<Formfields> = async (data) => {
         const signupCardData: SignupCardData = {
             user_id: userId,
             name: `${data.firstName} ${data.lastName}`,
             email: data.email,
             is_registered_user: isRegisteredUser,
         };
-        postAttendee(event_id, signupCardData)
-            .then((attendee) => {
-                setIsFormSubmitted(true);
-                console.log(attendee);
-            })
-            .catch((_error) => {
-                setError('root', {
-                    message: 'Event registration could not be submitted',
-                });
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await postAttendee(event_id, signupCardData);
+            setIsFormSubmitted(true);
+        } catch (error) {
+            setError('root', {
+                message: 'Event registration could not be submitted',
             });
+            console.error('Submission error:', error);
+        };
     };
 
     return (
@@ -124,7 +143,7 @@ const SignupCard: React.FC<SignupCardProps> = ({
             modal={true}
         >
             <Dialog.Trigger asChild>
-                <Button bg="blue.solid" size="lg">
+                <Button bg="blue.fg" size="lg">
                     Sign up for this event
                 </Button>
             </Dialog.Trigger>
@@ -144,11 +163,12 @@ const SignupCard: React.FC<SignupCardProps> = ({
                                         }
                                         invalid={!!errors.firstName}
                                     >
-                                        <Field.Label>First name</Field.Label>
+                                        <Field.Label color="gray.fg">First name</Field.Label>
                                         <Input
                                             {...register('firstName')}
                                             type="text"
                                             placeholder="First Name"
+                                            color="black"
                                         />
                                         <Field.ErrorText>
                                             {errors.firstName?.message}
@@ -160,11 +180,12 @@ const SignupCard: React.FC<SignupCardProps> = ({
                                         }
                                         invalid={!!errors.lastName}
                                     >
-                                        <Field.Label>Last name</Field.Label>
+                                        <Field.Label color="gray.fg">Last name</Field.Label>
                                         <Input
                                             {...register('lastName')}
                                             type="text"
                                             placeholder="Last Name"
+                                            color="black"
                                         />
                                         <Field.ErrorText>
                                             {errors.lastName?.message}
@@ -176,11 +197,12 @@ const SignupCard: React.FC<SignupCardProps> = ({
                                         }
                                         invalid={!!errors.email}
                                     >
-                                        <Field.Label>Email</Field.Label>
+                                        <Field.Label color="gray.fg">Email</Field.Label>
                                         <Input
                                             {...register('email')}
                                             type="text"
                                             placeholder="Email"
+                                            color="black"
                                         />
                                         <Field.ErrorText>
                                             {errors.email?.message}
@@ -209,7 +231,7 @@ const SignupCard: React.FC<SignupCardProps> = ({
                                     {isFormSubmitted && (
                                         <>
                                         <Text
-                                            color="green"
+                                            color="fg.success"
                                             fontWeight="semibold"
                                         >
                                             Registration successful. Thank you

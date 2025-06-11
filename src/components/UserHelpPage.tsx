@@ -34,7 +34,7 @@ const UserHelpPage: React.FC = () => {
                 </Heading>
                 <List.Root gap="4" variant="plain">
                     <List.Item>
-                        <List.Indicator asChild color="green.500">
+                        <List.Indicator asChild color="green.fg">
                             <FaQuestionCircle />
                         </List.Indicator>
                         <Box display="block">
@@ -49,7 +49,7 @@ const UserHelpPage: React.FC = () => {
                         </Box>
                     </List.Item>
                     <List.Item>
-                        <List.Indicator asChild color="green.500">
+                        <List.Indicator asChild color="green.fg">
                             <FaQuestionCircle />
                         </List.Indicator>
                         <Box display="block">
@@ -66,7 +66,7 @@ const UserHelpPage: React.FC = () => {
                         </Box>
                     </List.Item>
                     <List.Item>
-                        <List.Indicator asChild color="green.500">
+                        <List.Indicator asChild color="green.fg">
                             <FaQuestionCircle />
                         </List.Indicator>
                         <Box display="block">

@@ -161,6 +161,7 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
         control: (provided: CSSObjectWithLabel) => ({
             ...provided,
             width: 200,
+            borderColor: "#27272a",
         }),
         singleValue: (provided: CSSObjectWithLabel) => ({
             ...provided,
@@ -168,21 +169,44 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
         }),
+        placeholder: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            color: '#27272a'
+        }),
+        option: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            color: 'black'
+        })
+        
     };
 
     return (
         <form>
-            <Text as="legend" mb={4} fontWeight="semibold">Filters</Text>
+            <Text hideBelow="md" as="legend" mb={4} fontWeight="semibold">Filters</Text>
             <Flex wrap="wrap" gap={4} mb={8}>
-                <Box flex={1} display="flex" flexDirection="column" justifyContent="space-evenly">
+                <Button
+                    size="sm"
+                    variant="surface"
+                    borderColor="gray.600"
+                    rounded="md"
+                    onClick={resetAllFilters}
+                    width={{ base: "100%", md: "auto" }}
+                >
+                    <MdFilterAltOff />
+                    <Text>RESET</Text>
+                </Button>
+                <Box flex={1} display="flex" flexDirection="column" gap={2} justifyContent="space-evenly">
                 <Checkbox.Root
                     id="online"
                     checked={online}
                     onCheckedChange={handleOnlineChange}
                 >
                     <Checkbox.HiddenInput />
-                    <Checkbox.Control />
-                    <Checkbox.Label style={{ marginLeft: '5px' }}>
+                    <Checkbox.Control 
+                        borderColor="border.inverted"
+                    />
+                    <Checkbox.Label ml={2}
+                        color="gray.fg">
                         Online
                     </Checkbox.Label>
                 </Checkbox.Root>
@@ -193,15 +217,18 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
                     onCheckedChange={handleRecurringChange}
                 >
                     <Checkbox.HiddenInput />
-                    <Checkbox.Control />
-                    <Checkbox.Label style={{ marginLeft: '5px' }}>
+                    <Checkbox.Control 
+                        borderColor="border.inverted"
+                    />
+                    <Checkbox.Label ml={2}
+                        color="gray.fg">
                         Recurring
                     </Checkbox.Label>
                 </Checkbox.Root>
                 </Box>
 
                 <Field.Root flex={1} minW="fit-content">
-                    <Field.Label mt={0.5} htmlFor="tags">Tags</Field.Label>
+                    <Field.Label color="gray.fg" mt={0.5} htmlFor="tags">Tags</Field.Label>
                     <Select
                         inputId="tags"
                         isMulti
@@ -224,7 +251,7 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
                 </Field.Root>
 
                 <Field.Root flex={1} minW="fit-content">
-                    <Field.Label mt={0.5} htmlFor="venue">Venue</Field.Label>
+                    <Field.Label color="gray.fg" mt={0.5} htmlFor="venue">Venue</Field.Label>
                     <Select
                         inputId="venue"
                         options={venueOptions}
@@ -240,7 +267,7 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
                 </Field.Root>
 
                 <Field.Root flex={1} minW="fit-content">
-                    <Field.Label mt={0.5} htmlFor="organiser">Organiser</Field.Label>
+                    <Field.Label color="gray.fg" mt={0.5} htmlFor="organiser">Organiser</Field.Label>
                     <Select
                         inputId="organiser"
                         options={organiserOptions}
@@ -255,7 +282,7 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
                 </Field.Root>
 
                 <Field.Root flex={1} minW="fit-content">
-                    <Field.Label mt={0.5} htmlFor="sort_by">Sort By</Field.Label>
+                    <Field.Label color="gray.fg" mt={0.5} htmlFor="sort_by">Sort By</Field.Label>
                     <Select
                         inputId="sort_by"
                         options={sortByOptions}
@@ -277,7 +304,7 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
                 </Field.Root>
 
                 <Field.Root flex={1} minW="fit-content">
-                    <Field.Label mt={0.5} htmlFor="order">Order</Field.Label>
+                    <Field.Label color="gray.fg" mt={0.5} htmlFor="order">Order</Field.Label>
                     <Select
                         inputId="order"
                         options={orderOptions}
@@ -297,16 +324,6 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
                         isClearable
                     />
                 </Field.Root>
-                <Button
-                    alignSelf="end"
-                    size="sm"
-                    variant="surface"
-                    rounded="md"
-                    onClick={resetAllFilters}
-                >
-                    <MdFilterAltOff />
-                    <Text>RESET</Text>
-                </Button>
             </Flex>
         </form>
     );

@@ -4,18 +4,18 @@ import {
     Heading,
     HStack,
     IconButton,
-    Image,
     Stack,
     Text,
     useBreakpointValue,
+    VisuallyHidden,
 } from '@chakra-ui/react';
-import { BsBrightnessHighFill } from 'react-icons/bs';
 import MainMenu from './MainMenu';
 import LoginCard from './LoginCard';
 import { useEffect } from 'react';
 import { useUser } from '../contexts/UserProvider';
-import homeIcon from '/home-icon.png';
 import { Link } from 'react-router-dom';
+import { ColorModeButton } from './ui/color-mode';
+import { HomeIcon } from './ui/HomeIcon';
 
 const Header: React.FC = () => {
     const { user } = useUser();
@@ -69,7 +69,7 @@ const Header: React.FC = () => {
             <Stack direction="row" gap={{ base: 0, md: 4 }} alignItems="center">
                 <Link to="/">
                     <IconButton
-                        aria-label='Got to home page'
+                        aria-label='Go to home page'
                         minH="fit-content"
                         maxW="fit-content"
                         variant="plain"
@@ -77,11 +77,10 @@ const Header: React.FC = () => {
                         m={0}
                         alignSelf="center"
                     >
-                        <Image
-                            src={homeIcon}
-                            alt="Scene Locally home icon"
-                            boxSize={iconImageSize}
-                        />
+                        <>
+                        <HomeIcon boxSize={iconImageSize} color="teal.fg" />
+                        <VisuallyHidden>Scene Locally Icon</VisuallyHidden> 
+                        </>
                     </IconButton>
                 </Link>
                 <Box>
@@ -89,7 +88,7 @@ const Header: React.FC = () => {
                         as="h1"
                         whiteSpace="nowrap"
                         textStyle={headingFontSize}
-                        color={'gray.700'}
+                        color="fg.muted"
                         fontWeight={500}
                         fontFamily="Lora, serif"
                     >
@@ -99,7 +98,7 @@ const Header: React.FC = () => {
                         as="h2"
                         whiteSpace="nowrap"
                         textStyle={subheadingFontSize}
-                        color={'gray.700'}
+                        color="fg.muted"
                         fontFamily="Quicksand, sans-serif"
                         letterSpacing={{ md: '0.4em' }}
                     >
@@ -109,16 +108,14 @@ const Header: React.FC = () => {
             </Stack>
 
             <HStack id="menu" alignItems="flex-start">
-                <IconButton
-                    variant="outline"
+                <ColorModeButton 
+                    aria-label="Toggle Brightness"
                     color="teal.fg"
+                    variant="outline"
+                    size="md"
                     borderColor="teal.fg"
                     borderWidth={2}
-                    size="md"
-                    aria-label="Toggle Brightness"
-                >
-                    <BsBrightnessHighFill />
-                </IconButton>
+                />
                 <Box>
                     <MainMenu />
                 </Box>

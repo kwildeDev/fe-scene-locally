@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Field, Text } from '@chakra-ui/react';
 import { useFocusWarning } from '../hooks/useFocusWarning';
 
 interface EventFormFieldProps {
@@ -60,15 +60,17 @@ export const EventFormField = forwardRef<HTMLInputElement | HTMLTextAreaElement 
     
     return (
         <Box flex="1">
-            <label htmlFor={htmlFor}>{label}</label>
+            <Field.Root>
+            <Field.Label color="gray.fg" htmlFor={htmlFor}>{label}</Field.Label>
             {shouldWarn && isFocused && focusedMessage && (
-                <Text color="red.500" fontSize="sm" mb={1}>
+                <Text color="fg.error" fontSize="sm" mb={1}>
                     {focusedMessage}
                 </Text>
             )}
             {clonedInput}
-            {helperText && <Text color="gray.500" fontSize="sm">{helperText}</Text>}
-            {error && <Text className="error-message">{error.message}</Text>}
+            {helperText && <Text color="fg.muted" fontSize="sm">{helperText}</Text>}
+            {error && <Text className="error-message" color="fg.error">{error.message}</Text>}
+            </Field.Root>
         </Box>
     );
 });

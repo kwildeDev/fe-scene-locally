@@ -12,6 +12,8 @@ const StaffDashboard: React.FC = () => {
     const { user } = useUser();
     const organisationId = user?.organisation_id;
 
+    console.log("user: ", user);
+
     if (!organisationId) {
         return <Navigate to={`/`} replace />;
     }
