@@ -11,7 +11,6 @@ import {
     useBreakpointValue,
     Drawer,
     CloseButton,
-    Image,
     Box,
     Separator,
     Button,
@@ -20,7 +19,7 @@ import { useState } from 'react';
 
 import { FaBars, FaUserCircle } from 'react-icons/fa';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
-import homeIcon from '/home-icon.png';
+import { HomeIcon } from './ui/HomeIcon';
 import { useUser } from '../contexts/UserProvider';
 
 export default function MainMenu() {
@@ -71,21 +70,21 @@ export default function MainMenu() {
                                 <CloseButton size="md" onClick={() => setIsOpen(false)} />
                             </Drawer.CloseTrigger>
                             <Drawer.Header bg="gray.subtle" mb={5}>
-                                <Image
-                                    src={homeIcon}
-                                    alt="Scene Locally Icon"
+                                <HomeIcon
                                     boxSize="40px"
+                                    color="teal.fg"
                                 />
+                                
                                 <Box>
                                 <Text 
-                                    color={'gray.700'}
+                                    color={'fg.muted'}
                                     fontFamily="Lora, serif" fontWeight={500}
                                 >
                                     Scene Locally
                                 </Text>
                                 <Text
                                     fontSize="2xs"
-                                    color={'gray.700'}
+                                    color={'fg.muted'}
                                     fontFamily="Quicksand, sans-serif"
                                 >
                                     MEADOWBRIDGE
