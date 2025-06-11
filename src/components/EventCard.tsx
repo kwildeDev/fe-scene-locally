@@ -24,7 +24,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         <LinkBox maxW="md" as="article">
             <Card.Root>
                 <Image
-                    alt="Promotional image for event"
+                    alt={`Promotional image for ${event.title}`}
                     src={event.image_url || placeholderImageUrl}
                 ></Image>
                 <Card.Header>

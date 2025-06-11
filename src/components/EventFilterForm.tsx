@@ -6,7 +6,7 @@ import {
     Checkbox,
     Flex,
 } from '@chakra-ui/react';
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { MdFilterAltOff } from 'react-icons/md';
 import Select, { MultiValue, CSSObjectWithLabel } from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -329,4 +329,4 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
     );
 };
 
-export default EventFilterForm;
+export default React.memo(EventFilterForm);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { getEvents } from '../api.ts';
 import { Box, Collapsible, Group, SimpleGrid, Text } from '@chakra-ui/react';
 import EventCard from './EventCard.tsx';
@@ -34,7 +34,9 @@ const EventList: React.FC = () => {
 
     const isCollapsible = useBreakpointValue({ base: true, md: false });
 
-    const handleFilterChange = (key: string, value: string) => {
+    console.log("isCollapsible: ", isCollapsible)
+
+    const handleFilterChange = useCallback((key: string, value: string) => {
         const updatedParams = new URLSearchParams(searchParams);
 
         if (key === 'resetAll') {
@@ -49,24 +51,13 @@ const EventList: React.FC = () => {
             updatedParams.delete(key);
         }
         setSearchParams(updatedParams);
-    };
+    }, [searchParams]);
     
     const filters = useMemo(() => {
         return Object.fromEntries(
             Array.from(searchParams.entries()).filter(([, value]) => value)
         );
     }, [searchParams]);    
-    
-    const filterForm = useMemo(() => (
-        <EventFilterForm
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            availableTags={uniqueTags.length > 0 ? uniqueTags : []}
-            availableVenues={uniqueVenues.length > 0 ? uniqueVenues : []}
-            availableOrganisers={uniqueOrganisers.length > 0 ? uniqueOrganisers : []}
-            
-        />
-    ), [filters, handleFilterChange, uniqueTags, uniqueVenues, uniqueOrganisers]);
 
 
     useEffect(() => {
@@ -114,17 +105,14 @@ const EventList: React.FC = () => {
     if (isError) {
         return (
             <>
-                {filterForm}
+                <EventFilterForm
+                    filters={filters}
+                    onFilterChange={handleFilterChange}
+                    availableTags={uniqueTags}
+                    availableVenues={uniqueVenues}
+                    availableOrganisers={uniqueOrganisers}
+                />
                 <Text>Failed to load events.</Text>
-            </>
-        );
-    }
-
-    if (isLoading) {
-        return (
-            <>
-                {filterForm}
-                <LoadingSpinner />    
             </>
         );
     }
@@ -132,7 +120,7 @@ const EventList: React.FC = () => {
     return (
         <>
             {isCollapsible ? (
-                <Collapsible.Root mb={1} >
+                <Collapsible.Root mb={1} mt={1}>
                     <Collapsible.Trigger p={2} borderWidth="1px" borderColor="gray.600" rounded="sm">
                         <Group>
                             <FaFilter />
@@ -141,15 +129,29 @@ const EventList: React.FC = () => {
                     </Collapsible.Trigger>
                     <Collapsible.Content>
                         <Box p={4}>
-                            {filterForm}
+                            <EventFilterForm
+                                filters={filters}
+                                onFilterChange={handleFilterChange}
+                                availableTags={uniqueTags}
+                                availableVenues={uniqueVenues}
+                                availableOrganisers={uniqueOrganisers}
+                            />
                         </Box>
                     </Collapsible.Content>
                 </Collapsible.Root>
             ) : (
-                filterForm
+                <EventFilterForm
+                    filters={filters}
+                    onFilterChange={handleFilterChange}
+                    availableTags={uniqueTags}
+                    availableVenues={uniqueVenues}
+                    availableOrganisers={uniqueOrganisers}
+                />
             )}
 
-            {events.length === 0 ? (
+            {isLoading ? (
+                <LoadingSpinner />
+            ) : events.length === 0 ? (
                 <Text>No events available.</Text>
             ) : (
                 <SimpleGrid minChildWidth="sm" gap={6}>

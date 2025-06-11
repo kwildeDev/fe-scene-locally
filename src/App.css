@@ -1,3 +1,8 @@
+/* --- Force a vertical scrollbar to always be visible to prevent elements shifting --- */
+html {
+    scrollbar-gutter: stable;
+}
+
 /* --- Label Styles --- */
 label {
     display: block;
