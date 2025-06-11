@@ -21,7 +21,7 @@ const placeholderImageUrl: string = 'https://placehold.co/600x400';
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
     return (
-        <LinkBox as="article">
+        <LinkBox maxW="md" as="article">
             <Card.Root>
                 <Image
                     alt="Promotional image for event"
