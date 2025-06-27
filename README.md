@@ -76,32 +76,6 @@ Node.js, PostgreSQL, Express
 
 React, Axios, TypeScript, Chakra UI, React Form Hook, Zod, React Select.
 
-## Known Issues and Limitations
-
-**Known Bugs**
-
-1.  When signing in from the single event page, if the user then clicks on "Sign up for this event," the user details should be passed into the sign-up card as default values, and the user ID should also be stored on the registration record. This is likely to result in a registration being created for a registered user but with a guest format.
-2.  When a user logs in, their user details get stored in a user context, and a token is stored in local storage. This is fine when navigating within the app, but the user gets automatically logged out on a page reload.
-
-**Missing Features from the MVP**
-
-1.  Currently, there is the functionality to delete an event if it is a draft event and to change the status of a draft event to published, published to cancelled, or completed. There isn't yet a way for organisers to update anything else on the event or even view individual events from the staff dashboard.
-2.  Organisers are not yet able to view attendees for an event.
-3.  The app has not yet been thoroughly checked for accessibility and is lacking some semantic tags and alt text.
-4.  **UPDATE**: The integration with Google Calendar has been partially completed. An "Add to Google Calendar" button now appears after a user signs up for an event and will open the event details in the user's Google Calendar, allowing them to easily add it. Further improvements may include exploring Google authentication to replace the app's own login system and the potential addition of an ICS file download option as an alternative way to add events to calendars.
-
-**Other Missing Features**
-
-1.  Users are not yet able to view their profile. The link navigates to a page that does not yet exist.
-2.  The location pin in the header is a placeholder for a site logo.
-3.  There is an icon button indicating a dark mode/light mode toggle which is not yet functional.
-4.  There is backend logic for a search on events, but a search bar has not yet been implemented.
-5.  There is currently no functionality to create a user account but I will provide test accounts.
-
-## Future Improvements
-
-The above issues will be resolved and the app will include the additional features listed above and in the documentation.
-
 ## Frontend Local Development Setup
 
 These instructions will guide you on how to run the frontend application on your local machine. For instructions on setting up the backend, please refer to the [backend repository README](https://github.com/kwildeDev/be-scene-locally).
