@@ -1,5 +1,15 @@
-import { Box, Stack, Text, Badge } from '@chakra-ui/react';
+import {
+    Box,
+    Stack,
+    Text,
+    Badge,
+    Dialog,
+    Button,
+    Portal,
+    CloseButton,
+} from '@chakra-ui/react';
 import { formatDateTime, formatRelativeDate } from '../utils/utils';
+import EventAttendees from './EventAttendees';
 
 interface EventHeaderProps {
     event: {
@@ -7,6 +17,7 @@ interface EventHeaderProps {
         updated_at: string;
         status: string;
         event_id: number;
+        title: string;
     };
 }
 
@@ -24,7 +35,7 @@ export const EventFormHeader: React.FC<EventHeaderProps> = ({ event }) => {
 
     return (
         <Stack direction={{ base: 'column', md: 'row' }} gap={6}>
-            <Box minW="1/3">
+            <Box minW="1/4">
                 <Text fontWeight="bold" color="fg.muted">
                     Created on
                 </Text>
@@ -34,7 +45,7 @@ export const EventFormHeader: React.FC<EventHeaderProps> = ({ event }) => {
                 </Text>
             </Box>
 
-            <Box minW="1/3">
+            <Box minW="1/4">
                 <Text fontWeight="bold" color="fg.muted">
                     Updated on
                 </Text>
@@ -46,13 +57,55 @@ export const EventFormHeader: React.FC<EventHeaderProps> = ({ event }) => {
                 </Text>
             </Box>
 
-            <Box minW="1/3">
+            <Box minW="1/4">
                 <Text fontWeight="bold" color="fg.muted">
                     Status
                 </Text>
-                <Badge colorPalette={badgeColour} size="lg" fontSize="md" textTransform="capitalize">
+                <Badge
+                    colorPalette={badgeColour}
+                    size="lg"
+                    fontSize="md"
+                    textTransform="capitalize"
+                >
                     {event.status}
                 </Badge>
+            </Box>
+
+            <Box minW="1/4">
+                <Dialog.Root
+                    size={{ mdDown: "lg", md: "xl" }}
+                    placement="bottom"
+                    motionPreset="slide-in-bottom"
+                >
+                    <Dialog.Trigger asChild>
+                        <Button size="sm" bg="teal.fg">
+                            View Attendees
+                        </Button>
+                    </Dialog.Trigger>
+                    <Portal>
+                        <Dialog.Backdrop />
+                        <Dialog.Positioner>
+                            <Dialog.Content>
+                                <Dialog.Header>
+                                    <Dialog.Title>{`Attendees: ${event.title}`}</Dialog.Title>
+                                    <Dialog.CloseTrigger asChild>
+                                        <CloseButton size="sm" />
+                                    </Dialog.CloseTrigger>
+                                </Dialog.Header>
+                                <Dialog.Body>
+                                    <EventAttendees />
+                                </Dialog.Body>
+                                <Dialog.Footer>
+                                    <Dialog.ActionTrigger asChild>
+                                        <Button bg="teal.fg">
+                                            Close
+                                        </Button>
+                                    </Dialog.ActionTrigger>
+                                </Dialog.Footer>
+                            </Dialog.Content>
+                        </Dialog.Positioner>
+                    </Portal>
+                </Dialog.Root>
             </Box>
         </Stack>
     );
