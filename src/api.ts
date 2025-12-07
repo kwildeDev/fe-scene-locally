@@ -96,6 +96,16 @@ export interface OrganisationEventSummary extends Omit<EventSummary, 'organiser'
     status: string;
 }
 
+export interface AttendeeListDetail {
+    registration_id: number;
+    event_id: number;
+    user_id: number | null;
+    name: string;
+    email: string;
+    is_registered_user: boolean;
+    created_at: string;
+}
+
 export interface NewEventRequest {
     organisation_id: number;
     title: string;
@@ -295,6 +305,23 @@ const getOrganisationTags = (organisation_id: number): Promise<string[]> => {
         })
 };
 
+//Attendees
+const getEventAttendees = (event_id: number): Promise<AttendeeListDetail[]> => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+        throw new Error('Token not found');
+    }
+    return api
+        .get(`/events/${event_id}/attendees`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(({ data }) => {
+            return data.attendees
+        })
+};
+
 
 //Users
 
@@ -344,6 +371,7 @@ export {
     postAttendee,
     getOrganisationEvents,
     getOrganisationTags,
+    getEventAttendees,
     postEvent,
     loginUser,
     getUserDetails,
