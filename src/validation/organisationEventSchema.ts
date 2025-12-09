@@ -9,11 +9,6 @@ const capitaliseFirstCharacter = (
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 };
 
-const numberOrUndefined = z.preprocess((value) => {
-    if (value === '') return undefined;
-    return Number(value);
-}, z.number().int().optional());
-
 export const organisationEventSchema = z.object({
         title: z
             .string()
@@ -59,7 +54,9 @@ export const organisationEventSchema = z.object({
                 }
             ),
         endTime: z.string().min(1, { message: 'End time is required' }),
-        venue: numberOrUndefined,
+        venue: z.number()
+            .int()
+            .min(1, { message: 'Venue is required' }),
         isOnline: z.boolean(),
         accessLink: z
             .string()
@@ -71,8 +68,12 @@ export const organisationEventSchema = z.object({
                     message: 'Invalid URL',
                 }
             ),
-        category: numberOrUndefined,
-        subcategory: numberOrUndefined,
+        category: z.number()
+            .int()
+            .min(1, { message: 'Category is required' }),
+        subcategory: z.number()
+            .int()
+            .min(1, { message: 'Subcategory is required' }),
         selectedTags: z.array(z.string().toLowerCase()).optional(),
         isRecurring: z.boolean(),
         recurringFrequency: z.string().optional(),
@@ -88,18 +89,6 @@ export const organisationEventSchema = z.object({
                 }
             ),
         signupRequired: z.boolean(),
-    })
-     .refine((values) => values.venue !== undefined, {
-        message: 'Venue is required',
-        path: ['venue'],
-    })
-    .refine((values) => values.category !== undefined, {
-        message: 'Category is required',
-        path: ['category'],
-    })
-    .refine((values) => values.subcategory !== undefined, {
-        message: 'Subcategory is required',
-        path: ['subcategory'],
     })
     .refine(
         (values) => {

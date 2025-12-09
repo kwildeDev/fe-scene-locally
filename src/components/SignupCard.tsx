@@ -31,19 +31,27 @@ interface SignupCardData {
 }
 
 const capitaliseFirstCharacter = (
-    name: string | undefined
-): string | undefined => {
-    if (!name) {
-        return name;
+    name: string | null | undefined
+): string | null | undefined => {
+    if (!name || name.trim() === '') {
+        return '';
     }
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 };
 
 const schema = z.object({
-    firstName: z.string().optional().transform((val) => val ? capitaliseFirstCharacter(val) : undefined),
-    lastName: z.string().optional().transform((val) => val ? capitaliseFirstCharacter(val) : undefined),
-    email: z.string().email(),
-});
+    firstName: z
+        .string()
+        .min(1, { error: 'First name is required' })
+        .transform((val) => capitaliseFirstCharacter(val) || ''),
+    lastName: z
+        .string()
+        .min(1, { error: 'Last name is required' })
+        .transform((val) => capitaliseFirstCharacter(val) || ''),
+    email: z
+        .email({ error: (iss) => iss.input === '' ? 'Email is required' : "Invalid email address" })
+        .min(1), 
+    });
 
 type Formfields = z.infer<typeof schema>;
 

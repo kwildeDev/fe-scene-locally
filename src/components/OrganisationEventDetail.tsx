@@ -85,7 +85,7 @@ const OrganisationEventDetail: React.FC = () => {
         trigger,
         formState: { errors, isSubmitting, isDirty, dirtyFields },
     } = useForm<Formfields>({
-        resolver: zodResolver(organisationEventSchema as z.ZodTypeAny),
+        resolver: zodResolver(organisationEventSchema),
     });
 
     const isOnline = watch('isOnline', false);

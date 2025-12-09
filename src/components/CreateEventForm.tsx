@@ -87,7 +87,7 @@ const CreateEventForm: React.FC = () => {
         trigger,
         formState: { errors, isSubmitting, isDirty },
     } = useForm<Formfields>({
-        resolver: zodResolver(organisationEventSchema as z.ZodType<Formfields>),
+        resolver: zodResolver(organisationEventSchema),
         defaultValues: {
             title: '',
             description: '',
@@ -97,9 +97,9 @@ const CreateEventForm: React.FC = () => {
             endTime: '',
             isOnline: false,
             accessLink: '',
-            venue: undefined,
-            category: undefined,
-            subcategory: undefined,
+            venue: 0,
+            category: 0,
+            subcategory: 0,
             selectedTags: [],
             isRecurring: false,
             recurringFrequency: undefined,

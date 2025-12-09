@@ -40,6 +40,10 @@ export const CategorySubcategoryFields: React.FC<
     watch,
     setSubcategories,
 }) => {
+
+    console.log('CategorySubcategoryFields - isLoadingSubcategories:', isLoadingSubcategories);
+    console.log('CategorySubcategoryFields - subcategoriesList.length:', subcategoriesList.length);
+    
     const categoryId = watch('category');
 
     React.useEffect(() => {
@@ -106,11 +110,11 @@ export const CategorySubcategoryFields: React.FC<
                             </Text>
                         )}
                         <select
-                            {...register('subcategory')}
+                            {...register('subcategory', { valueAsNumber: true })}
                             id="subcategory"
                             disabled={isDisabled}
                         >
-                            <option value="">
+                            <option value={0}>
                                 {isLoadingSubcategories
                                     ? 'Loading subcategories...'
                                     : 'Select subcategory'}
