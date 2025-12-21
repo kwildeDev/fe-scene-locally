@@ -94,6 +94,7 @@ interface AttendeeDetail {
 
 export interface OrganisationEventSummary extends Omit<EventSummary, 'organiser'> {
     status: string;
+    attendee_count: number;
 }
 
 export interface AttendeeListDetail {

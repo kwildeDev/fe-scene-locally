@@ -3,7 +3,7 @@ import Header from './Header';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
-        <Container>
+        <Container id='layout-container' overflow="hidden">
             <Header />
             <Separator />
             <main>{children}</main>
