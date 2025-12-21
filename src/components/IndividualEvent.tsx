@@ -9,18 +9,13 @@ import {
 } from '@chakra-ui/react';
 import { Image } from '@chakra-ui/react';
 import { EventDetail, getEventById } from '../api.ts';
-import {
-    FaBuilding,
-    FaCalendarDays,
-    FaLocationDot,
-    FaRotate,
-} from 'react-icons/fa6';
 import { formatDateTime } from '../utils/utils.ts';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaArrowCircleLeft, FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle } from 'react-icons/fa';
 import LoadingSpinner from './LoadingSpinner.tsx';
 import SignupCard from './SignupCard.tsx';
+import { Building2, CalendarDays, CalendarSync, CircleArrowLeft, MapPin } from 'lucide-react';
 
 export interface GoogleCalendarEvent {
     eventTitle: string;
@@ -83,7 +78,7 @@ const IndividualEvent: React.FC = () => {
                     navigate(-1);
                 }}
             >
-                <FaArrowCircleLeft />
+                <CircleArrowLeft />
                 <Text>Back to list</Text>
             </Button>
             <SimpleGrid columns={[1, null, 2]} gap={8}>
@@ -122,7 +117,7 @@ const IndividualEvent: React.FC = () => {
                 <Box>
                     <Box bg="gray.subtle" borderRadius="md" p={4}>
                         <Box mb={2}>
-                            <Icon as={FaCalendarDays} marginRight="2" />
+                            <Icon as={CalendarDays} marginRight="2" />
                             <Text as="span">
                                 {formatDateTime(event.start_datetime)} to{' '}
                                 {formatDateTime(event.end_datetime)}
@@ -130,7 +125,7 @@ const IndividualEvent: React.FC = () => {
                         </Box>
                         {recurringScheduleExists && (
                             <Box color="blue.fg" mb={8}>
-                                <Icon as={FaRotate} marginRight="2" />
+                                <Icon as={CalendarSync} marginRight="2" />
                                 <Text as="span">
                                     {event.recurring_schedule?.frequency} on{' '}
                                     {event.recurring_schedule?.day}s
@@ -138,11 +133,11 @@ const IndividualEvent: React.FC = () => {
                             </Box>
                         )}
                         <Box mb={2}>
-                            <Icon as={FaBuilding} marginRight="2" />
+                            <Icon as={Building2} marginRight="2" />
                             <Text as="span">{event.organisation_name}</Text>
                         </Box>
                         <Box mb={2}>
-                            <Icon as={FaLocationDot} marginRight="2" />
+                            <Icon as={MapPin} marginRight="2" />
                             <Text as="span">{event.venue_name}</Text>
                         </Box>
                     </Box>

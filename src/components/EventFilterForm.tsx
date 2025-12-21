@@ -6,8 +6,8 @@ import {
     Checkbox,
     Flex,
 } from '@chakra-ui/react';
+import { FunnelX } from 'lucide-react';
 import React, { useState, useCallback } from 'react';
-import { MdFilterAltOff } from 'react-icons/md';
 import Select, { MultiValue, CSSObjectWithLabel } from 'react-select';
 import makeAnimated from 'react-select/animated';
 
@@ -192,7 +192,7 @@ const EventFilterForm: React.FC<EventFilterProps> = ({
                     onClick={resetAllFilters}
                     width={{ base: "100%", md: "auto" }}
                 >
-                    <MdFilterAltOff />
+                    <FunnelX />
                     <Text>RESET</Text>
                 </Button>
                 <Box flex={1} display="flex" flexDirection="column" gap={2} justifyContent="space-evenly">

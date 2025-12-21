@@ -10,8 +10,8 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { Image } from '@chakra-ui/react';
 import { EventSummary } from '../api.ts';
-import { FaCalendarDays, FaLocationDot } from 'react-icons/fa6';
 import { formatDateTime } from '../utils/utils.ts';
+import { CalendarDays, MapPin } from 'lucide-react';
 
 interface EventCardProps {
     event: EventSummary;
@@ -37,11 +37,11 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
                 </Card.Header>
                 <Card.Body>
                     <Group>
-                        <Icon as={FaCalendarDays} />
+                        <Icon as={CalendarDays} />
                         <Text>{formatDateTime(event.start_datetime)}</Text>
                     </Group>
                     <Group>
-                        <Icon as={FaLocationDot} />
+                        <Icon as={MapPin} />
                         <Text>{event.venue}</Text>
                     </Group>
                 </Card.Body>
