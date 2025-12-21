@@ -78,7 +78,7 @@ export const EventFormHeader: React.FC<EventHeaderProps> = ({ event }) => {
                     motionPreset="slide-in-bottom"
                 >
                     <Dialog.Trigger asChild>
-                        <Button size="sm" bg="teal.fg">
+                        <Button size="sm" bg="teal.fg" disabled={event.status === 'draft'}>
                             View Attendees
                         </Button>
                     </Dialog.Trigger>

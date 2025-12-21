@@ -11,9 +11,10 @@ import {
     Heading,
     Badge,
     VisuallyHidden,
+    Icon,
+    Menu,
+    IconButton,
 } from '@chakra-ui/react';
-import { FaXmark } from 'react-icons/fa6';
-import { FcCheckmark } from 'react-icons/fc';
 import {
     getOrganisationEvents,
     OrganisationEventSummary,
@@ -25,6 +26,8 @@ import LoadingSpinner from './LoadingSpinner';
 import { formatShortDate, formatShortTime } from '../utils/utils';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { Toaster, toaster } from './ui/toaster';
+import { Tooltip } from './ui/tooltip';
+import { CalendarSync, Users, Check, CircleAlert, EllipsisVertical } from 'lucide-react';
 
 interface OutletContextType {
     organisation_id: number | null | undefined;
@@ -36,9 +39,7 @@ const OrganisationEventList: React.FC = () => {
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [selectedStatuses, setSelectedStatuses] = useState<{
-        [eventId: number]: string;
-    }>({});
+ 
     const navigate = useNavigate();
     const { organisation_id } = useOutletContext() as OutletContextType;
 
@@ -72,10 +73,6 @@ const OrganisationEventList: React.FC = () => {
         return <LoadingSpinner />;
     }
 
-    const iconType = (property: boolean): React.ReactNode => {
-        return property ? <FcCheckmark /> : <FaXmark color="red" />;
-    };
-
     const handleStatusChange = (eventId: number, status: string) => {
         const updatePromise = updateEvent(eventId, { status });
 
@@ -103,10 +100,6 @@ const OrganisationEventList: React.FC = () => {
                             : event
                     )
                 );
-                setSelectedStatuses((prevStatuses) => ({
-                    ...prevStatuses,
-                    [eventId]: '',
-                }));
             })
             .catch((error) => {
                 console.error('Error updating status:', error);
@@ -158,7 +151,7 @@ const OrganisationEventList: React.FC = () => {
     return (
         <>
             {organisation_id ? (
-                <Container p={1}>
+                <Container p={1} id='staff-eventlist-container'>
                     <Box pt={4} pb={4}>
                         <Heading>Organisation Events</Heading>
                         <Text textStyle="lg">
@@ -182,7 +175,7 @@ const OrganisationEventList: React.FC = () => {
                         shadow="md"
                     >
                         <Stack gap="10">
-                            <Table.Root size="md">
+                            <Table.Root size="sm" interactive>
                                 <Table.Header>
                                     <Table.Row bg="gray.subtle">
                                         <Table.ColumnHeader fontWeight="semibold">
@@ -198,21 +191,28 @@ const OrganisationEventList: React.FC = () => {
                                             Time
                                         </Table.ColumnHeader>
                                         <Table.ColumnHeader fontWeight="semibold">
-                                            Recurrent
+                                            <Tooltip content="Recurring event" positioning={{ placement: "top" }}>
+                                                <Icon>
+                                                    <CalendarSync />
+                                                </Icon>
+                                            </Tooltip>
+                                            <VisuallyHidden>Recurring event</VisuallyHidden>
                                         </Table.ColumnHeader>
-                                        <Table.ColumnHeader fontWeight="semibold">
-                                            Online
+                                        <Table.ColumnHeader fontWeight="semibold" aria-label='Number of attendees'>
+                                            <Tooltip content="Number of attendees" positioning={{ placement: "top" }}>
+                                                <Icon>
+                                                    <Users />
+                                                </Icon>
+                                            </Tooltip>
+                                            <VisuallyHidden>Number of attendees</VisuallyHidden>
                                         </Table.ColumnHeader>
                                         <Table.ColumnHeader fontWeight="semibold">
                                             Status
                                         </Table.ColumnHeader>
                                         <Table.ColumnHeader fontWeight="semibold">
                                             <VisuallyHidden>
-                                                Update Status Dropdown Menu
+                                                Actions
                                             </VisuallyHidden>
-                                        </Table.ColumnHeader>
-                                        <Table.ColumnHeader fontWeight="semibold">
-                                            Actions
                                         </Table.ColumnHeader>
                                     </Table.Row>
                                 </Table.Header>
@@ -222,9 +222,9 @@ const OrganisationEventList: React.FC = () => {
                                             event.status === 'draft'
                                                 ? 'gray'
                                                 : event.status === 'published'
-                                                ? 'orange'
+                                                ? 'green'
                                                 : event.status === 'cancelled'
-                                                ? 'purple'
+                                                ? 'red'
                                                 : event.status === 'completed'
                                                 ? 'blue'
                                                 : 'gray';
@@ -254,87 +254,68 @@ const OrganisationEventList: React.FC = () => {
                                                     )}
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    {iconType(
-                                                        event.is_recurring
-                                                    )}
+                                                    {event.is_recurring === true ? <Check /> : ''}
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    {iconType(event.is_online)}
+                                                    {event.status === 'draft' ? '' : event.attendee_count}
                                                 </Table.Cell>
                                                 <Table.Cell>
                                                     <Badge
                                                         colorPalette={badgeColour}
                                                         textTransform="capitalize"
+                                                        size="md"
                                                     >
-                                                        {event.status === 'draft' ? `⚠️ ${event.status}` : event.status}   
+                                                        {event.status === 'draft' ? <CircleAlert size="1em"/> : ""}
+                                                        {event.status}
                                                     </Badge>
                                                 </Table.Cell>
                                                 <Table.Cell>
-                                                    <select
-                                                        aria-label='Update status dropdown menu'
-                                                        value={
-                                                            selectedStatuses[
-                                                                event.event_id
-                                                            ] || ''
-                                                        }
-                                                        onChange={(e) => {
-                                                            const newStatus =
-                                                                e.currentTarget
-                                                                    .value;
-                                                            setSelectedStatuses(
-                                                                (
-                                                                    prevStatuses
-                                                                ) => ({
-                                                                    ...prevStatuses,
-                                                                    [event.event_id]:
-                                                                        newStatus,
-                                                                })
-                                                            );
-                                                            handleStatusChange(
-                                                                event.event_id,
-                                                                newStatus
-                                                            );
-                                                        }}
-                                                        size={0}
-                                                        style={{
-                                                            color: 'teal.fg',
-                                                            borderColor: 'teal.fg',
-                                                            font: 'inherit',
-                                                            width: 148,
-                                                            marginBottom: 7,
-                                                        }}
+                                                    <Menu.Root
+                                                        positioning={{ placement: "bottom-end", hideWhenDetached: true }}
                                                     >
-                                                        <option value="">
-                                                            Update Status
-                                                        </option>
-                                                        <option value="published" disabled={event.status === "published" || event.status === "completed"}>
-                                                            Published
-                                                        </option>
-                                                        <option value="cancelled" disabled={event.status !== "published"}>
-                                                            Cancelled
-                                                        </option>
-                                                        <option value="completed" disabled={event.status !== "published"}>
-                                                            Completed
-                                                        </option>
-                                                    </select>
-                                                </Table.Cell>
-                                                <Table.Cell>
-                                                    <Button
-                                                        m={0}
-                                                        size="sm"
-                                                        variant="surface"
-                                                        disabled={
-                                                            event.status !==
-                                                            'draft'
-                                                        }
-                                                        onClick={() =>
-                                                            handleDeleteClick(
-                                                                event.event_id
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </Button>
+                                                        <Menu.Trigger asChild>
+                                                                <IconButton aria-label='Event actions' variant="ghost" size="md" color="fg.muted" _hover={{ bg: "gray.muted" }}>
+                                                                    <EllipsisVertical />
+                                                                </IconButton>
+                                                        </Menu.Trigger>
+                                                        <Portal disabled>
+                                                            <Menu.Positioner>
+                                                                <Menu.Content>
+                                                                    <Menu.Item 
+                                                                        value="published" 
+                                                                        disabled={event.status === "published" || event.status === "completed"}
+                                                                        onSelect={() => {handleStatusChange(event.event_id, "published")}}
+                                                                    >
+                                                                        Publish
+                                                                    </Menu.Item>
+                                                                    <Menu.Item 
+                                                                        value="cancelled" 
+                                                                        disabled={event.status !== "published"}
+                                                                        onSelect={() => {handleStatusChange(event.event_id, "cancelled")}}
+                                                                    >
+                                                                        Cancel
+                                                                    </Menu.Item>
+                                                                    <Menu.Item 
+                                                                        value="completed" 
+                                                                        disabled={event.status !== "published"}
+                                                                        onSelect={() => {handleStatusChange(event.event_id, "completed")}}
+                                                                    >
+                                                                        Complete
+                                                                    </Menu.Item>
+                                                                    <Menu.Item 
+                                                                        value="delete"
+                                                                        color="fg.error"
+                                                                        _hover={{ bg: "bg.error", color: "fg.error" }} 
+                                                                        disabled={event.status !== "draft"}
+                                                                        onSelect={() => {handleDeleteClick(event.event_id)}}
+                                                                    >
+                                                                        Delete
+                                                                    </Menu.Item>
+                                                                </Menu.Content>
+                                                            </Menu.Positioner>
+                                                        </Portal>
+                                                        
+                                                    </Menu.Root>
                                                 </Table.Cell>
                                             </Table.Row>
                                         );
