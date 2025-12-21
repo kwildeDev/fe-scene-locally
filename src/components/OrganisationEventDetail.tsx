@@ -12,7 +12,6 @@ import {
     Text,
 } from '@chakra-ui/react';
 import { Toaster, toaster } from './ui/toaster.tsx';
-import { FaArrowCircleLeft } from 'react-icons/fa';
 import '../App.css';
 
 import { useEffect, useState } from 'react';
@@ -34,6 +33,7 @@ import { CategorySubcategoryFields } from './CategorySubcategoryFields';
 import { TagsInput } from './TagsInput';
 import { RecurringEventFields } from './RecurringEventFields';
 import { EventFormHeader } from './EventFormHeader.tsx';
+import { CircleArrowLeft } from 'lucide-react';
 
 interface OutletContextType {
     organisation_id: number | null | undefined;
@@ -371,7 +371,7 @@ const OrganisationEventDetail: React.FC = () => {
                                 handleNavigation("../events");
                             }}
                         >
-                            <FaArrowCircleLeft />
+                            <CircleArrowLeft />
                             <Text>Back to list</Text>
                         </Button>
                     </Box>

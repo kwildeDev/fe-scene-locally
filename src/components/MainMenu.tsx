@@ -17,10 +17,10 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { FaBars, FaUserCircle } from 'react-icons/fa';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { HomeIcon } from './ui/HomeIcon';
 import { useUser } from '../contexts/UserProvider';
+import { CircleUser, MenuIcon } from 'lucide-react';
 
 export default function MainMenu() {
     const linkColour: string = 'teal.fg';
@@ -59,7 +59,7 @@ export default function MainMenu() {
                                 borderWidth={2}
                                 onClick={() => setIsOpen(true)}
                             >
-                                <FaBars />
+                                <MenuIcon />
                             </IconButton>
                         </Drawer.Trigger>
                         <Portal>
@@ -121,7 +121,7 @@ export default function MainMenu() {
                                                 <NavLink to="/users/me">
                                                     <HStack>
                                                         <Icon color={linkColour} size="md">
-                                                            <FaUserCircle />
+                                                            <CircleUser />
                                                         </Icon>
                                                         <Text
                                                             color={linkColour}
@@ -203,7 +203,7 @@ export default function MainMenu() {
                     {user?.user_id && (
                         <>
                             <Icon color={linkColour} size="lg">
-                                <FaUserCircle />
+                                <CircleUser />
                             </Icon>
                             <Menu.Root positioning={{ placement: 'bottom-end' }}>
                                 <Menu.Trigger asChild>

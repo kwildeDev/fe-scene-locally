@@ -5,7 +5,7 @@ import {
     List,
     Text,
 } from '@chakra-ui/react';
-import { FaQuestionCircle } from 'react-icons/fa';
+import { CircleQuestionMark } from 'lucide-react';
 
 const UserHelpPage: React.FC = () => {
     return (
@@ -35,7 +35,7 @@ const UserHelpPage: React.FC = () => {
                 <List.Root gap="4" variant="plain">
                     <List.Item>
                         <List.Indicator asChild color="green.fg">
-                            <FaQuestionCircle />
+                            <CircleQuestionMark />
                         </List.Indicator>
                         <Box display="block">
                             <Heading as="h3" size="md" mb={1}>
@@ -50,7 +50,7 @@ const UserHelpPage: React.FC = () => {
                     </List.Item>
                     <List.Item>
                         <List.Indicator asChild color="green.fg">
-                            <FaQuestionCircle />
+                            <CircleQuestionMark />
                         </List.Indicator>
                         <Box display="block">
                             <Heading as="h3" size="md" mb={1}>
@@ -67,7 +67,7 @@ const UserHelpPage: React.FC = () => {
                     </List.Item>
                     <List.Item>
                         <List.Indicator asChild color="green.fg">
-                            <FaQuestionCircle />
+                            <CircleQuestionMark />
                         </List.Indicator>
                         <Box display="block">
                             <Heading as="h3" size="md" mb={1}>
